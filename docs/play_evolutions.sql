@@ -1,0 +1,22 @@
+CREATE TABLE play_evolutions
+(
+  id Number(10,0) Not Null Enable,
+  hash VARCHAR2(255 Byte),
+  applied_at Timestamp Not Null,
+  apply_script clob,
+  revert_script clob,
+  state Varchar2(255),
+  last_problem clob,
+  CONSTRAINT play_evolutions_pk PRIMARY KEY (id)
+); 
+
+ //play_evolution for mssql server 2008
+   create table play_evolutions (
+    id int not null primary key, hash varchar(255) not null, 
+    applied_at datetime not null, 
+    apply_script text, 
+    revert_script text, 
+    state varchar(255), 
+    last_problem text
+    )
+

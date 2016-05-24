@@ -1,0 +1,25 @@
+@(branch: models.geo.Branch)
+@import helper._
+
+@main("Branch Information"){
+  <table border=1>
+    <tr> <th align ="left">Branch Name</th> <td>@branch.name</td> </tr>
+    <tr> <th align ="left">Branch Code</th> <td>@branch.branchCode</td> </tr>
+    @*
+    <tr> <th align ="left">Contact Person Name</th> <td>@branch.contactPersonName</td> </tr>
+    <tr> <th align ="left">Contact Person Email</th> <td>@branch.contactPersonEmail</td> </tr>
+    <tr> <th align ="left">Contact Person Phone</th> <td>@branch.contactPersonPhone</td> </tr>
+    *@
+    <tr> <th align ="center">Active?</th> <td><input type="checkbox" disabled=true @(if(branch.isActive) "checked")></td></tr>
+    <tr> <th align ="left">Region</th> <td>@branch.region.name</td> </tr>
+    <br/>
+
+</table>
+
+<br><br>
+
+ @form(routes.BranchManagement.edit(branch.id)) {
+    <input type="submit" value="Edit">
+  }
+
+}

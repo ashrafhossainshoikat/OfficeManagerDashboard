@@ -1,0 +1,33 @@
+@(user: models.usermanagement.User)
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("User Information"){
+  <h1>User Information</h1>
+
+  <table border=1>
+    <tr> <th align ="left">Id</th> <td>@user.id</td> </tr>
+    <tr> <th align ="left">Username</th> <td>@user.username</td> </tr>
+    <tr> <th align ="left">Full Name</th> <td>@user.fullName</td> </tr>
+    <tr> <th align ="left">Email</th> <td>@user.email</td> </tr>
+    <tr> <th align ="left">Phone</th> <td>@user.phone</td> </tr>
+    <tr> <th align ="left">Prior Login IP</th> <td>@user.lastLoginIp</td> </tr>
+    <tr> <th align ="left">Latest Login IP</th> <td>@user.currentLoginIp</td> </tr>
+    <tr> <th align ="left">Prior Login At</th> <td>@user.lastLoginDateTime</td> </tr>
+    <tr> <th align ="left">Latest Login At</th> <td>@user.currentLoginDateTime</td> </tr>
+    <tr> <th align ="left">Latest Login Successful</th> <td><input type="checkbox" disabled=true @(if(user.isLastLoginSuccessful) "checked")></td> </tr>
+    <tr> <th align ="left">Password Change Mandatory</th> <td><input type="checkbox" disabled=true @(if(user.pwdChangeForced) "checked")></td> </tr>
+    <tr> <th align ="left">Login Failure Count</th> <td>@user.consecLoginFailureCount</td> </tr>
+    <tr> <th align ="left">Active?</th> <td><input type="checkbox" disabled=true @(if(user.isActive) "checked")></td> </tr>
+    <tr> <th align ="left">Verification Date</th> <td>@user.verificationDate</td> </tr>
+    <tr> <th align ="left">Create Date</th> <td>@user.createDate</td> </tr>
+    <tr> <th align ="left">Branch</th> <td>@user.branch.name</td> </tr>
+    <tr> <th align ="left">Role</th> <td>@user.role.roleName</td> </tr>
+  </table>
+  <br/> <br/>
+  @form(routes.UserManagement.edit(user.id)) {
+    <input type="submit" value="Edit">
+  }
+  <br/> <br/>
+  <h3>View the <a href="@routes.UserManagement.list()">list</a> of all User</h3>
+}

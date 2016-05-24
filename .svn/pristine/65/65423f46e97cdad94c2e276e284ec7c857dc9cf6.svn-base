@@ -1,0 +1,30 @@
+@(user: models.usermanagement.User)
+@import helper._
+
+@main("User Information"){
+  
+
+  
+
+  <table border=1>
+    <tr> <th align ="left">User Name</th> <td>@user.username</td> </tr>
+    <tr> <th align ="left">Full Name</th> <td>@user.fullName</td> </tr>
+    <tr> <th align ="left">Password</th> <td>@user.password</td> </tr>
+    <tr> <th align ="left">Email</th> <td>@user.email</td> </tr>
+    <tr> <th align ="left">Phone</th> <td>@user.phone</td> </tr>
+    <tr> <th align ="left">Branch</th> <td>@user.branch.name</td> </tr>
+    <tr> <th align ="left">Role</th> <td>@user.role.roleName</td> </tr>
+    <tr> <th align ="left">Is Active</th> <td><input type="checkbox" disabled=true @(if(user.isActive) "checked")></td> </tr>
+    <tr> <th align ="left">Approval Date</th> <td>@user.verificationDate</td> </tr>
+    <tr> <th align ="left">Create Date</th> <td>@user.createDate</td> </tr>
+    <br/>
+
+</table>
+
+<br><br>
+
+ @form(routes.UserManagement.edit(user.id)) {
+    <input type="submit" value="Edit">
+  }
+
+}

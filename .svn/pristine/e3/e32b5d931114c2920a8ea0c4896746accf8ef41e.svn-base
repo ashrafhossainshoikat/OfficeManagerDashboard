@@ -1,0 +1,34 @@
+@(cards: List[models.punchcard.Card])
+
+@import helper._
+@import services.AppConstants
+
+@main("List of Card"){
+
+  <table>
+	<tr>
+	 <th>Card ID</th>
+     <th>Card Number</th>
+     <th>Branch</th>
+     <th>Service Type</th>
+	</tr>
+	@for(c <- cards) {
+	<tr>
+      <td><a href="@routes.CardManagement.show(c.id)">@c.id</a></td>
+	  <td>@c.cardNumber</td>
+	  <td>@c.branchName()</td>
+	  @* <td> <input type="checkbox" disabled=true @(if(c.isBssoCard) "checked")></td> *@
+	  <td>@if(c.isBssoCard){BSSO}else{CCSO}</td>
+	  <td>
+	    <form action="@routes.CardManagement.approveCreate()" method="post">
+	      <input type="hidden" name=@AppConstants.FORM_FIELD_NAME_CARD_ID value="@c.id">
+	  	  <input type="Submit" value="Approve">
+		</form>
+	  </td>
+	</tr>
+	}
+  </table>
+ 
+  <br/>
+  Select any of the Card (click on Id) to view its detail information.
+}

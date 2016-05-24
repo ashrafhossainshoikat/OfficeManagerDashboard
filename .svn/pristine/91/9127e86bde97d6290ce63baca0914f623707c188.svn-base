@@ -1,0 +1,18 @@
+@(userForm: Form[dummymodels.DummyUserPass], username: String)
+@import models.usermanagement.User
+@import services.JavaUtils
+@import scala.collection.immutable.Map
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("Change Password"){
+  <h2>Change your password</h2><br/><br/>
+  
+  @form(routes.UserManagement.updatePassword(), 'id->"userForm") {
+  	<input type="hidden" name="username" id="username" value="@username">
+  	@inputPassword(userForm("oldPassword"), '_label->"Current Password")<br />
+    @inputPassword(userForm("password"), '_label->"New Password")<br />
+    @inputPassword(userForm("retypePassword"), '_label->"Retype New Password")<br />
+    <input type="submit" value="Change Password">
+  }
+}

@@ -1,0 +1,507 @@
+// @SOURCE:E:/j2ee-workspace/service-delivery-model/conf/routes
+// @HASH:fef7899bc0d012e5647fdf18a83c1711a57f19e5
+// @DATE:Wed Aug 13 12:31:58 ALMT 2014
+
+import Routes.{prefix => _prefix, defaultPrefix => _defaultPrefix}
+import play.core._
+import play.core.Router._
+import play.core.j._
+
+import play.api.mvc._
+import play.libs.F
+
+import Router.queryString
+
+
+// @LINE:27
+// @LINE:26
+// @LINE:25
+// @LINE:24
+// @LINE:23
+// @LINE:22
+// @LINE:18
+// @LINE:17
+// @LINE:16
+// @LINE:15
+// @LINE:14
+// @LINE:13
+// @LINE:9
+// @LINE:6
+package controllers {
+
+// @LINE:6
+class ReverseApplication {
+    
+
+// @LINE:6
+def index(): Call = {
+   Call("GET", _prefix)
+}
+                                                
+    
+}
+                          
+
+// @LINE:9
+class ReverseAssets {
+    
+
+// @LINE:9
+def at(file:String): Call = {
+   Call("GET", _prefix + { _defaultPrefix } + "assets/" + implicitly[PathBindable[String]].unbind("file", file))
+}
+                                                
+    
+}
+                          
+
+// @LINE:27
+// @LINE:26
+// @LINE:25
+// @LINE:24
+// @LINE:23
+// @LINE:22
+class ReverseBranchManagement {
+    
+
+// @LINE:27
+def update(): Call = {
+   Call("POST", _prefix + { _defaultPrefix } + "branch/edit")
+}
+                                                
+
+// @LINE:23
+def insert(): Call = {
+   Call("POST", _prefix + { _defaultPrefix } + "branch/create")
+}
+                                                
+
+// @LINE:22
+def create(): Call = {
+   Call("GET", _prefix + { _defaultPrefix } + "branch/create")
+}
+                                                
+
+// @LINE:25
+def show(uid:Int): Call = {
+   Call("GET", _prefix + { _defaultPrefix } + "branch/show/" + implicitly[PathBindable[Int]].unbind("uid", uid))
+}
+                                                
+
+// @LINE:24
+def list(): Call = {
+   Call("GET", _prefix + { _defaultPrefix } + "branch/list")
+}
+                                                
+
+// @LINE:26
+def edit(uid:Int): Call = {
+   Call("GET", _prefix + { _defaultPrefix } + "branch/edit/" + implicitly[PathBindable[Int]].unbind("uid", uid))
+}
+                                                
+    
+}
+                          
+
+// @LINE:18
+// @LINE:17
+// @LINE:16
+// @LINE:15
+// @LINE:14
+// @LINE:13
+class ReverseRegionManagement {
+    
+
+// @LINE:18
+def update(): Call = {
+   Call("POST", _prefix + { _defaultPrefix } + "region/edit")
+}
+                                                
+
+// @LINE:14
+def insert(): Call = {
+   Call("POST", _prefix + { _defaultPrefix } + "region/create")
+}
+                                                
+
+// @LINE:13
+def create(): Call = {
+   Call("GET", _prefix + { _defaultPrefix } + "region/create")
+}
+                                                
+
+// @LINE:16
+def show(uid:Int): Call = {
+   Call("GET", _prefix + { _defaultPrefix } + "region/show/" + implicitly[PathBindable[Int]].unbind("uid", uid))
+}
+                                                
+
+// @LINE:15
+def list(): Call = {
+   Call("GET", _prefix + { _defaultPrefix } + "region/list")
+}
+                                                
+
+// @LINE:17
+def edit(uid:Int): Call = {
+   Call("GET", _prefix + { _defaultPrefix } + "region/edit/" + implicitly[PathBindable[Int]].unbind("uid", uid))
+}
+                                                
+    
+}
+                          
+}
+                  
+
+
+// @LINE:27
+// @LINE:26
+// @LINE:25
+// @LINE:24
+// @LINE:23
+// @LINE:22
+// @LINE:18
+// @LINE:17
+// @LINE:16
+// @LINE:15
+// @LINE:14
+// @LINE:13
+// @LINE:9
+// @LINE:6
+package controllers.javascript {
+
+// @LINE:6
+class ReverseApplication {
+    
+
+// @LINE:6
+def index : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.Application.index",
+   """
+      function() {
+      return _wA({method:"GET", url:"""" + _prefix + """"})
+      }
+   """
+)
+                        
+    
+}
+              
+
+// @LINE:9
+class ReverseAssets {
+    
+
+// @LINE:9
+def at : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.Assets.at",
+   """
+      function(file) {
+      return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "assets/" + (""" + implicitly[PathBindable[String]].javascriptUnbind + """)("file", file)})
+      }
+   """
+)
+                        
+    
+}
+              
+
+// @LINE:27
+// @LINE:26
+// @LINE:25
+// @LINE:24
+// @LINE:23
+// @LINE:22
+class ReverseBranchManagement {
+    
+
+// @LINE:27
+def update : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.BranchManagement.update",
+   """
+      function() {
+      return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "branch/edit"})
+      }
+   """
+)
+                        
+
+// @LINE:23
+def insert : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.BranchManagement.insert",
+   """
+      function() {
+      return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "branch/create"})
+      }
+   """
+)
+                        
+
+// @LINE:22
+def create : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.BranchManagement.create",
+   """
+      function() {
+      return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "branch/create"})
+      }
+   """
+)
+                        
+
+// @LINE:25
+def show : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.BranchManagement.show",
+   """
+      function(uid) {
+      return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "branch/show/" + (""" + implicitly[PathBindable[Int]].javascriptUnbind + """)("uid", uid)})
+      }
+   """
+)
+                        
+
+// @LINE:24
+def list : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.BranchManagement.list",
+   """
+      function() {
+      return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "branch/list"})
+      }
+   """
+)
+                        
+
+// @LINE:26
+def edit : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.BranchManagement.edit",
+   """
+      function(uid) {
+      return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "branch/edit/" + (""" + implicitly[PathBindable[Int]].javascriptUnbind + """)("uid", uid)})
+      }
+   """
+)
+                        
+    
+}
+              
+
+// @LINE:18
+// @LINE:17
+// @LINE:16
+// @LINE:15
+// @LINE:14
+// @LINE:13
+class ReverseRegionManagement {
+    
+
+// @LINE:18
+def update : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.RegionManagement.update",
+   """
+      function() {
+      return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "region/edit"})
+      }
+   """
+)
+                        
+
+// @LINE:14
+def insert : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.RegionManagement.insert",
+   """
+      function() {
+      return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "region/create"})
+      }
+   """
+)
+                        
+
+// @LINE:13
+def create : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.RegionManagement.create",
+   """
+      function() {
+      return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "region/create"})
+      }
+   """
+)
+                        
+
+// @LINE:16
+def show : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.RegionManagement.show",
+   """
+      function(uid) {
+      return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "region/show/" + (""" + implicitly[PathBindable[Int]].javascriptUnbind + """)("uid", uid)})
+      }
+   """
+)
+                        
+
+// @LINE:15
+def list : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.RegionManagement.list",
+   """
+      function() {
+      return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "region/list"})
+      }
+   """
+)
+                        
+
+// @LINE:17
+def edit : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.RegionManagement.edit",
+   """
+      function(uid) {
+      return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "region/edit/" + (""" + implicitly[PathBindable[Int]].javascriptUnbind + """)("uid", uid)})
+      }
+   """
+)
+                        
+    
+}
+              
+}
+        
+
+
+// @LINE:27
+// @LINE:26
+// @LINE:25
+// @LINE:24
+// @LINE:23
+// @LINE:22
+// @LINE:18
+// @LINE:17
+// @LINE:16
+// @LINE:15
+// @LINE:14
+// @LINE:13
+// @LINE:9
+// @LINE:6
+package controllers.ref {
+
+// @LINE:6
+class ReverseApplication {
+    
+
+// @LINE:6
+def index(): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.Application.index(), HandlerDef(this, "controllers.Application", "index", Seq(), "GET", """ Home page""", _prefix + """""")
+)
+                      
+    
+}
+                          
+
+// @LINE:9
+class ReverseAssets {
+    
+
+// @LINE:9
+def at(path:String, file:String): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.Assets.at(path, file), HandlerDef(this, "controllers.Assets", "at", Seq(classOf[String], classOf[String]), "GET", """ Map static resources from the /public folder to the /assets URL path""", _prefix + """assets/$file<.+>""")
+)
+                      
+    
+}
+                          
+
+// @LINE:27
+// @LINE:26
+// @LINE:25
+// @LINE:24
+// @LINE:23
+// @LINE:22
+class ReverseBranchManagement {
+    
+
+// @LINE:27
+def update(): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.BranchManagement.update(), HandlerDef(this, "controllers.BranchManagement", "update", Seq(), "POST", """""", _prefix + """branch/edit""")
+)
+                      
+
+// @LINE:23
+def insert(): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.BranchManagement.insert(), HandlerDef(this, "controllers.BranchManagement", "insert", Seq(), "POST", """""", _prefix + """branch/create""")
+)
+                      
+
+// @LINE:22
+def create(): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.BranchManagement.create(), HandlerDef(this, "controllers.BranchManagement", "create", Seq(), "GET", """ Create Branch Registration page""", _prefix + """branch/create""")
+)
+                      
+
+// @LINE:25
+def show(uid:Int): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.BranchManagement.show(uid), HandlerDef(this, "controllers.BranchManagement", "show", Seq(classOf[Int]), "GET", """""", _prefix + """branch/show/$uid<[^/]+>""")
+)
+                      
+
+// @LINE:24
+def list(): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.BranchManagement.list(), HandlerDef(this, "controllers.BranchManagement", "list", Seq(), "GET", """""", _prefix + """branch/list""")
+)
+                      
+
+// @LINE:26
+def edit(uid:Int): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.BranchManagement.edit(uid), HandlerDef(this, "controllers.BranchManagement", "edit", Seq(classOf[Int]), "GET", """""", _prefix + """branch/edit/$uid<[^/]+>""")
+)
+                      
+    
+}
+                          
+
+// @LINE:18
+// @LINE:17
+// @LINE:16
+// @LINE:15
+// @LINE:14
+// @LINE:13
+class ReverseRegionManagement {
+    
+
+// @LINE:18
+def update(): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.RegionManagement.update(), HandlerDef(this, "controllers.RegionManagement", "update", Seq(), "POST", """""", _prefix + """region/edit""")
+)
+                      
+
+// @LINE:14
+def insert(): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.RegionManagement.insert(), HandlerDef(this, "controllers.RegionManagement", "insert", Seq(), "POST", """""", _prefix + """region/create""")
+)
+                      
+
+// @LINE:13
+def create(): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.RegionManagement.create(), HandlerDef(this, "controllers.RegionManagement", "create", Seq(), "GET", """""", _prefix + """region/create""")
+)
+                      
+
+// @LINE:16
+def show(uid:Int): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.RegionManagement.show(uid), HandlerDef(this, "controllers.RegionManagement", "show", Seq(classOf[Int]), "GET", """""", _prefix + """region/show/$uid<[^/]+>""")
+)
+                      
+
+// @LINE:15
+def list(): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.RegionManagement.list(), HandlerDef(this, "controllers.RegionManagement", "list", Seq(), "GET", """""", _prefix + """region/list""")
+)
+                      
+
+// @LINE:17
+def edit(uid:Int): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.RegionManagement.edit(uid), HandlerDef(this, "controllers.RegionManagement", "edit", Seq(classOf[Int]), "GET", """""", _prefix + """region/edit/$uid<[^/]+>""")
+)
+                      
+    
+}
+                          
+}
+                  
+      

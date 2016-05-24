@@ -1,0 +1,178 @@
+package models.task;
+
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
+import models.customer.CustomerServiceTask;
+import models.ebeanhelper.time.Interval;
+import models.geo.Region;
+import play.data.validation.Constraints.Required;
+import play.db.ebean.Model;
+import services.JavaUtils;
+
+@Entity
+public class TaskType extends Model {
+
+	@Id
+	public Integer id;
+
+	@Version
+	@Column(name = "edit_count", nullable = false)
+	public int version = 1;
+
+	@Required
+	@Column(nullable=false)
+	public boolean isBssoTask;
+
+	@Required
+	public String taskName;
+	
+	//@Temporal(TemporalType.TIME)
+	//public Date benchmarkTime;
+	@Required
+	public Interval benchmarkTime;
+
+	@Column(nullable = false)
+	public boolean isActive;
+
+	@Column(nullable = false)
+	public boolean isApproved; // ** for checker
+	
+	@Column(nullable = false)
+	public Date createDate;
+	
+	@Column(nullable = false)
+	public String createdBy;
+	
+	public Date lastUpdateDate;
+	
+	public String lastUpdatedBy;
+
+	@OneToMany(mappedBy = "taskType")
+	public List<CustomerServiceTask> customerServiceTask;
+	
+	@Required
+	@ManyToOne
+	@JoinColumn(name="task_category_id", referencedColumnName="id")
+	public TaskCategory taskCategory;
+	// ------------------------------------------------------------------------
+
+	public static Finder<Integer, TaskType> find = new Finder(Integer.class, TaskType.class);
+	
+	@Transient
+	public String bssoOrCcso() {
+		TaskType tt;
+		
+		if(this.taskName==null & this.id!=null)
+			tt = get(this.id);
+		else
+			tt = this;
+		
+		return (tt.isBssoTask) ? "BSSO" : "CCSO";
+	}
+
+	public static Integer create(TaskType taskType) {
+		try {
+			taskType.createDate = new Date();
+			taskType.createdBy = JavaUtils.getCurrentUsername();
+			taskType.isActive = false;
+			taskType.isApproved = false;
+			taskType.save();
+			return taskType.id;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public static Integer update(TaskType taskType) {
+		try {
+			//System.out.println(taskType);
+			taskType.update(taskType.id);
+			return taskType.id;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public static List<TaskType> all() {
+		return find.all();
+	}
+
+	public static TaskType get(int id) {
+		return find.byId(id);
+	}
+
+	public static Map<String, String> getAllAsMap() {
+		LinkedHashMap<String, String> tasks = new LinkedHashMap<String, String>();
+		for (TaskType taskType : TaskType.find.orderBy("taskName").findList()) {
+			tasks.put(taskType.id.toString(), taskType.taskName);
+		}
+
+		return tasks;
+	}
+
+	public static Map<String, String> getBssoTasksAsMap() {
+		LinkedHashMap<String, String> tasks = new LinkedHashMap<String, String>();
+		for (TaskType taskType : find.where().eq("isBssoTask", true).orderBy("taskName").findList()) {
+			tasks.put(taskType.id.toString(), taskType.taskName);
+		}
+
+		return tasks;
+	}
+	
+	public static Map<String,String> getCcsoTasksAsMap() {
+        LinkedHashMap<String,String> tasks = new LinkedHashMap<String,String>();
+        for(TaskType taskType: find.where().eq("isBssoTask", false).orderBy("taskName").findList()) {
+            tasks.put(taskType.id.toString(), taskType.taskName);
+        }
+        
+        return tasks;
+    }
+
+	/*public static List<TaskType> getTaskType() {
+		List<TaskType> tasklist = TaskType.find.orderBy("id").findList();
+
+		return tasklist;
+	}*/
+
+	public static List<TaskType> allUnapproved() {
+		return find.where().eq("isApproved", false).orderBy("taskName").findList();
+	}
+
+	public static boolean approveById(int id) {
+		TaskType taskType = get(id);
+		if (taskType == null)
+			return false;
+
+		try {
+			taskType.isApproved = true;
+			taskType.isActive = true;
+			taskType.update();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "TaskType [id=" + id + ", version=" + version + ", isBssoTask=" + isBssoTask + ", taskName=" + taskName + ", benchmarkTime=" + benchmarkTime
+				+ ", isActive=" + isActive + ", isApproved=" + isApproved + ", createDate=" + createDate + ", createdBy=" + createdBy + ", lastUpdateDate="
+				+ lastUpdateDate + ", lastUpdatedBy=" + lastUpdatedBy + ", customerServiceTask=" + customerServiceTask + ", taskCategory=" + taskCategory + "]";
+	}
+
+	
+}

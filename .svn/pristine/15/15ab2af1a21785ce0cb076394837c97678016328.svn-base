@@ -1,0 +1,33 @@
+@(formCustomerCriteria: Form[models.CustomerCriteria])
+
+
+
+ <div id="wrapper">
+  
+	<div>
+	<h2>Customer Criteria Information</h2><br>
+	
+    
+    <form id="traninfosearch" name="region_info" method="POST" action="@routes.RegionManagement.regionCreate()" >
+    	<table class="search_table">
+	  		<tr>
+	  		<td>Customer Criteria ID:</td>
+	  		<td><input type="text" name="customer_criteria_Id"></td>
+	  		</tr>
+	  		
+	  		<tr>
+	  			<td>Criteria Name:</td>
+	  			<td><input type="text" name="criteria_name"></td>
+	  			
+	  		</tr>
+	  		
+	  	    
+    		
+
+		</table>
+		<input type="button" onclick=""  value="Submit" class="submit"> &nbsp;&nbsp;
+		
+	</form>
+	</div>
+
+

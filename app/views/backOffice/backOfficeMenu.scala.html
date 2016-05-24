@@ -1,0 +1,93 @@
+@()
+
+@import services.AppConstants._
+@import services.JavaUtils
+
+@main("Back-Office Menu") {
+  <br /><br />
+  
+  <div class="container_12">         
+    <!-- Dashboard icons -->
+    <div class="grid_7">
+    
+      @defining(JavaUtils.getCurrentUser.permissionNames){pn =>
+      	
+      	@* if(pn.contains(ACTION_DEADBOLT_NAME_CARD_CREATE)){
+          <a href="@routes.CardManagement.create()" class="dashboard-module">                      
+            <img src=@routes.Assets.at("images/menus/back-office.png") alt="" title="" width="64" height="64" border="0" />
+            <span>Create new Card</span>
+          </a>
+        } *@
+        @if(pn.contains(ACTION_DEADBOLT_NAME_CARD_VIEW)){
+          <a href="@routes.CardManagement.list()" class="dashboard-module">                      
+            <img src=@routes.Assets.at("images/menus/back-office.png") alt="" title="" width="64" height="64" border="0" />
+            <span>Card List</span>
+          </a>
+        }
+        @if(pn.contains(ACTION_DEADBOLT_NAME_CARD_APPROVE)){
+          <a href="@routes.CardManagement.showCreateApprovalForm()" class="dashboard-module">                      
+            <img src=@routes.Assets.at("images/menus/back-office.png") alt="" title="" width="64" height="64" border="0" />
+            <span>Approve Card</span>
+          </a>
+        }
+        @if(pn.contains(ACTION_DEADBOLT_NAME_TASK_CREATE)){
+          <a href="@routes.TaskTypeManagement.create()" class="dashboard-module">                      
+            <img src=@routes.Assets.at("images/menus/back-office.png") alt="" title="" width="64" height="64" border="0" />
+            <span>Create new Service</span>
+          </a>
+        }
+        @if(pn.contains(ACTION_DEADBOLT_NAME_TASK_VIEW)){
+          <a href="@routes.TaskTypeManagement.list()" class="dashboard-module">                      
+            <img src=@routes.Assets.at("images/menus/back-office.png") alt="" title="" width="64" height="64" border="0" />
+            <span>Service List</span>
+          </a>
+        }
+        @if(pn.contains(ACTION_DEADBOLT_NAME_TASK_APPROVE)){
+          <a href="@routes.TaskTypeManagement.showCreateApprovalForm()" class="dashboard-module">                      
+            <img src=@routes.Assets.at("images/menus/back-office.png") alt="" title="" width="64" height="64" border="0" />
+            <span>Approve Service</span>
+          </a>
+        }
+        @if(pn.contains(ACTION_DEADBOLT_NAME_CATEGORY_CREATE)){
+          <a href="@routes.CategoryManagement.create()" class="dashboard-module">                      
+            <img src=@routes.Assets.at("images/menus/back-office.png") alt="" title="" width="64" height="64" border="0" />
+            <span>Create new Service Category</span>
+          </a>
+        }
+        @if(pn.contains(ACTION_DEADBOLT_NAME_CATEGORY_VIEW)){
+          <a href="@routes.CategoryManagement.list()" class="dashboard-module">                      
+            <img src=@routes.Assets.at("images/menus/back-office.png") alt="" title="" width="64" height="64" border="0" />
+            <span>Service Category List</span>
+          </a>
+        }
+        @if(pn.contains(ACTION_DEADBOLT_NAME_CATEGORY_APPROVE)){
+          <a href="@routes.CategoryManagement.showCreateApprovalForm()" class="dashboard-module">                      
+            <img src=@routes.Assets.at("images/menus/back-office.png") alt="" title="" width="64" height="64" border="0" />
+            <span>Approve Service Category</span>
+          </a>
+        }
+        @if(pn.contains(ACTION_DEADBOLT_NAME_REGION_CREATE)){
+          <a href="@routes.RegionManagement.create()" class="dashboard-module">                      
+            <img src=@routes.Assets.at("images/menus/back-office.png") alt="" title="" width="64" height="64" border="0" />
+            <span>Create new Region</span>
+          </a>
+        }
+        @if(pn.contains(ACTION_DEADBOLT_NAME_REGION_VIEW)){
+          <a href="@routes.RegionManagement.list()" class="dashboard-module">                      
+            <img src=@routes.Assets.at("images/menus/back-office.png") alt="" title="" width="64" height="64" border="0" />
+            <span>Region List</span>
+          </a>
+        }
+        @if(pn.contains(ACTION_DEADBOLT_NAME_REGION_APPROVE)){
+          <a href="@routes.RegionManagement.showCreateApprovalForm()" class="dashboard-module">                      
+            <img src=@routes.Assets.at("images/menus/back-office.png") alt="" title="" width="64" height="64" border="0" />
+            <span>Approve Region</span>
+          </a>
+        }
+        
+      }
+      
+    </div> <!-- End .grid_7 -->
+    <div style="clear:both;"></div>
+  </div>
+}

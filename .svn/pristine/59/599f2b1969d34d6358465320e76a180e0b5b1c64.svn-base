@@ -1,0 +1,44 @@
+@()
+
+<html>
+
+<head>
+
+ <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/connectplus.css")">
+
+</head>
+
+<body>
+  <div class="wrapper">
+  <div class="google-header-bar  centered"></div>
+  
+  
+  <div class="main content clearfix">
+     <div class="card signin-card clearfix">
+         <div id="cc_iframe_parent">
+             <iframe id="youtube" src="Gmail_files/CheckConnection.htm" style="visibility: hidden; width: 1px; height: 1px; position: absolute; top: -100px;"></iframe>
+         </div>
+         
+         <img class="profile-img" src="@routes.Assets.at("images/connectplus/login_logo.png")" alt="">
+         
+         <p class="profile-name"></p>
+         
+         <form action="@connectplus.controllers.routes.UserManagement.authenticate()" method="post">
+         
+             <input type="text" id="Email" name="username" placeholder="User Name" spellcheck="false" class="" >
+             <input type="password" id="Passwd" name="Password" placeholder="Password" class="" >
+             @if(flash.get("error")){
+				<span class="error-msg" role="alert">
+					@flash.get("error")
+				</span>
+			 }
+             <input type="submit" id="signIn" class="rc-button rc-button-submit" value="Sign in" >
+         </form>
+     </div>
+  </div>
+</div>
+ 
+  
+
+</body>
+</html>

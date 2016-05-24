@@ -1,0 +1,242 @@
+# --- Created by Ebean DDL
+# To stop Ebean DDL generation, remove this comment and start using Evolutions
+
+# --- !Ups
+
+create table branch (
+  id                        number(10) not null,
+  name                      varchar2(255),
+  branch_code               varchar2(255),
+  branch_manager_name       varchar2(255),
+  address                   varchar2(255),
+  contact_person_name       varchar2(255),
+  contact_person_phone      varchar2(255),
+  contact_person_email      varchar2(255),
+  region_id                 number(10),
+  data_version              number(10) not null,
+  constraint pk_branch primary key (id))
+;
+
+create table card (
+  id                        number(10) not null,
+  card_number               varchar2(255),
+  is_bsso_card              number(1),
+  data_version              number(10) not null,
+  constraint pk_card primary key (id))
+;
+
+create table customer_criteria (
+  id                        number(10) not null,
+  criteria_name             varchar2(255),
+  data_version              number(10) not null,
+  constraint pk_customer_criteria primary key (id))
+;
+
+create table customer_history (
+  id                        number(10) not null,
+  card_number               varchar2(255),
+  customer_name             varchar2(255),
+  account_number            varchar2(255),
+  customer_phone            varchar2(255),
+  customer_address          varchar2(255),
+  punch_in_time             timestamp,
+  punch_out_time            timestamp,
+  card_id                   number(10),
+  customer_criteria_id      number(10),
+  data_version              number(10) not null,
+  constraint pk_customer_history primary key (id))
+;
+
+create table customer_service_task (
+  id                        number(10) not null,
+  task_start_time           timestamp,
+  task_end_time             timestamp,
+  total_task_time           number(19,4),
+  customer_history_id       number(10),
+  task_type_id              number(10),
+  user_id                   number(10),
+  data_version              number(10) not null,
+  constraint pk_customer_service_task primary key (id))
+;
+
+create table menu_permission (
+  id                        number(10) not null,
+  permission_name           varchar2(255),
+  view_order                number(10),
+  data_version              number(10) not null,
+  constraint pk_menu_permission primary key (id))
+;
+
+create table region (
+  id                        number(10) not null,
+  name                      varchar2(255),
+  manager_name              varchar2(255),
+  data_version              number(10) not null,
+  constraint pk_region primary key (id))
+;
+
+create table role (
+  id                        number(10) not null,
+  role_name                 varchar2(255),
+  description               varchar2(255),
+  is_active                 number(1),
+  data_version              number(10) not null,
+  constraint pk_role primary key (id))
+;
+
+create table task_event_history (
+  id                        number(10) not null,
+  customer_history_id       number(10),
+  task_event_type_id        number(10),
+  event_start_time          timestamp,
+  event_end_time            timestamp,
+  data_version              number(10) not null,
+  constraint pk_task_event_history primary key (id))
+;
+
+create table task_event_type (
+  id                        number(10) not null,
+  event_name                varchar2(255),
+  is_active                 number(1),
+  data_version              number(10) not null,
+  constraint pk_task_event_type primary key (id))
+;
+
+create table task_type (
+  id                        number(10) not null,
+  is_bsso_task              number(1),
+  task_type                 varchar2(255),
+  data_version              number(10) not null,
+  constraint pk_task_type primary key (id))
+;
+
+create table app_user (
+  id                        number(10) not null,
+  username                  varchar2(255) not null,
+  full_name                 varchar2(255),
+  password                  varchar2(255),
+  email                     varchar2(255),
+  phone                     varchar2(255),
+  branch_id                 number(10),
+  region_id                 number(10),
+  address                   varchar2(255),
+  role_id                   number(10),
+  is_active                 number(1),
+  approval_date             timestamp,
+  create_date               timestamp,
+  data_version              number(10) not null,
+  constraint uq_app_user_username unique (username),
+  constraint pk_app_user primary key (id))
+;
+
+
+create table role_menu_permission (
+  role_id                        number(10) not null,
+  menu_permission_id             number(10) not null,
+  constraint pk_role_menu_permission primary key (role_id, menu_permission_id))
+;
+create sequence branch_seq;
+
+create sequence card_seq;
+
+create sequence customer_criteria_seq;
+
+create sequence customer_history_seq;
+
+create sequence customer_service_task_seq;
+
+create sequence menu_permission_seq;
+
+create sequence region_seq;
+
+create sequence role_seq;
+
+create sequence task_event_history_seq;
+
+create sequence task_event_type_seq;
+
+create sequence task_type_seq;
+
+create sequence app_user_seq;
+
+alter table branch add constraint fk_branch_region_1 foreign key (region_id) references region (id);
+create index ix_branch_region_1 on branch (region_id);
+alter table customer_history add constraint fk_customer_history_card_2 foreign key (card_id) references card (id);
+create index ix_customer_history_card_2 on customer_history (card_id);
+alter table customer_history add constraint fk_customer_history_customer_3 foreign key (customer_criteria_id) references customer_criteria (id);
+create index ix_customer_history_customer_3 on customer_history (customer_criteria_id);
+alter table customer_service_task add constraint fk_customer_service_task_cus_4 foreign key (customer_history_id) references customer_history (id);
+create index ix_customer_service_task_cus_4 on customer_service_task (customer_history_id);
+alter table customer_service_task add constraint fk_customer_service_task_tas_5 foreign key (task_type_id) references task_type (id);
+create index ix_customer_service_task_tas_5 on customer_service_task (task_type_id);
+alter table customer_service_task add constraint fk_customer_service_task_use_6 foreign key (user_id) references app_user (id);
+create index ix_customer_service_task_use_6 on customer_service_task (user_id);
+alter table task_event_history add constraint fk_task_event_history_custom_7 foreign key (customer_history_id) references customer_service_task (id);
+create index ix_task_event_history_custom_7 on task_event_history (customer_history_id);
+alter table task_event_history add constraint fk_task_event_history_taskEv_8 foreign key (task_event_type_id) references task_event_type (id);
+create index ix_task_event_history_taskEv_8 on task_event_history (task_event_type_id);
+alter table app_user add constraint fk_app_user_branch_9 foreign key (branch_id) references branch (id);
+create index ix_app_user_branch_9 on app_user (branch_id);
+alter table app_user add constraint fk_app_user_region_10 foreign key (region_id) references region (id);
+create index ix_app_user_region_10 on app_user (region_id);
+alter table app_user add constraint fk_app_user_role_11 foreign key (role_id) references role (id);
+create index ix_app_user_role_11 on app_user (role_id);
+
+
+
+alter table role_menu_permission add constraint fk_role_menu_permission_rol_01 foreign key (role_id) references role (id);
+
+alter table role_menu_permission add constraint fk_role_menu_permission_men_02 foreign key (menu_permission_id) references menu_permission (id);
+
+# --- !Downs
+
+drop table branch cascade constraints purge;
+
+drop table card cascade constraints purge;
+
+drop table customer_criteria cascade constraints purge;
+
+drop table customer_history cascade constraints purge;
+
+drop table customer_service_task cascade constraints purge;
+
+drop table menu_permission cascade constraints purge;
+
+drop table role_menu_permission cascade constraints purge;
+
+drop table region cascade constraints purge;
+
+drop table role cascade constraints purge;
+
+drop table task_event_history cascade constraints purge;
+
+drop table task_event_type cascade constraints purge;
+
+drop table task_type cascade constraints purge;
+
+drop table app_user cascade constraints purge;
+
+drop sequence branch_seq;
+
+drop sequence card_seq;
+
+drop sequence customer_criteria_seq;
+
+drop sequence customer_history_seq;
+
+drop sequence customer_service_task_seq;
+
+drop sequence menu_permission_seq;
+
+drop sequence region_seq;
+
+drop sequence role_seq;
+
+drop sequence task_event_history_seq;
+
+drop sequence task_event_type_seq;
+
+drop sequence task_type_seq;
+
+drop sequence app_user_seq;
+

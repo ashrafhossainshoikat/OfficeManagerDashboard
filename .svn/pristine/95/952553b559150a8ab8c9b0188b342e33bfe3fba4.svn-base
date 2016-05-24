@@ -1,0 +1,39 @@
+@(cards: List[models.punchcard.Card])
+
+@import services.JavaUtils
+@import helper._
+@main("List of Cards"){
+
+<table>
+<tr>
+   
+   <th>Card Number</th>
+   <th>Service Type</th>
+   <th>Branch Name</th>
+   <th>Is Active?</th>
+   <th>Is Approved?</th>
+</tr>
+@for(c <- cards) {
+<tr>
+
+    <td><a href="@routes.CardManagement.show(c.id)">@c.cardNumber</a></td>
+   
+	 @if(c.isBssoCard) {
+        <td>BSSO</td>
+    } else {
+        <td>CCSO</td>
+    }
+    
+    <td>@c.branchName</td>
+    <td><input type="checkbox" disabled=true @(if(c.isActive) "checked")></td>
+	<td><input type="checkbox" disabled=true @(if(c.isApproved) "checked")></td>
+	
+</tr>
+ 
+}
+ </table>
+ 
+ <br/>
+  Select any of the Branch (click on Id) to view its detail information.
+
+}

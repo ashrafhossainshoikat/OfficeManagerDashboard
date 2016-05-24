@@ -1,0 +1,449 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Korean resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR)
+#ifdef _WIN32
+LANGUAGE LANG_KOREAN, SUBLANG_DEFAULT
+#pragma code_page(949)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\BioStarCPP.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\BioStarCPP.ico"
+#endif    // Korean resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About BioStarCPP"
+FONT 9, "Tahoma"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "BioStarCPP Version 1.0",IDC_STATIC,40,10,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 2008",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
+END
+
+IDD_BIOSTARCPP_DIALOG DIALOGEX 0, 0, 327, 250
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "BioStar SDK Example"
+FONT 9, "Tahoma", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "Close",IDOK,243,220,54,14
+    GROUPBOX        "Device",IDC_STATIC,7,7,153,194
+    GROUPBOX        "Connected Device",IDC_STATIC,167,7,153,194
+    LISTBOX         IDC_DEVICE_LIST,14,21,138,151,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_CONNECTED_LIST,175,21,138,151,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Search",IDC_SEARCH,24,179,54,14
+    PUSHBUTTON      "Network Config",IDC_NETWORK_CONFIG,89,179,54,14
+    PUSHBUTTON      "Clear",IDC_DISCONNECT,219,179,54,14
+    GROUPBOX        "Function Test",IDC_STATIC,7,205,313,38
+    PUSHBUTTON      "Time",IDC_TIME,30,220,54,14
+    PUSHBUTTON      "User",IDC_USER,101,220,54,14
+    PUSHBUTTON      "Log",IDC_LOG,172,220,54,14
+END
+
+IDD_NETWORKC_CONFIG DIALOG DISCARDABLE  0, 0, 246, 281
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Network Configuration"
+FONT 9, "Tahoma"
+BEGIN
+    DEFPUSHBUTTON   "Close",IDOK,98,260,50,14
+    EDITTEXT        IDC_DEVICE_INFO,7,7,232,14,ES_CENTER | ES_AUTOHSCROLL | 
+                    ES_READONLY
+    GROUPBOX        "System Information",IDC_STATIC,7,28,232,77
+    LTEXT           "Device ID",IDC_STATIC,17,42,31,14,SS_CENTERIMAGE
+    LTEXT           "MAC Address",IDC_STATIC,17,63,42,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_DEVICE_ID,72,42,101,14,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "Refresh",IDC_REFRESH,181,42,50,14
+    EDITTEXT        IDC_MAC_ADDR,72,63,101,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "FW Version",IDC_STATIC,17,83,42,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_FIRM_VER,72,83,101,14,ES_AUTOHSCROLL | ES_READONLY
+    GROUPBOX        "Network Configuration",IDC_STATIC,7,111,232,142
+    CONTROL         "DHCP",IDC_DHCP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,
+                    125,39,14
+    CONTROL         "Use Sever",IDC_USE_SERVER,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,72,125,46,14
+    CONTROL         "Sync Time",IDC_SYNC_TIME,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,130,125,44,14
+    PUSHBUTTON      "Write",IDC_WRITE,181,125,50,14
+    LTEXT           "IP",IDC_STATIC,17,146,31,14,SS_CENTERIMAGE
+    LTEXT           "Gateway",IDC_STATIC,17,167,31,14,SS_CENTERIMAGE
+    LTEXT           "Subnet Mask",IDC_STATIC,17,188,43,14,SS_CENTERIMAGE
+    LTEXT           "Server IP",IDC_STATIC,17,209,43,14,SS_CENTERIMAGE
+    LTEXT           "Port",IDC_STATIC,17,230,43,14,SS_CENTERIMAGE
+    CONTROL         "IPAddress1",IDC_GATEWAY,"SysIPAddress32",WS_TABSTOP,72,
+                    167,101,14
+    CONTROL         "IPAddress1",IDC_IP_ADDR,"SysIPAddress32",WS_TABSTOP,72,
+                    146,101,14
+    CONTROL         "IPAddress1",IDC_SUBNET_MASK,"SysIPAddress32",WS_TABSTOP,
+                    72,188,101,14
+    CONTROL         "IPAddress1",IDC_SERVER_IP,"SysIPAddress32",WS_TABSTOP,
+                    72,209,101,14
+    EDITTEXT        IDC_PORT,72,230,101,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Refresh",IDC_NETWORK_REFRESH,181,146,50,14
+    PUSHBUTTON      "Connect",IDC_CONNECT,181,167,50,14
+END
+
+IDD_SETUP_TIME DIALOG DISCARDABLE  0, 0, 217, 70
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Setup Time"
+FONT 9, "Tahoma"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,84,49,50,14
+    GROUPBOX        "Time",IDC_STATIC,7,7,203,36
+    CONTROL         "DateTimePicker1",IDC_DATE,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,14,20,61,15
+    CONTROL         "DateTimePicker1",IDC_TIME,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | DTS_UPDOWN | WS_TABSTOP | 0x8,82,20,61,
+                    15
+    PUSHBUTTON      "Get",IDC_GET,149,20,26,14
+    PUSHBUTTON      "Set",IDC_SET,183,20,26,14
+END
+
+IDD_LOG_MANAGEMENT DIALOG DISCARDABLE  0, 0, 311, 327
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Log Management"
+FONT 9, "Tahoma"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,209,306,50,14
+    GROUPBOX        "Device",IDC_STATIC,7,7,297,36
+    EDITTEXT        IDC_DEVICE,16,20,161,14,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_NUM_OF_LOG,184,20,40,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "records",IDC_STATIC,229,20,28,14,SS_CENTERIMAGE
+    CONTROL         "List1",IDC_LOG_LIST,"SysListView32",LVS_REPORT | 
+                    WS_BORDER | WS_TABSTOP,7,49,297,250
+    PUSHBUTTON      "Read",IDC_READ,53,306,50,14
+    PUSHBUTTON      "Delete All",IDC_DELETE_ALL,131,306,50,14
+END
+
+IDD_USER_MANAGEMENT DIALOG DISCARDABLE  0, 0, 350, 317
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "User Management"
+FONT 9, "Tahoma"
+BEGIN
+    DEFPUSHBUTTON   "Close",IDOK,284,296,50,14
+    GROUPBOX        "Device",IDC_STATIC,7,7,336,33
+    EDITTEXT        IDC_DEVICE,14,19,132,14,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_NUM_OF_USER,154,19,40,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    EDITTEXT        IDC_NUM_OF_TEMPLATE,231,19,40,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "users",IDC_STATIC,200,19,19,14,SS_CENTERIMAGE
+    LTEXT           "templates",IDC_STATIC,276,19,39,14,SS_CENTERIMAGE
+    GROUPBOX        "User Database",IDC_STATIC,7,49,336,240
+    CONTROL         "List1",IDC_USER_LIST,"SysListView32",LVS_REPORT | 
+                    WS_BORDER | WS_TABSTOP,14,55,132,227
+    GROUPBOX        "Info",IDC_STATIC,154,51,181,68
+    LTEXT           "Name",IDC_STATIC,162,82,22,14,SS_CENTERIMAGE
+    LTEXT           "ID",IDC_STATIC,162,63,22,14,SS_CENTERIMAGE
+    LTEXT           "Admin",IDC_STATIC,162,101,22,14,SS_CENTERIMAGE
+    LTEXT           "Start",IDC_STATIC,249,63,22,14,SS_CENTERIMAGE
+    LTEXT           "Expiry",IDC_STATIC,249,82,27,14,SS_CENTERIMAGE
+    LTEXT           "Security",IDC_STATIC,249,101,27,14,SS_CENTERIMAGE
+    CONTROL         "DateTimePicker1",IDC_START_DATE,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,278,63,50,15
+    CONTROL         "DateTimePicker1",IDC_EXPIRY_DATE,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,278,82,50,15
+    COMBOBOX        IDC_SECURITY_LEVEL,278,101,50,85,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_ADMIN_LEVEL,190,101,50,49,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_NAME,190,82,50,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_ID,190,63,50,14,ES_AUTOHSCROLL
+    GROUPBOX        "Card",IDC_STATIC,154,122,181,49
+    LTEXT           "Card ID",IDC_STATIC,162,133,26,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CARD_ID,190,133,50,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Custom",IDC_STATIC,249,133,24,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CUSTOM_ID,278,133,50,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Type",IDC_STATIC,162,152,22,14,SS_CENTERIMAGE
+    COMBOBOX        IDC_CARD_TYPE,190,152,50,34,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Fingerprint",IDC_STATIC,154,175,181,52
+    CONTROL         "Finger1",IDC_FINGER1,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,162,187,39,14
+    CONTROL         "Finger2",IDC_FINGER2,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,162,205,39,14
+    CONTROL         "Duress",IDC_DURESS1,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,202,187,39,14
+    CONTROL         "Duress",IDC_DURESS2,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,202,205,39,14
+    LTEXT           "Checksum",IDC_STATIC,242,187,34,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CHECKSUM1,278,187,50,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Checksum",IDC_STATIC,242,205,34,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CHECKSUM2,278,205,50,14,ES_AUTOHSCROLL | ES_READONLY
+    GROUPBOX        "Access Control",IDC_STATIC,155,231,181,51
+    LTEXT           "Auth Mode",IDC_STATIC,163,243,62,14,SS_CENTERIMAGE
+    COMBOBOX        IDC_AUTH_MODE,238,243,91,82,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Access Group",IDC_STATIC,163,260,48,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_ACCESS_GROUP,238,260,91,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Add",IDC_ADD,14,296,50,14
+    PUSHBUTTON      "Update",IDC_UPDATE,68,296,50,14
+    PUSHBUTTON      "Delete",IDC_DELETE,122,296,50,14
+    PUSHBUTTON      "Delete All",IDC_DELETE_ALL,176,296,50,14
+    PUSHBUTTON      "Refresh",IDC_REFRESH,230,296,50,14
+    PUSHBUTTON      "Read Card",IDC_READ_CARD,278,152,50,14
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "BioStarCPP MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "BioStarCPP\0"
+            VALUE "LegalCopyright", "Copyright (C) 2008\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "BioStarCPP.EXE\0"
+            VALUE "ProductName", "BioStarCPP Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_BIOSTARCPP_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 320
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 243
+    END
+
+    IDD_NETWORKC_CONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 239
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 274
+    END
+
+    IDD_SETUP_TIME, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 210
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 63
+    END
+
+    IDD_LOG_MANAGEMENT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 304
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 320
+    END
+
+    IDD_USER_MANAGEMENT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 343
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 310
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_USER_MANAGEMENT DLGINIT
+BEGIN
+    IDC_SECURITY_LEVEL, 0x403, 8, 0
+0x6544, 0x6166, 0x6c75, 0x0074, 
+    IDC_SECURITY_LEVEL, 0x403, 7, 0
+0x6f4c, 0x6577, 0x7473, "\000" 
+    IDC_SECURITY_LEVEL, 0x403, 6, 0
+0x6f4c, 0x6577, 0x0072, 
+    IDC_SECURITY_LEVEL, 0x403, 7, 0
+0x6f4e, 0x6d72, 0x6c61, "\000" 
+    IDC_SECURITY_LEVEL, 0x403, 7, 0
+0x6948, 0x6867, 0x7265, "\000" 
+    IDC_SECURITY_LEVEL, 0x403, 8, 0
+0x6948, 0x6867, 0x7365, 0x0074, 
+    IDC_ADMIN_LEVEL, 0x403, 7, 0
+0x6f4e, 0x6d72, 0x6c61, "\000" 
+    IDC_ADMIN_LEVEL, 0x403, 6, 0
+0x6441, 0x696d, 0x006e, 
+    IDC_CARD_TYPE, 0x403, 7, 0
+0x6f4e, 0x6d72, 0x6c61, "\000" 
+    IDC_CARD_TYPE, 0x403, 7, 0
+0x7942, 0x6170, 0x7373, "\000" 
+    IDC_AUTH_MODE, 0x403, 9, 0
+0x6944, 0x6173, 0x6c62, 0x6465, "\000" 
+    IDC_AUTH_MODE, 0x403, 12, 0
+0x6946, 0x676e, 0x7265, 0x6f20, 0x6c6e, 0x0079, 
+    IDC_AUTH_MODE, 0x403, 20, 0
+0x6946, 0x676e, 0x7265, 0x6120, 0x646e, 0x5020, 0x7361, 0x7773, 0x726f, 
+0x0064, 
+    IDC_AUTH_MODE, 0x403, 19, 0
+0x6946, 0x676e, 0x7265, 0x6f20, 0x2072, 0x6150, 0x7373, 0x6f77, 0x6472, 
+"\000" 
+    IDC_AUTH_MODE, 0x403, 14, 0
+0x6150, 0x7373, 0x6f77, 0x6472, 0x6f20, 0x6c6e, 0x0079, 
+    IDC_AUTH_MODE, 0x403, 10, 0
+0x6143, 0x6472, 0x6f20, 0x6c6e, 0x0079, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About BioStarCPP..."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\BioStarCPP.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

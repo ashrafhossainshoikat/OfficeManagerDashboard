@@ -1,0 +1,37 @@
+@(formTaskType: Form[models.TaskType])
+
+
+
+ <div id="wrapper">
+  
+	<div>
+	<h2>Task Type Information</h2><br>
+	
+    
+    <form id="traninfosearch" name="region_info" method="POST" action="@routes.RegionManagement.regionCreate()" >
+    	<table class="search_table">
+	  		<tr>
+	  		<td>Task ID:</td>
+	  		<td><input type="text" name="task_Id"></td>
+	  		</tr>
+	  		
+	  	
+    		<tr>
+    		<td>Is BSSO Task:</td>
+    		<td><input type="checkbox" name="isBssoTask" value="isBssoTask"></td>		
+    		</tr>
+    		
+    	    <tr>
+	  		<td>Task Name:</td>
+	  		<td><input type="text" name="task_Name"></td>
+	  		</tr>
+	  		
+	  	   
+
+		</table>
+		<input type="button" onclick=""  value="Submit" class="submit"> &nbsp;&nbsp;
+		
+	</form>
+	</div>
+
+

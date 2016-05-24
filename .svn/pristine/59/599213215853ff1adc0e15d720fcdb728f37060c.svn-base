@@ -1,0 +1,433 @@
+package controllers;
+
+import java.util.Date;
+import java.util.Map;
+
+import models.customer.CustomerHistory;
+import models.customer.CustomerServiceTask;
+import models.ebeanhelper.time.Interval;
+import models.punchcard.Card;
+import models.task.TaskEventHistory;
+import models.task.TaskType;
+
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.ObjectNode;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import play.data.Form;
+import play.libs.F.Function;
+import play.libs.Json;
+import play.libs.WS;
+import play.mvc.BodyParser;
+import play.mvc.Controller;
+import play.mvc.Result;
+import services.AppConstants;
+import services.JavaUtils;
+import be.objectify.deadbolt.java.actions.Dynamic;
+import connectplus.models.User;
+import views.html.customerAndTask.*;
+
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ObjectNode;
+
+import connectplus.services.deadbolt.*;
+
+public class CustomerAndTaskManagement extends Controller {
+
+	public static Form<TaskType> homepageform = Form.form(TaskType.class);
+	public static Form<CustomerHistory> updateChForm = Form.form(CustomerHistory.class);
+	public static Form<CustomerServiceTask> cstForm = Form.form(CustomerServiceTask.class);
+	public static Form<TaskEventHistory> tehForm = Form.form(TaskEventHistory.class);
+
+	public static final String feedUrl = "http://10.5.2.79:7001/FetchFinacleTransaction/Proxy_Services/FetchFinacleData";
+
+	// Action to show landing Home page
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_ENTRY_PAGE, handler = DeadboltHandler.class)
+	public static Result homepage() {
+		return ok(homepage.render(JavaUtils.getCurrentUsername(), JavaUtils.isCurrentUserBssoOrCcso()));
+	}
+
+	// Action to show account Information of a single customer from Finacle
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_ENTRY_PAGE, handler = DeadboltHandler.class)
+	public static Result accInfoPage() {
+		return ok(accinfo.render());
+
+	}
+
+	// Action to get all punched in Customer List
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_ENTRY_PAGE, handler = DeadboltHandler.class)
+	public static Result getPunchedInCustomerList() {
+		ArrayNode cstArray = CustomerHistory.getAllPunchedInCustomerAsJsonNode();
+		if (cstArray.size() == 0)
+			return ok(JavaUtils.generateJsonFailureResponse());
+		else
+			return ok(JavaUtils.generateJsonSuccessResponse(cstArray));
+	}
+
+	// Action to get a single Customer History as JSON by cardNumber
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_ENTRY_PAGE, handler = DeadboltHandler.class)
+	@BodyParser.Of(BodyParser.Json.class)
+	public static Result getCustomerAsJson(String cardNumber) {
+
+		CustomerHistory ch = CustomerHistory.getCustomerByCardNumber(cardNumber);
+
+		if (ch == null)
+			return ok(JavaUtils.generateJsonFailureResponse());
+		else
+			return ok(JavaUtils.generateJsonSuccessResponse(ch.toJson()));
+	}
+
+	// Action to update a Customer History Data
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_ENTRY_PAGE, handler = DeadboltHandler.class)
+	public static Result updateCustomerHistory() {
+		Form<CustomerHistory> filledForm = updateChForm.bindFromRequest();
+
+		if (filledForm.hasErrors()) {
+			return badRequest(homepage.render(JavaUtils.getCurrentUsername(), JavaUtils.isCurrentUserBssoOrCcso()));
+		} else {
+			CustomerHistory cHistory = filledForm.get();
+
+			try {
+				CustomerHistory.update(cHistory);
+				flash(AppConstants.FLASH_KEY_INFO, AppConstants.FLASH_MSG_CUST_HIST_UPDATE_SUCCESS);
+				return ok(homepage.render(JavaUtils.getCurrentUsername(), JavaUtils.isCurrentUserBssoOrCcso()));
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				flash(AppConstants.FLASH_KEY_ERROR, AppConstants.FLASH_MSG_CUST_HIST_UPDATE_FAILURE);
+				return ok(homepage.render(JavaUtils.getCurrentUsername(), JavaUtils.isCurrentUserBssoOrCcso()));
+			}
+		}
+	}
+
+	// Action to get all task-list from Customer Service Task
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_ENTRY_PAGE, handler = DeadboltHandler.class)
+	public static Result getAllTaskList() {
+
+		// List<CustomerServiceTask> cstList = CustomerServiceTask.all();
+		// return cstList;
+		return TODO;
+	}
+
+	// Action to create a Customer Service Task
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_ENTRY_PAGE, handler = DeadboltHandler.class)
+	public static Result createCustomerServiceTask(String userName) {
+		Form<CustomerServiceTask> filledForm = cstForm.bindFromRequest();
+
+		if (filledForm.hasErrors()) {
+			return badRequest(homepage.render(JavaUtils.getCurrentUsername(), JavaUtils.isCurrentUserBssoOrCcso()));
+		} else {
+			CustomerServiceTask cst = filledForm.get();
+
+			cst.taskStatus = AppConstants.TASK_STATUS_ASSIGNED;
+
+			if (userName != null || userName.trim().isEmpty() == false) {
+
+				cst.username = userName;
+			}
+
+			CustomerHistory ch = CustomerHistory.get(cst.customerHistory.id);
+			if (ch.customerServiceTasks.size() > 0)
+				cst.taskIssueTime = new Date();
+			else
+				cst.taskIssueTime = ch.punchInTime;
+
+			try {
+				CustomerServiceTask.create(cst);
+				return ok(AppConstants.RESPONSE_MSG_SUCCESS);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				return ok(AppConstants.RESPONSE_MSG_FAILURE);
+			}
+
+		}
+
+	}
+
+	// Action to create a Task Event History
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_ENTRY_PAGE, handler = DeadboltHandler.class)
+	public static Result createTaskEventHistory(String assignedUserName) {
+		Form<TaskEventHistory> filledForm = tehForm.bindFromRequest();
+
+		if (filledForm.hasErrors()) {
+
+			return badRequest(homepage.render(JavaUtils.getCurrentUsername(), JavaUtils.isCurrentUserBssoOrCcso()));
+		} else {
+			TaskEventHistory teh = filledForm.get();
+			try {
+				if (teh.taskEventType.equals(AppConstants.TASK_EVENT_TYPE_START)) {
+					teh.eventStartTime = new Date();
+					TaskEventHistory.create(teh);
+					// System.out.print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"+teh.taskEventType);
+					// TODO check data tempering
+					CustomerServiceTask cst = CustomerServiceTask.get(teh.customerServiceTask.id);
+					// System.out.print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+					// + cst.taskType);
+					if (cst != null) {
+
+						cst.taskStartTime = teh.eventStartTime;
+						cst.taskStatus = AppConstants.TASK_STATUS_ACTIVE;
+						cst.waitingTime = Interval.generate(cst.taskIssueTime, cst.taskStartTime);
+						CustomerServiceTask.update(cst);
+					}
+
+				} else if (teh.taskEventType.equals(AppConstants.TASK_EVENT_TYPE_COMPLETE)
+						|| teh.taskEventType.equals(AppConstants.TASK_EVENT_TYPE_CANCEL)) {
+					teh.eventStartTime = new Date();
+					TaskEventHistory.create(teh);
+					CustomerServiceTask cst = CustomerServiceTask.get(teh.customerServiceTask.id);
+					cst.taskEndTime = teh.eventStartTime;
+					cst.taskStatus = AppConstants.TASK_STATUS_ENDED;
+					cst.totalTaskTime = Interval.generate(cst.taskStartTime, cst.taskEndTime);
+					CustomerServiceTask.update(cst);
+				} else if (teh.taskEventType.equals(AppConstants.TASK_EVENT_TYPE_PAUSE)) {
+					teh.eventStartTime = new Date();
+					TaskEventHistory.create(teh);
+					CustomerServiceTask cst = CustomerServiceTask.get(teh.customerServiceTask.id);
+					cst.taskStatus = AppConstants.TASK_STATUS_PAUSED;
+					CustomerServiceTask.update(cst);
+				} else if (teh.taskEventType.equals(AppConstants.TASK_EVENT_TYPE_RESUME)) {
+					TaskEventHistory taskEventHistory = TaskEventHistory.getPausedTask(teh.customerServiceTask.id);
+					teh.eventStartTime = new Date();
+					TaskEventHistory.create(teh);
+					taskEventHistory.eventEndTime = teh.eventStartTime;
+					TaskEventHistory.update(taskEventHistory);
+					CustomerServiceTask cst = CustomerServiceTask.get(teh.customerServiceTask.id);
+					cst.taskStatus = AppConstants.TASK_STATUS_ACTIVE;
+					CustomerServiceTask.update(cst);
+
+				}
+
+				else if (teh.taskEventType.equals(AppConstants.TASK_EVENT_TYPE_REASSIGN)) {
+					teh.eventStartTime = new Date();
+					teh.remarks = remarksMessageFormatter(JavaUtils.getCurrentUsername(), assignedUserName);
+					TaskEventHistory.create(teh);
+					CustomerServiceTask cst = CustomerServiceTask.get(teh.customerServiceTask.id);
+					if (cst.taskStatus.equals(AppConstants.TASK_STATUS_ACTIVE)) {
+						cst.taskStatus = AppConstants.TASK_STATUS_PAUSED;
+					}
+
+					cst.username = assignedUserName;
+					CustomerServiceTask.update(cst);
+				}
+
+				return ok(AppConstants.RESPONSE_MSG_SUCCESS);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				return ok(AppConstants.RESPONSE_MSG_FAILURE);
+			}
+		}
+
+	}
+
+	// Action to create a general format of Remarks Message
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_ENTRY_PAGE, handler = DeadboltHandler.class)
+	public static String remarksMessageFormatter(String currentUserName, String assignedUserName) {
+		String remarksMessage = "Current UserName:" + currentUserName + " and Task Assigned to " + assignedUserName;
+		return remarksMessage;
+
+	}
+
+	// Action to get All Account Info From Finacle
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_ENTRY_PAGE, handler = DeadboltHandler.class)
+	public static Result getAllAccountInfo() {
+
+		String feedUrl = "http://10.100.17.137:9000/getjson/1501100014805001";
+		return async(WS.url(feedUrl).get().map(new Function<WS.Response, Result>() {
+			public Result apply(WS.Response wsResponse) {
+				return status(wsResponse.getStatus(), wsResponse.getBody()).as(wsResponse.getHeader(CONTENT_TYPE));
+			}
+		}));
+
+	}
+
+	// Action to get the details of a Single Account by Account Number
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_ENTRY_PAGE, handler = DeadboltHandler.class)
+	public static Result getAccountDetails(String accountNumber) {
+		response().setContentType("application/json; charset=utf-8");
+		return async(WS.url(feedUrl).setQueryParameter("accountNo", accountNumber.trim())
+
+		.setQueryParameter("phoneNo", "").get().map(new Function<WS.Response, Result>() {
+			public Result apply(WS.Response response) {
+				Element elem;
+				ObjectNode accInfoJson = Json.newObject();
+
+				String accountName = "";
+				String currentBalance = "";
+				String phoneNumber = "";
+				String accountNo = "";
+				String accountType = "";
+				String accountStatus = "";
+
+				if (response.getStatus() != play.mvc.Http.Status.OK)
+					return ok(JavaUtils.generateFinacleResponseFailureMsgAsJson());
+
+				Document xmlDoc;
+				try {
+					xmlDoc = response.asXml();
+				} catch (Exception e) {
+					return ok(JavaUtils.generateFinacleResponseFailureMsgAsJson());
+				}
+
+				if (xmlDoc == null)
+					return ok(JavaUtils.generateXmlResponseFailureMsgAsJson());
+
+				try {
+					elem = (Element) xmlDoc.getElementsByTagName("sp:ACCOUNT_NO").item(0);
+
+					if (elem == null)
+						return ok(JavaUtils.generateElementResponseFailureMsgAsJson());
+
+					if (elem != null)
+						accountNo = elem.getTextContent();
+
+					elem = (Element) xmlDoc.getElementsByTagName("sp:ACCOUNT_NAME").item(0);
+					if (elem != null)
+						accountName = elem.getTextContent();
+
+					elem = (Element) xmlDoc.getElementsByTagName("sp:CURRENT_BALANCE").item(0);
+					if (elem != null)
+						currentBalance = elem.getTextContent();
+
+					elem = (Element) xmlDoc.getElementsByTagName("sp:PHONE_NUMBER").item(0);
+					if (elem != null)
+						phoneNumber = elem.getTextContent();
+
+					elem = (Element) xmlDoc.getElementsByTagName("sp:ACCOUNT_TYPE").item(0);
+					if (elem != null)
+						accountType = elem.getTextContent();
+
+					elem = (Element) xmlDoc.getElementsByTagName("sp:STATUS").item(0);
+					if (elem != null)
+						accountStatus = elem.getTextContent();
+
+				} catch (Exception e) {
+					return ok(JavaUtils.generateElementResponseFailureMsgAsJson());
+				}
+
+				accInfoJson.put("ACCOUNT_NAME", accountName);
+				accInfoJson.put("CURRENT_BALANCE", currentBalance);
+				accInfoJson.put("PHONE_NUMBER", phoneNumber);
+				accInfoJson.put("ACCOUNT_NO", accountNo);
+				accInfoJson.put("ACCOUNT_TYPE", accountType);
+				accInfoJson.put("STATUS", accountStatus);
+
+				return ok(JavaUtils.generateJsonSuccessResponse(accInfoJson));
+			}
+		}));
+
+	}
+
+	// Action for Manually Input a Card
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_ENTRY_PAGE, handler = DeadboltHandler.class)
+	public static Result manualCardInput() {
+		return ok(manuallycardinput.render(updateChForm));
+	}
+
+	// Action for create a new Customer History when Manually input card Number
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_ENTRY_PAGE, handler = DeadboltHandler.class)
+	public static Result createNewCustomerHistory() {
+
+		Form<CustomerHistory> filledForm = updateChForm.bindFromRequest();
+
+		if (filledForm.hasErrors()) {
+			return badRequest(manuallycardinput.render(filledForm));
+		}
+
+		else {
+			CustomerHistory customerHistory = filledForm.get();
+			Card card = Card.findByCardNumber(customerHistory.cardNumber);
+			customerHistory.card = card;
+			customerHistory.punchInTime = new Date();
+			CustomerHistory.create(customerHistory);
+			return ok("A new Customer History is created.....");
+		}
+	}
+
+	// Action to get All Customer Service Task as JSON Array
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_ENTRY_PAGE, handler = DeadboltHandler.class)
+	public static Result jsonArray(String customerHistoryId) {
+
+		int chId = Integer.parseInt(customerHistoryId);
+		ArrayNode cstArray = CustomerServiceTask.findAllByIdAsJson(chId);
+		if (cstArray.size() == 0)
+			return ok(JavaUtils.generateJsonFailureResponse());
+		else
+			return ok(JavaUtils.generateJsonSuccessResponse(cstArray));
+	}
+
+	// Action to get the task that is assigned to Me
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_ENTRY_PAGE, handler = DeadboltHandler.class)
+	public static Result getMyAssinedTask() {
+
+		String currentUserName = "";
+		int chId = 0;
+
+		final Map<String, String[]> values = request().body().asFormUrlEncoded();
+
+		String[] userName = values.get("userName");
+		if (userName.length > 0) {
+			currentUserName = userName[0];
+		}
+
+		String[] customerHistoryId = values.get("customerHistoryId");
+		if (customerHistoryId.length > 0) {
+			String custHistId = customerHistoryId[0];
+			chId = Integer.parseInt(custHistId);
+		}
+
+		CustomerServiceTask cuSeTask = CustomerServiceTask.getAssignedTask(currentUserName, chId);
+
+		if (cuSeTask == null)
+			return ok(JavaUtils.generateJsonFailureResponse());
+		else
+			return ok(JavaUtils.generateJsonSuccessResponse(cuSeTask.toJson()));
+
+	}
+
+	// Action to get a single Customer Service Task as JSON by (Customer Service
+	// Task ID)
+	public static Result getCustomerServiceTaskAsJson(String cstId) {
+
+		int taskId;
+		try {
+			taskId = Integer.parseInt(cstId);
+		} catch (NumberFormatException e) {
+			flash("Could not parse Customer Service Task Id into Integer");
+			return redirect(controllers.routes.CustomerAndTaskManagement.homepage());
+
+		}
+
+		CustomerServiceTask cst = CustomerServiceTask.get(taskId);
+		ObjectNode cstJson = cst.toJson();
+
+		if (cstJson == null)
+			return ok(JavaUtils.generateJsonFailureResponse());
+		else
+			return ok(JavaUtils.generateJsonSuccessResponse(cstJson));
+
+	}
+
+	// Action for punch out
+	public static Result punchOutCustomer(String customerHistoryId) {
+		
+		int chId = Integer.parseInt(customerHistoryId);
+		ArrayNode cstArray = CustomerServiceTask.findAllNotEndedTaskForPunchOutAsJson(chId);
+		if (cstArray.size() == 0){
+			CustomerHistory ch=CustomerHistory.get(chId);
+			ch.punchOutTime=new Date();
+			ch.punchOutStatus = JavaUtils.getCurrentUserPunchOutStatus();
+			CustomerHistory.update(ch);
+			
+			return ok(JavaUtils.generateJsonPunchOutSuccessResponse());
+			
+		} else {
+			
+			return ok(JavaUtils.generateJsonPunchOutFailureResponse(cstArray));
+		}
+	}
+
+}

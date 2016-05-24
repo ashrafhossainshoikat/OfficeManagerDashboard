@@ -1,0 +1,84 @@
+
+package views.html
+
+import play.templates._
+import play.templates.TemplateMagic._
+
+import play.api.templates._
+import play.api.templates.PlayMagic._
+import models._
+import controllers._
+import java.lang._
+import java.util._
+import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
+import play.api.i18n._
+import play.core.j.PlayMagicForJava._
+import play.mvc._
+import play.data._
+import play.api.data.Field
+import play.mvc.Http.Context.Implicit._
+import views.html._
+/**/
+object main extends BaseScalaTemplate[play.api.templates.Html,Format[play.api.templates.Html]](play.api.templates.HtmlFormat) with play.api.templates.Template2[String,Html,play.api.templates.Html] {
+
+    /**/
+    def apply/*1.2*/(title: String)(content: Html):play.api.templates.Html = {
+        _display_ {
+
+Seq[Any](format.raw/*1.32*/("""
+
+
+
+<html>
+
+<head>
+
+	<title>"""),_display_(Seq[Any](/*9.10*/title)),format.raw/*9.15*/("""</title>
+    <link rel="stylesheet" media="screen" href=""""),_display_(Seq[Any](/*10.50*/routes/*10.56*/.Assets.at("stylesheets/bootstrap.css"))),format.raw/*10.95*/("""">
+	
+</head>
+
+<body>
+    <div id="wrapper">
+
+   <div id="header">
+        <div id="logo">
+            <h1>Service Delivery Model</h1>
+        </div>
+    </div>
+  
+    
+ 
+  
+	"""),_display_(Seq[Any](/*26.3*/content)),format.raw/*26.10*/("""  
+    <div style="clear: both;"></div>
+    </div>  
+    <!-- end #content -->
+    <div id="sidebar">
+        
+    </div>
+  
+
+
+</body>
+</html>"""))}
+    }
+    
+    def render(title:String,content:Html): play.api.templates.Html = apply(title)(content)
+    
+    def f:((String) => (Html) => play.api.templates.Html) = (title) => (content) => apply(title)(content)
+    
+    def ref: this.type = this
+
+}
+                /*
+                    -- GENERATED --
+                    DATE: Wed Aug 13 12:31:58 ALMT 2014
+                    SOURCE: E:/j2ee-workspace/service-delivery-model/app/views/main.scala.html
+                    HASH: 64f70c461f02ca23c750a5ae22c0a5013722ac44
+                    MATRIX: 727->1|834->31|906->68|932->73|1027->132|1042->138|1103->177|1329->368|1358->375
+                    LINES: 26->1|29->1|37->9|37->9|38->10|38->10|38->10|54->26|54->26
+                    -- GENERATED --
+                */
+            

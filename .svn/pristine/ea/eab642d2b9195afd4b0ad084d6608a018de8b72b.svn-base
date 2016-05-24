@@ -1,0 +1,213 @@
+# --- Created by Ebean DDL
+# To stop Ebean DDL generation, remove this comment and start using Evolutions
+
+# --- !Ups
+
+create table audit_log (
+  id                        numeric(19) identity(1,1) not null,
+  user_id                   integer not null,
+  username                  varchar(255) not null,
+  role_id                   integer not null,
+  branch_id                 integer,
+  user_action               varchar(255) not null,
+  table_name                varchar(255) not null,
+  primary_key_value         numeric(19) not null,
+  remarks                   varchar(255),
+  visitor_ip                varchar(255),
+  visitor_browser           varchar(255),
+  activity_date_time        datetime not null,
+  constraint pk_audit_log primary key (id))
+;
+
+create table base_model_int (
+  id                        integer identity(1,1) not null,
+  create_date               datetime,
+  created_by                varchar(255),
+  create_checked_by         varchar(255),
+  create_check_remarks      varchar(255),
+  is_checked                bit default 0 not null,
+  last_update_date          datetime,
+  last_updated_by           varchar(255),
+  last_update_checked_by    varchar(255),
+  update_check_remarks      varchar(1000),
+  is_active                 bit default 0 not null,
+  edit_count                integer not null,
+  constraint pk_base_model_int primary key (id))
+;
+
+create table base_model_long (
+  id                        numeric(19) identity(1,1) not null,
+  create_date               datetime,
+  created_by                varchar(255),
+  create_checked_by         varchar(255),
+  create_check_remarks      varchar(255),
+  is_checked                bit default 0 not null,
+  last_update_date          datetime,
+  last_updated_by           varchar(255),
+  last_update_checked_by    varchar(255),
+  update_check_remarks      varchar(1000),
+  is_active                 bit default 0 not null,
+  edit_count                integer not null,
+  constraint pk_base_model_long primary key (id))
+;
+
+create table branch_in_region (
+  branch_sol_id             integer not null,
+  region_id                 integer not null,
+  constraint uq_branch_in_region_branch_sol_i unique (branch_sol_id))
+;
+
+create table card (
+  id                        integer not null,
+  card_number               varchar(255) not null,
+  is_bsso_card              bit default 0 not null,
+  branch_sol_id             integer,
+  is_active                 bit default 0 not null,
+  is_approved               bit default 0 not null,
+  create_date               datetime not null,
+  created_by                varchar(255) not null,
+  last_update_date          datetime,
+  last_updated_by           varchar(255),
+  edit_count                integer not null,
+  constraint uq_card_card_number unique (card_number),
+  constraint pk_card primary key (id))
+;
+
+create table customer_criteria (
+  id                        integer identity(1,1) not null,
+  criteria_name             varchar(255),
+  create_date               datetime not null,
+  created_by                varchar(255) not null,
+  last_update_date          datetime,
+  last_updated_by           varchar(255),
+  constraint pk_customer_criteria primary key (id))
+;
+
+create table customer_history (
+  id                        integer identity(1,1) not null,
+  customer_name             varchar(255),
+  account_number            varchar(255),
+  customer_phone            varchar(255),
+  customer_address          varchar(255),
+  punch_in_time             datetime,
+  punch_out_time            datetime,
+  punch_out_status          varchar(255),
+  card_number               varchar(255),
+  card_id                   integer,
+  customer_criteria_id      integer,
+  edit_count                integer not null,
+  constraint pk_customer_history primary key (id))
+;
+
+create table customer_service_task (
+  id                        integer identity(1,1) not null,
+  task_issue_time           datetime,
+  task_start_time           datetime,
+  task_end_time             datetime,
+  total_task_time           integer,
+  waiting_time              integer,
+  task_status               varchar(255),
+  customer_history_id       integer,
+  task_type_id              integer,
+  username                  varchar(255),
+  user_id                   integer,
+  edit_count                integer not null,
+  constraint pk_customer_service_task primary key (id))
+;
+
+create table region (
+  id                        integer identity(1,1) not null,
+  zone_id                   varchar(255),
+  name                      varchar(255),
+  is_active                 bit default 0 not null,
+  is_approved               bit default 0 not null,
+  create_date               datetime not null,
+  created_by                varchar(255) not null,
+  last_update_date          datetime,
+  last_updated_by           varchar(255),
+  edit_count                integer not null,
+  constraint uq_region_zone_id unique (zone_id),
+  constraint pk_region primary key (id))
+;
+
+create table task_category (
+  id                        integer identity(1,1) not null,
+  category_name             varchar(255),
+  is_active                 bit default 0 not null,
+  is_approved               bit default 0 not null,
+  create_date               datetime not null,
+  created_by                varchar(255) not null,
+  last_update_date          datetime,
+  last_updated_by           varchar(255),
+  edit_count                integer not null,
+  constraint pk_task_category primary key (id))
+;
+
+create table task_event_history (
+  id                        integer identity(1,1) not null,
+  task_id                   integer,
+  task_event_type           varchar(255),
+  event_start_time          datetime,
+  event_end_time            datetime,
+  remarks                   varchar(255),
+  edit_count                integer not null,
+  constraint pk_task_event_history primary key (id))
+;
+
+create table task_type (
+  id                        integer identity(1,1) not null,
+  is_bsso_task              bit default 0 not null,
+  task_name                 varchar(255),
+  benchmark_time            integer,
+  is_active                 bit default 0 not null,
+  is_approved               bit default 0 not null,
+  create_date               datetime not null,
+  created_by                varchar(255) not null,
+  last_update_date          datetime,
+  last_updated_by           varchar(255),
+  task_category_id          integer,
+  edit_count                integer not null,
+  constraint pk_task_type primary key (id))
+;
+
+alter table customer_history add constraint fk_customer_history_card_1 foreign key (card_id) references card (id);
+create index ix_customer_history_card_1 on customer_history (card_id);
+alter table customer_history add constraint fk_customer_history_customerCr_2 foreign key (customer_criteria_id) references customer_criteria (id);
+create index ix_customer_history_customerCr_2 on customer_history (customer_criteria_id);
+alter table customer_service_task add constraint fk_customer_service_task_custo_3 foreign key (customer_history_id) references customer_history (id);
+create index ix_customer_service_task_custo_3 on customer_service_task (customer_history_id);
+alter table customer_service_task add constraint fk_customer_service_task_taskT_4 foreign key (task_type_id) references task_type (id);
+create index ix_customer_service_task_taskT_4 on customer_service_task (task_type_id);
+alter table task_event_history add constraint fk_task_event_history_customer_5 foreign key (task_id) references customer_service_task (id);
+create index ix_task_event_history_customer_5 on task_event_history (task_id);
+alter table task_type add constraint fk_task_type_taskCategory_6 foreign key (task_category_id) references task_category (id);
+create index ix_task_type_taskCategory_6 on task_type (task_category_id);
+
+
+
+# --- !Downs
+
+drop table audit_log;
+
+drop table base_model_int;
+
+drop table base_model_long;
+
+drop table branch_in_region;
+
+drop table card;
+
+drop table customer_criteria;
+
+drop table customer_history;
+
+drop table customer_service_task;
+
+drop table region;
+
+drop table task_category;
+
+drop table task_event_history;
+
+drop table task_type;
+

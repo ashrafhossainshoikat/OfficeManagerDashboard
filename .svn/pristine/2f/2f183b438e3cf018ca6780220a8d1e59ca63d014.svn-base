@@ -1,0 +1,29 @@
+@(users: List[models.usermanagement.User])
+@import services.AppConstants
+@import services.ScalaUtils
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("List of Inactive Users"){
+  <h1>List of Inactive Users</h1>
+  <table border="1">
+    <tr>
+       <th>Activate</th> <th>Username</th> <th>Full Name</th> <th>Merchant Id</th><th>Email</th> <th>Phone</th> <th>Create Date</th>
+    </tr>
+    @for(user <- users) {
+      <tr>
+        <td>
+          @form(routes.UserManagement.activateUser(), 'id->"userForm"){
+          	<input type="hidden" name="@AppConstants.POST_FORM_USER_ID" id="@AppConstants.POST_FORM_USER_ID" value="@user.id">
+        	<input type="submit" value="Activate">
+          }
+        </td>
+        <td><a href="@routes.UserManagement.show(user.id)">@user.username</a></td>
+        <td>@user.fullName</td>
+        <td>@user.email</td>
+        <td>@user.phone</td>
+        <td>@ScalaUtils.formatDateTime(user.createDate)</td>
+      </tr> 
+    }
+   </table>
+}      

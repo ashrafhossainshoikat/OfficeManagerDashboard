@@ -1,0 +1,33 @@
+@(users: List[models.usermanagement.User])
+
+@import helper._
+@import services.AppConstants
+
+@main("List of User"){
+
+  <table>
+	<tr>
+	  <th>User Id</th>
+	  <th>User Name</th>
+	  <th>Email</th>
+	  <th>Active?</th>
+	</tr>
+	@for(u <- users) {
+	<tr>
+      <td><a href="@routes.UserManagement.show(u.id)">@u.id</a></td>
+	  <td> @u.username</td>
+	  <td> @u.email</td>
+	  <td><input type="checkbox" disabled=true @(if(u.isActive) "checked")></td>
+	  <td>
+	    <form action="@routes.UserManagement.approveCreate()" method="post">
+	      <input type="hidden" name=@AppConstants.FORM_FIELD_NAME_USER_ID value="@u.id">
+	  	  <input type="Submit" value="Approve">
+		</form>
+	  </td>
+	</tr>
+	}
+  </table>
+ 
+  <br/>
+  Select any of the User (click on Id) to view its detail information.
+}

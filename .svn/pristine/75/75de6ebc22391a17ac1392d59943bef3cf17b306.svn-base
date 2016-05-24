@@ -1,0 +1,22 @@
+@(roleForm: Form[models.usermanagement.Role])
+
+
+@import helper._
+
+@main("Role Edit Page"){
+<h2>Update the Role having Id @roleForm("id").value</h2><br/><br/>
+
+@form(action=routes.RoleManagement.update()) {
+
+<br/>
+
+  <input type="hidden" name="id" value=@roleForm("id").value>
+  <input type="hidden" name="version" value=@roleForm("version").value>
+
+    @inputText(field=roleForm("roleName") , '_label->"Role Name")<br/>
+    @inputText(field=roleForm("description") , '_label->"Description")<br/>
+    @checkbox(field=roleForm("isActive") , '_label->"Active?")<br/>
+    <input type="submit" value="Save">
+
+}
+}

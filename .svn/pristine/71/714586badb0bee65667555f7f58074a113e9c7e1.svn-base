@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Pay24bd admin panel.</title>
+       
+       
+        <!-- Fluid 960 Grid System - CSS framework -->
+		<link rel="stylesheet" type="text/css" href="grid.css"  media="screen" />
+		
+        
+        <!-- Main stylesheet -->
+        <link rel="stylesheet" type="text/css" href="styles.css" media="screen" />
+        
+     
+	</head>
+	<body>
+    	<!-- Header -->
+        <div id="header">
+            <!-- Header. Status part -->
+            <div id="header-status">
+                <div class="container_12">
+                    <div class="grid_8">
+					&nbsp; Pay24bd Admin Panel
+                    </div>
+                    <div class="grid_4">
+                        <a href="" id="logout">
+                        Logout
+                        </a>
+                    </div>
+                </div>
+                <div style="clear:both;"></div>
+            </div> <!-- End #header-status -->
+            
+            <!-- Header. Main part -->
+            <div id="header-main">
+                <div class="container_12">
+                    <div class="grid_12">
+                        <div id="logo">
+                            <ul id="nav">
+                                <li id="current"><a href="">Dashboard</a></li>
+                                <li><a href="">Articles</a></li>
+                                <li><a href="">Files</a></li>
+                                <li><a href="">Profile</a></li>
+                                <li><a href="">Settings</a></li>
+                            </ul>
+                        </div><!-- End. #Logo -->
+                    </div><!-- End. .grid_12-->
+                    <div style="clear: both;"></div>
+                </div><!-- End. .container_12 -->
+            </div> <!-- End #header-main -->
+            <div style="clear: both;"></div>
+            <!-- Sub navigation -->
+            <div id="subnav">
+                <div class="container_12">
+                    <div class="grid_12">
+                        <ul>
+                            <li><a href="#">link 1</a></li>
+                            <li><a href="#">link 2</a></li>
+                            <li><a href="#">link 3</a></li>
+                            <li><a href="#">link 4</a></li>
+                            <li><a href="#">link 5</a></li>
+                        </ul>
+                        
+                    </div><!-- End. .grid_12-->
+                </div><!-- End. .container_12 -->
+                <div style="clear: both;"></div>
+            </div> <!-- End #subnav -->
+        </div> <!-- End #header -->
+        
+		<div class="container_12">
+        
+
+            
+            <!-- Dashboard icons -->
+            <div class="grid_7">
+            	<a href="" class="dashboard-module">
+                	<img src="Crystal_Clear_write.gif"  width="64" height="64" alt="edit" />
+                	<span>New article</span>
+                </a>
+                
+                <a href="" class="dashboard-module">
+                	<img src="Crystal_Clear_file.gif"  width="64" height="64" alt="edit" />
+                	<span>Upload file</span>
+                </a>
+                
+                <a href="" class="dashboard-module">
+                	<img src="Crystal_Clear_files.gif"  width="64" height="64" alt="edit" />
+                	<span>Articles</span>
+                </a>
+                
+                <a href="" class="dashboard-module">
+                	<img src="Crystal_Clear_calendar.gif"  width="64" height="64" alt="edit" />
+                	<span>Calendar</span>
+                </a>
+                
+                <a href="" class="dashboard-module">
+                	<img src="Crystal_Clear_user.gif"  width="64" height="64" alt="edit" />
+                	<span>My profile</span>
+                </a>
+                
+                <a href="" class="dashboard-module">
+                	<img src="Crystal_Clear_stats.gif"  width="64" height="64" alt="edit" />
+                	<span>Stats</span>
+                </a>
+                
+                <a href="" class="dashboard-module">
+                	<img src="Crystal_Clear_settings.gif"  width="64" height="64" alt="edit" />
+                	<span>Settings</span>
+                </a>
+                
+                <a href="" class="dashboard-module">
+                	<img src="Crystal_Clear_settings.gif"  width="64" height="64" alt="edit" />
+                	<span>Settings</span>
+                </a>
+                
+                <a href="" class="dashboard-module">
+                	<img src="Crystal_Clear_settings.gif"  width="64" height="64" alt="edit" />
+                	<span>Settings</span>
+                </a>
+                
+                <a href="" class="dashboard-module">
+                	<img src="Crystal_Clear_settings.gif"  width="64" height="64" alt="edit" />
+                	<span>Settings</span>
+                </a>
+                
+                <a href="" class="dashboard-module">
+                	<img src="Crystal_Clear_settings.gif"  width="64" height="64" alt="edit" />
+                	<span>Settings</span>
+                </a>
+                
+                <a href="" class="dashboard-module">
+                	<img src="Crystal_Clear_settings.gif"  width="64" height="64" alt="edit" />
+                	<span>Settings</span>
+                </a>
+                
+                <a href="" class="dashboard-module">
+                	<img src="Crystal_Clear_settings.gif"  width="64" height="64" alt="edit" />
+                	<span>Settings</span>
+                </a>
+                
+                <a href="" class="dashboard-module">
+                	<img src="Crystal_Clear_settings.gif"  width="64" height="64" alt="edit" />
+                	<span>Settings</span>
+                </a>
+                <div style="clear: both"></div>
+            </div> <!-- End .grid_7 -->
+            
+            <!-- Account overview -->
+            <div class="grid_5">
+                <div class="module">
+                        <h2><span>Account overview</span></h2>
+                        
+                        <div class="module-body">
+                        
+                        	<p>
+                                <strong>User: </strong>User X<br />
+                                <strong>Your last visit was on: </strong>20 January 2010,<br />
+                                <strong>From IP: </strong>000.000.00.00
+                            </p>
+                        
+                             <div>
+                                 <div class="indicator">
+                                     <div style="width: 77%;"></div><!-- change the width value (23%) to dynamically control your indicator -->
+                                 </div>
+                                 <p>Your storage space: 23 MB out of 100MB</p>
+                             </div>
+                             
+                             <div>
+                                 <div class="indicator">
+                                     <div style="width: 100%;"></div><!-- change the width value (100%) to dynamically control your indicator -->
+                                 </div>
+                                 <p>Your bandwidth (January): 1 GB out of 1 GB</p>
+                             </div>
+                             
+                        	
+                        </div>
+                </div>
+                <div style="clear:both;"></div>
+            </div> <!-- End .grid_5 -->
+            
+            <div style="clear:both;"></div>
+            
+            
+            
+          <!-- End .grid_12 -->
+                
+            <!-- Categories list -->
+          <!-- End .grid_6 -->
+            
+            <!-- To-do list -->
+            
+          <div style="clear:both;"></div>
+            
+            <!-- Form elements -->    
+           
+                
+          <!-- Settings-->
+            
+                
+          <!-- Password -->
+           
+          <div style="clear:both;"></div><!-- End .grid_3 --><!-- End .grid_3 --><!-- End .grid_6 -->
+
+            
+          <div style="clear:both;"></div>
+        </div> <!-- End .container_12 -->
+		
+           
+        <!-- Footer -->
+        <div id="footer">
+        	<div class="container_12">
+            	<div class="grid_12">
+                	<!-- You can change the copyright line for your own -->
+                	<p>&copy;<a href="http://www.bracits.com" title="Brac IT Services">Brac IT Services</a></p>
+        		</div>
+            </div>
+            <div style="clear:both;"></div>
+        </div> <!-- End #footer -->
+	</body>
+</html>

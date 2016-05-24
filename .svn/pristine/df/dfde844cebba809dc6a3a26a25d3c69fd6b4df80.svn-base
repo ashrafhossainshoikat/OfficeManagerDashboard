@@ -1,0 +1,10 @@
+@(str: Array[String])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("Add Branch to Region"){
+  @for((s, i) <- str.zipWithIndex){
+  	@i -- @s <br />
+  }
+}

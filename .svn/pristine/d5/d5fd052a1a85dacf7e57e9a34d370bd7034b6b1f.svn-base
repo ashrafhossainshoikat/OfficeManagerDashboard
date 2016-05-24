@@ -1,0 +1,53 @@
+@(userForm: Form[models.usermanagement.User])
+@import models.geo.Region
+@import models.geo.Branch
+@import models.usermanagement.Role
+@import scala.collection.immutable.Map
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("Edit User"){
+  <script>
+      jQuery(document).ready(function() {
+  
+          //  alert("hello...");
+          jQuery("#userForm").validationEngine();
+  
+          var pickerOpts = {
+            dateFormat: $.datepicker.defaultDateFormat
+          };
+          $("#verificationDate").datepicker(pickerOpts);
+          });
+  </script>
+  
+  <h2>Update the user <b>@userForm("username").value</h2><br/><br/>
+  
+  @form(routes.UserManagement.update(), 'id->"userForm"){
+    <input type="hidden" name="id" value=@userForm("id").value>
+    <input type="hidden" name="username" value="a">
+    <input type="hidden" name="password" value="b">
+    @inputText(userForm("username") ,'class->"text-input", '_label->"Username", 'disabled->true) <br/>
+    @inputText(userForm("fullName"), 'class->"validate[custom[onlyLetterSp]] text-input", '_label->"Full Name")<br/>
+    @inputText(userForm("email"), '_label->"Email") <br/>
+    @inputText(userForm("phone"), 'class-> "validate[custom[phone]] text-input", '_label->"Phone") <br/>
+    @inputText(userForm("consecLoginFailureCount"), 'class-> "text-input", '_label->"Login Failure Count") <br/>
+    @checkbox(userForm("isLastLoginSuccessful"), '_label->"Latest Login Successful") <br/>
+    @checkbox(userForm("pwdChangeForced"), '_label->"Password Change Mandatory") <br/>
+    @checkbox(userForm("isActive"), '_label->"Active?") <br/>
+    @checkbox(userForm("isVerified"), args='_label->"Verified?") <br/>
+    @inputDate(userForm("verificationDate"), '_label->"Verification Date", 'id->"verificationDate", '_help -> "format dd/MM/yyyy", 'readonly->"true") <br/>
+    @select(
+  	  userForm("branch.id"),
+      options(Branch.getAsMap),
+      '_label -> "Branch", '_default -> "-- Choose a Branch --",
+      '_showConstraints -> false
+    )<br/>
+    @select(
+  	  userForm("role.id"),
+      options(Role.getAsMap),
+      '_label -> "Role", '_default -> "-- Choose a role --",
+      '_showConstraints -> false
+    )<br/>
+    <input type="submit" value="Save">
+  }
+}

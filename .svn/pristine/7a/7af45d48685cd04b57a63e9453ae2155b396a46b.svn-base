@@ -1,0 +1,33 @@
+@(roles: List[models.usermanagement.Role])
+
+@import helper._
+@import services.AppConstants
+
+@main("List of Role"){
+
+  <table>
+	<tr>
+	  <th>Role Id</th>
+	  <th>Role Name</th>
+	  <th>Description</th>
+	  <th>Active?</th>
+	</tr>
+	@for(r <- roles) {
+	<tr>
+      <td><a href="@routes.RoleManagement.show(r.id)">@r.id</a></td>
+	  <td> @r.roleName</td>
+	  <td> @r.description</td>
+	  <td><input type="checkbox" disabled=true @(if(r.isActive) "checked")></td>
+	  <td>
+	    <form action="@routes.RoleManagement.approveCreate()" method="post">
+	      <input type="hidden" name=@AppConstants.FORM_FIELD_NAME_ROLE_ID value="@r.id">
+	  	  <input type="Submit" value="Approve">
+		</form>
+	  </td>
+	</tr>
+	}
+  </table>
+ 
+  <br/>
+  Select any of the Role (click on Id) to view its detail information.
+}

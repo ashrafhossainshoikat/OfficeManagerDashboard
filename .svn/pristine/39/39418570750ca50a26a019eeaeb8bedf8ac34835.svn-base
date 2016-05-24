@@ -1,0 +1,12 @@
+@(frm: Form[dummymodels.test.IntervalTest])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("Add Branch to Region"){
+  @form(action=routes.Test.intervalSubmit(), 'id -> "abc"){
+  	<input type="hidden" name="id" value=1>
+    @inputText(field=frm("ival") , '_label->"Interval: ", '_showConstraints -> false)<br/>
+    <input type="submit" value="Submit" />
+  }
+}

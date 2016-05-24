@@ -1,0 +1,58 @@
+@(branchForm: Form[Branch])
+@import scala.collection.immutable.Map
+@import helper._
+
+@main{
+
+
+<h2>Create a new Branch</h2><br/><br/>
+
+
+<script>
+    jQuery(document).ready(function() {
+
+        //  alert("hello...");
+        jQuery("#formID").validationEngine();
+    });
+
+</script>
+
+@form(action=routes.BranchManagement.insert(), 'id->"formID") {
+
+@select(userForm("role.id"),
+options(Role.getRolesAsMap),
+'_label -> "Role", '_default -> "-- Choose a role --"
+)
+<br/>
+@inputText(field=branchForm("id") ,'class->"validate[required] text-input", '_label->"Branch Id")
+<br/>
+@inputText(field=userForm("name"), 'class->"validate[required,custom[onlyLetterSp]] text-input", '_label->"fullName")
+<br/>
+@inputText(field=userForm("password"),  'class->"validate[required,minSize[6]] text-input", 'type->"password", '_label->"password")
+<br/>
+@inputText(field=userForm("email"), 'class-> "validate[required,custom[email]] text-input", '_label->"email")
+<br/>
+@inputText(field=userForm("phone"), 'class-> "validate[required,custom[phone]] text-input",  '_label->"phone")
+<br/>
+@inputText(field=userForm("branchId"), 'class-> "validate[required,custom[branchId]] text-input",  '_label->"branchId")
+<br/>
+@inputText(field=userForm("regionId"), 'class-> "validate[required,custom[regionId]] text-input",  '_label->"regionId")
+<br/>
+@inputText(field=userForm("address"), 'class-> "validate[required,custom[address]] text-input",  '_label->"address")
+<br/>
+@inputText(field=userForm("roleId"), 'class-> "validate[required,custom[roleId]] text-input",  '_label->"roleId")
+<br/>
+@inputText(field=userForm("regionId"), 'class-> "validate[required,custom[phone]] text-input",  '_label->"regionId")
+<br/>
+@checkbox(field=userForm("isActive"), '_label->"Active")
+<br/>
+@inputDate(field=userForm("approvalDate"), args='_label->"approvalDate", '_help -> "format yyyy/mm/dd")
+<br/>
+@inputDate(field=userForm("createDate"), args='_label->"createDate", '_help -> "format yyyy/mm/dd")
+<br/>
+<input type="submit" value="Create new User">
+}
+
+<br/> <br/>
+<h3>View the <a href="@routes.UserManagement.list()">list</a> of all User</h3>
+}

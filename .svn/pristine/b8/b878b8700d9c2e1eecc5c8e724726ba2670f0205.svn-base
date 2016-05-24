@@ -1,0 +1,65 @@
+
+package views.html.region
+
+import play.templates._
+import play.templates.TemplateMagic._
+
+import play.api.templates._
+import play.api.templates.PlayMagic._
+import models._
+import controllers._
+import java.lang._
+import java.util._
+import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
+import play.api.i18n._
+import play.core.j.PlayMagicForJava._
+import play.mvc._
+import play.data._
+import play.api.data.Field
+import play.mvc.Http.Context.Implicit._
+import views.html._
+/**/
+object create extends BaseScalaTemplate[play.api.templates.Html,Format[play.api.templates.Html]](play.api.templates.HtmlFormat) with play.api.templates.Template1[Form[models.geo.Region],play.api.templates.Html] {
+
+    /**/
+    def apply/*1.2*/(regionForm: Form[models.geo.Region]):play.api.templates.Html = {
+        _display_ {import helper._
+
+
+Seq[Any](format.raw/*1.39*/("""
+
+"""),format.raw/*4.1*/("""
+
+
+"""),_display_(Seq[Any](/*7.2*/main("Region Create Form")/*7.28*/{_display_(Seq[Any](format.raw/*7.29*/("""
+
+"""),_display_(Seq[Any](/*9.2*/form(action=routes.RegionManagement.insert())/*9.47*/ {_display_(Seq[Any](format.raw/*9.49*/("""
+
+"""),_display_(Seq[Any](/*11.2*/inputText(field=regionForm("name") , '_label->"Region Name"))),format.raw/*11.62*/("""
+<br/>
+"""),_display_(Seq[Any](/*13.2*/inputText(field=regionForm("managerName") , '_label->"Region Manager Name"))),format.raw/*13.77*/("""
+<br/>
+<input type="submit" value="Create new Region">
+""")))})),format.raw/*16.2*/("""
+
+""")))})))}
+    }
+    
+    def render(regionForm:Form[models.geo.Region]): play.api.templates.Html = apply(regionForm)
+    
+    def f:((Form[models.geo.Region]) => play.api.templates.Html) = (regionForm) => apply(regionForm)
+    
+    def ref: this.type = this
+
+}
+                /*
+                    -- GENERATED --
+                    DATE: Wed Aug 13 12:31:58 ALMT 2014
+                    SOURCE: E:/j2ee-workspace/service-delivery-model/app/views/region/create.scala.html
+                    HASH: 39772a50acad2f1a0a2c4c97adbcbdd9b71b954b
+                    MATRIX: 748->1|879->38|909->60|950->67|984->93|1022->94|1061->99|1114->144|1153->146|1193->151|1275->211|1320->221|1417->296|1507->355
+                    LINES: 26->1|30->1|32->4|35->7|35->7|35->7|37->9|37->9|37->9|39->11|39->11|41->13|41->13|44->16
+                    -- GENERATED --
+                */
+            

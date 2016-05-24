@@ -1,0 +1,111 @@
+package controllers;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import connectplus.models.geo.Branch;
+import models.punchcard.Card;
+import play.data.Form;
+import play.mvc.Controller;
+import play.mvc.Result;
+import services.AppConstants;
+import services.JavaUtils;
+import views.html.card.*;
+import connectplus.services.deadbolt.DeadboltHandler;
+import be.objectify.deadbolt.java.actions.Dynamic;
+
+public class CardManagement extends Controller {
+
+	static Form<Card> cardForm = Form.form(Card.class);
+
+	/*
+	// **show Card create Form //
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_CARD_CREATE, handler = DeadboltHandler.class)
+	public static Result create() {
+
+		return ok(create.render(cardForm));
+	}
+
+	// ** Bind & store the Card from View //
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_CARD_CREATE, handler = DeadboltHandler.class)
+	public static Result insert() {
+
+		Form<Card> filledForm = cardForm.bindFromRequest();
+
+		if (filledForm.hasErrors()) {
+			System.out.println(filledForm.errors());
+			return badRequest(create.render(filledForm));
+		} else {
+			Card card = filledForm.get();
+			Card.create(card);
+			flash("A new Card is created Successfully..");
+			return redirect(controllers.routes.CardManagement.list());
+		}
+	}
+	*/
+
+	// ** show the list of Card //
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_CARD_VIEW, handler = DeadboltHandler.class)
+	public static Result list() {
+		List<Card> listOfCard = Card.all();
+		return ok(list.render(listOfCard));
+	}
+
+	// ** show each Card details //
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_CARD_VIEW, handler = DeadboltHandler.class)
+	public static Result show(Integer id) {
+		Card card = Card.get(id);
+		return ok(show.render(card));
+	}
+
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_CARD_VIEW, handler = DeadboltHandler.class)
+		public static Result edit(Integer id) {
+		Card card = Card.get(id);
+		return ok(edit.render(cardForm.fill(card)));
+	}
+
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_CARD_VIEW, handler = DeadboltHandler.class)
+	public static Result update() {
+		Form<Card> filledForm = cardForm.bindFromRequest();
+		if (filledForm.hasErrors()) {
+			return badRequest(edit.render(filledForm));
+		} else {
+			Card c = filledForm.get();
+			Card card = Card.get(c.id);
+			card.branchSolId = c.branchSolId;
+			card.isBssoCard = c.isBssoCard;
+			card.lastUpdateDate = new Date();
+			card.lastUpdatedBy = JavaUtils.getCurrentUsername();
+			card.isApproved = false;
+			card.isActive = false;
+			
+			Card.update(card);
+			flash(AppConstants.FLASH_KEY_INFO, "Card " + card.cardNumber + " has been updated successfully.");
+			//return ok(show.render(card));
+			return redirect(routes.CardManagement.show(card.id));
+		}
+	}
+
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_CARD_APPROVE, handler = DeadboltHandler.class)
+	public static Result showCreateApprovalForm() {
+		List<Card> listOfCard = Card.allUnapproved();
+		return ok(approve.render(listOfCard));
+	}
+
+	
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_CARD_APPROVE, handler = DeadboltHandler.class)
+	public static Result approveCreate() {
+		final Map<String, String[]> data = request().body().asFormUrlEncoded();
+		String cardIdStr = data.get(AppConstants.FORM_FIELD_NAME_CARD_ID)[0];
+
+		int cardId = 0;
+		if (cardIdStr != null && !cardIdStr.isEmpty())
+			cardId = Integer.parseInt(cardIdStr);
+
+		Card.approveById(cardId);
+
+		return redirect(routes.CardManagement.list());
+	}
+
+}

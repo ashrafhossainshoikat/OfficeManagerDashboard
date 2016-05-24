@@ -1,0 +1,227 @@
+package models.punchcard;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
+import com.avaje.ebean.Expr;
+import com.avaje.ebean.Expression;
+
+import connectplus.models.User;
+import connectplus.models.geo.Branch;
+import models.customer.CustomerHistory;
+import models.geo.Region;
+import play.data.validation.Constraints.Required;
+import play.db.ebean.Model;
+import services.AppConstants;
+import services.JavaUtils;
+
+@Entity
+public class Card extends Model {
+
+	@Id
+	//@GeneratedValue(strategy=GenerationType.AUTO)
+	public Integer id;
+
+	@Version
+	@Column(name = "edit_count", nullable = false)
+	public int version = 1;
+
+	@Required
+	@Column(unique=true, nullable=false)
+	public String cardNumber;
+
+	@Required
+	@Column(nullable = false)
+	public boolean isBssoCard;
+	
+	@Required
+	//@Column(nullable = false)
+	public Integer branchSolId;
+
+	@Column(nullable = false)
+	public boolean isActive;
+
+	@Column(nullable = false)
+	public boolean isApproved; // ** for checker
+	
+	@Column(nullable = false)
+	public Date createDate;
+	
+	@Column(nullable = false)
+	public String createdBy;
+	
+	public Date lastUpdateDate;
+	
+	public String lastUpdatedBy;
+
+	@OneToMany(mappedBy = "card")
+	public List<CustomerHistory> customerHistoryList;
+	// ** ----------------------------------------
+
+	@Transient
+	public String branchName() {
+		if(this.id==null || this.branchSolId==null)
+			return "";
+		
+		Branch b = Branch.findBySol(this.branchSolId);
+		if(b == null)
+			return "";
+		
+		return b.toString();
+	}
+	
+	public static Finder<Integer, Card> find = new Finder(Integer.class, Card.class);
+
+	/* Save User Data To Create Account */
+	public static void create(Card card) {
+		card.createDate = new Date();
+		card.createdBy = JavaUtils.getCurrentUsername();
+		card.save();
+	}
+
+	/* Update Card Data from Account */
+	public static void update(Card card) {
+		card.update();
+	}
+
+	public static List<Card> all() {
+		// return find.all();
+		return find.all();
+	}
+
+	public static Card get(int id) {
+		return find.where().eq("id", id).findUnique();
+	}
+	
+	public static Card findByCardNumber(String cardNumber) {
+		return find.where().eq("cardNumber", cardNumber).findUnique();
+	}
+	
+	public static List<Card> findListBySol(int sol) {
+		return find.where().eq("branchSolId", sol).findList();
+	}
+	
+	public static List<Card> findListBySolList(Integer[] sol) {
+		return find.where().in("branchSolId", sol).findList();
+	}
+	
+
+	public static List<Card> allUnapproved() {
+		return find.where().eq("isApproved", false).orderBy("cardNumber").findList();
+	}
+
+	public static boolean approveById(int id) {
+		Card card = get(id);
+		if (card == null)
+			return false;
+
+		try {
+			card.isApproved = true;
+			card.update();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	// ** for punch in simulation ** //
+	// ** Used in application from 29-Nov-2014 for Card manual input
+	/*
+	public static List<Card> getAvailableCards(){
+		List<Integer> inServiceCards = CustomerHistory.getCardIdsInService();
+
+		if(inServiceCards==null || inServiceCards.size()==0)
+			return all();
+		else
+			return find.where()
+					.eq("branchSolId", JavaUtils.getCurrentUserBranchSolId())
+					.not(Expr.in("id", inServiceCards))
+					.findList();
+	}
+	*/
+	public static List<Card> getAvailableCards(){
+		int solId = JavaUtils.getCurrentUserBranchSolId();
+		
+		List<Integer> inServiceCards = CustomerHistory.getCardIdsInService(solId);
+		
+		if(inServiceCards==null || inServiceCards.size()==0)
+			return all();
+		else
+			return find.where()
+					.eq("branchSolId", solId)
+					.not(Expr.in("id", inServiceCards))
+					.findList();
+	}
+	
+	public static List<Card> getAvailableCardsForPunchIn(int solId){
+		List<Integer> inServiceCards = CustomerHistory.getCardIdsInService(solId);
+		
+		if(inServiceCards==null || inServiceCards.size()==0)
+			return all();
+		else
+			return find.where()
+					.eq("branchSolId", solId)
+					.not(Expr.in("id", inServiceCards))
+					.findList();
+	}
+
+	
+	public static Map<String, String> getAvailableCardsOfSameBranchAsMap() {
+		Map<String, String> cards = new HashMap<String, String>();
+		
+		for (Card c : getAvailableCards()) {
+			cards.put(c.cardNumber, c.cardNumber);
+		}
+
+		return cards;
+	}
+	
+	
+	public static Map<String, String> getAsMapForReportFilter() {
+		User user = JavaUtils.getCurrentUser();
+		if(user==null || user.branchId==null)
+			new HashMap<String, String>();
+		
+		Map<String, String> cardMap = new HashMap<String, String>();
+		List<Card> cards;
+		
+		if(user.isBssoOrCcsoUser())
+			cards = findListBySolList(new Integer[]{JavaUtils.getCurrentUserBranchSolId()});
+		else
+			cards = findListBySolList(Branch.findSolIdArrayByUser(user));
+		
+		for(Card c : cards)
+			cardMap.put(c.cardNumber, c.cardNumber);
+			
+		return cardMap;
+	}
+	
+	public static List<Integer> getDistinctSolId(){
+		List<Card> cards = find
+				.select("branchSolId")
+				.setDistinct(true)
+				.where()
+				.not(Expr.in("id", CustomerHistory.getCardIdsInService()))
+				.findList();
+		
+		List<Integer> solIds = new ArrayList<>();
+		
+		for(Card c: cards)
+			solIds.add(c.branchSolId);
+		
+		return solIds;
+	}
+	
+}

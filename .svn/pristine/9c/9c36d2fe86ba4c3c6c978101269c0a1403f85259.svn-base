@@ -1,0 +1,9 @@
+@(errMsg: String)
+@import helper._
+@import helper.twitterBootstrap._
+
+@mainGuest{
+	
+  @errMsg
+
+}

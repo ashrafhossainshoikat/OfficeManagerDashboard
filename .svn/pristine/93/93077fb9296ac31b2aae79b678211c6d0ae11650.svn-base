@@ -1,0 +1,39 @@
+@import helper._
+
+
+
+@main("Account Information") {
+	        
+          
+          <div>
+           <fieldset>
+           <legend>Account Details</legend>
+	         <div>
+               <label>Account Name:</label>
+               <input type="text"  id="accName" readonly/>
+             </div>
+             <br>
+             <div>
+               <label>CLR_BAL_AMT:</label>
+               <input type="text"  id="CLR_BAL_AMT" readonly/>
+             </div>
+             <br>
+             <div>
+               <label>CUST_PAGER_NO:</label>
+              <input type="text"  id="CLR_BAL_AMT" readonly/>
+             </div>
+             <br>
+             <div>
+               <label>SCHM_DESC:</label>
+               <input type="text" id="SCHM_DESC" readonly />
+             </div>
+             <br>
+             <div>
+               <label>STATUS:</label>
+               <input type="text" name="STATUS" id="STATUS">
+            </div>
+            <br>   
+         </fieldset> 
+         </div>     
+          
+      }

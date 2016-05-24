@@ -1,0 +1,31 @@
+@(taskCategory: List[models.task.TaskCategory])
+
+@import helper._
+@import helper.bootstrap._
+@import services.AppConstants
+
+@main("List of Task_Category"){
+
+  <table>
+	<tr>
+	  <th>Category ID</td>
+	  <th>Category Name</th>
+	  <th>Active?</th>
+	</tr>
+	@for(t <- taskCategory) {
+	<tr>
+      <td><a href="@routes.CategoryManagement.show(t.id)">@t.id</a></td>
+	  <td>@t.categoryName</td>
+	  <td><input type="checkbox" disabled=true @(if(t.isActive) "checked")></td>
+	  <td>
+	    <form action="@routes.CategoryManagement.approveCreate()" method="post">
+	      <input type="hidden" name=@AppConstants.FORM_FIELD_NAME_CATEGORY_ID value="@t.id">
+	  	  <input type="Submit" value="Approve">
+		</form>
+	  </td>
+	</tr>
+	}
+  </table>
+ 
+  <br/>
+}

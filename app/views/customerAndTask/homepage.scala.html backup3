@@ -1,0 +1,331 @@
+@(sessionUserName: String)
+
+@import models.customer.CustomerHistory
+@import models.usermanagement.User
+@import models.task.TaskType
+@import models.task.TaskEventHistory
+@import models.customer.CustomerServiceTask
+@import models.customer.CustomerCriteria;
+@import java.text.SimpleDateFormat
+@import services.ScalaUtils
+@import services.AppConstants
+@import services.JavaUtils
+@import helper._
+
+
+
+@main("Customer & Task Management") {
+
+
+<script>
+  function automaticFillupData(cn) {
+    $.ajax({
+          url:"@routes.CustomerAndTaskManagement.getCustomerAsJson("")"+cn,
+          success:function(result){
+          if(result.success==true){
+         
+          $('#chId').val(result.obj.id);
+          $('#cardNumber').val(result.obj.cardNumber);
+          $('#customerName').val(result.obj.customerName);
+          $('#accountNumber').val(result.obj.accountNumber);
+          $('#customerPhone').val(result.obj.customerPhone);
+          $('#customerAddress').val(result.obj.customerAddress);
+          $('#customerPunchIn').val(result.obj.punchInTime);
+          $('#accountNumber').val(result.obj.accountNumber);
+          $('#id').val(result.obj.id);
+          $('#version').val(result.obj.version);
+          $('#customerCriteriaId').val(result.obj.customerCriteriaId);
+          
+          $('#criteriaId').val(result.obj.customerCriteriaId);
+          showTaskList(result.obj.id);
+          assignedTaskFinder((document.getElementById('sessionUser').value),result.obj.id);
+         
+     
+            
+          }
+     }});
+     
+     
+    
+ }
+</script>
+<script>
+
+function showTaskList(chId){
+ 
+
+
+	 $("#div2").empty(); 
+     $.ajax({
+           url:"@routes.Test.jsonArray("")"+chId,
+           success:function(result){
+           if(result.success==true){
+           var tbl=$("<table/>").attr("id","mytable");
+           var a= "<tr><th>UserName</th><th>Task Name</th><th>Start Time</th><th>End Time</th><th>Remarks</th></tr>"
+           $("#div2").append(tbl);
+           $("#mytable").append(a); 
+           for (var i = 0; i < result.obj.length; i++) {
+           var tr="<tr>";
+           var td1= "<td>"+result.obj[i]["username"]+"</button></td>";
+           var td2="<td>"+result.obj[i]["taskTypeName"]+"</button></td>";
+           var td3="<td>"+result.obj[i]["taskStartTime"]+"</td>";
+           var td4="<td>"+result.obj[i]["taskEndTime"]+"</td></tr>";
+           $("#mytable").append(tr+td1+td2+td3+td4); 
+           }}
+    }});
+}
+</script>
+<script>
+  function createCustomerServiceTask(chId,userName){
+     
+      $.ajax({
+          url:"@routes.CustomerAndTaskManagement.createCustomerServiceTask("")"+userName,
+          type : 'GET',
+          data : $("#tEForm").serialize(),
+          success:function(result){
+          $('#taskTypeName').val(result.myTask.taskTypeName);
+          $('#taskId').val(result.myTask.id);
+          showTaskList(chId);
+          }});
+          
+          
+    
+ }
+</script>
+
+<script>
+  function createTaskEventHistory(te,chId){
+    $.ajax({
+          url:"@routes.CustomerAndTaskManagement.createTaskEventHistory()",
+          type : 'POST',
+           data : $("#tEHForm").serialize() ,
+          success:function(result){
+          showTaskList(chId);
+          
+         
+     }});
+    
+ }
+</script>
+
+
+
+
+
+
+<script>
+function divReplace1(en,chId){
+
+ createTaskEventHistory(en,chId);
+ $('#mode1').hide();
+ $('#mode3').hide();
+ $('#mode2').show();
+ 
+}
+
+function divReplace2(en,chId){
+
+ createTaskEventHistory(en,chId);
+ $('#mode1').hide();
+ $('#mode2').hide();
+ $('#mode3').show();
+}
+
+function divReplace3(en,chId){
+ createTaskEventHistory(en,chId)
+ $('#mode1').hide();
+ $('#mode3').hide();
+ $('#mode2').show();
+}
+
+function divReplace4(en,chId){
+
+  confirm("Are You Sure?");
+ createTaskEventHistory(en,chId)
+ $('#mode2').hide();
+ $('#mode3').hide();
+ $('#mode1').show();
+}
+</script>
+
+<script>
+function assignedTaskFinder(username,chId){
+
+     	  $.ajax({
+          url:"@routes.Test.getMyAssinedTask()",
+          type : 'POST',
+          data: { userName: username, customerHistoryId: chId },
+          success:function(result){
+          var taskNameValue=document.getElementById('taskTypeName').value;
+          if(taskTypeName== null || taskTypeName==""){
+            $('#taskTypeName').val(result.obj.taskTypeName);
+          }
+          else{
+            document.getElementById('taskTypeName').value="";
+          
+          }
+          
+           $('#test').val(result.obj.username);
+          
+          }});
+      }
+</script>
+
+
+
+<input type="hidden" id="test" name="test"/>
+
+<table>
+  <tr>
+    <td><fieldset>
+      <legend>Card List</legend>
+      <div>
+        <ul class="removeBullet">
+            @for(ch <- CustomerHistory.getCurrentCustomers()){
+             <li>
+               <input type="button" value=@ch.cardNumber id="cardItem" onclick="automaticFillupData('@ch.cardNumber');">
+             </li><br>
+            }
+           </ul>
+         
+       </div>
+     </td></fieldset>
+     <td><fieldset>
+       <legend>Customer History</legend>
+       <div>
+        <form action="@routes.CustomerAndTaskManagement.updateCustomerHistory()" method="post" name="chForm" id="chForm">
+           <div>
+               <input type="hidden" name="version" id="version" value="version">
+               <input type="hidden" name="id" id="id" value="id">
+             </div>
+             <div>
+               <label>Card Number:</label>
+               <input type="text"  id="cardNumber" readonly/>
+             </div>
+             <br>
+             <div>
+               <label>Customer Criteria:</label>
+                 <select name="customerCriteria.id" id="criteriaId">
+                 @for((c, t) <- CustomerCriteria.getAsMap()){
+                   <option value="@c">@t</option>
+                 }
+                </select> 
+             </div>
+             <br>
+             <div>
+               <label>Customer Name:</label>
+               <input type="text" name="customerName" id="customerName">
+             </div>
+             <br>
+             <div>
+               <label>Account Number:</label>
+               <input type="text" name="accountNumber" id="accountNumber">
+             </div>
+             <br>
+             <div>
+               <label>Customer Phone:</label>
+               <input type="text" name="customerPhone" id="customerPhone">
+            </div>
+            <br>         
+            <div>
+              <label>Customer Address:</label>
+              <input type="text" name="customerAddress" id="customerAddress">
+            </div>
+            <br>
+            <div>
+              <label>Customer Punch In:</label>
+              <input type="text" id="customerPunchIn" readonly>
+            </div><br>
+            <div>
+              <input type="submit" name="update" value="Update" id="update">
+           </div>
+           <br>
+        </form>
+     </div>
+   </td></fieldset>
+   <td>
+     <div><fieldset>
+       <legend>Task Entry</legend>
+       <form method="post" action="" name="tEForm" id="tEForm">
+         <div>
+           <input type="hidden" name="customerHistory.id" id="chId" >       
+         </div>
+         <div>
+           <label>Task Type:</label>
+            <select name="taskType.id" id="taskTypeid">
+            @for((c, t) <- TaskType.getAllAsMap()){
+              <option value="@c">@t</option>
+            }
+            </select>
+          </div>
+          <br><br>
+          </form>
+       <br>
+       
+       <div>
+            <input type="hidden" name="sessionUser" id="sessionUser" value=@sessionUserName>   
+            <input type="button" value="Add to Me" id="addToMe" onclick="createCustomerServiceTask((document.getElementById('chId').value),(document.getElementById('sessionUser').value));">
+            <select name="username" id="username">
+            @for((c, u) <- User.getOtherUsernameAsMap(sessionUserName)){
+              <option value="@u">@u</option>
+            }
+            </select>
+            <input type="button" value="Assign to Others" id="assignToOthers" onclick="createCustomerServiceTask((document.getElementById('chId').value),(document.getElementById('username').value));">
+          </div> 
+          <br> 
+     </fieldset></div>
+     <div id="div3"><fieldset>
+       <legend>Task Event Entry</legend>
+       <form method="post" action="" name="tEHForm" id="tEHForm">
+         
+         <div>
+          <input type="hidden" id="taskId" name="customerServiceTask.id">
+         </div>
+         <div>
+           <label>Task Name:</label>
+           <input type="text" id="taskTypeName" readonly>
+         </div>
+         <br>
+         <div>
+           <label>Remarks:</label>
+           <textarea name="remarks" id="remarks"></textarea>
+         </div>
+         <br><br>
+         <div id="mode1">
+           <input Type= "button" id="start" value=@AppConstants.TASK_EVENT_TYPE_START onclick="divReplace1((document.getElementById('start').value),(document.getElementById('chId').value))"/>
+           <input Type= "button" id="cancel" value=@AppConstants.TASK_EVENT_TYPE_CANCEL onclick="divReplace4((document.getElementById('cancel').value),(document.getElementById('chId').value))"/>
+         </div>
+         <div id="mode2" style="display: none">
+           <input Type= "button" id="pause" value=@AppConstants.TASK_EVENT_TYPE_PAUSE onclick="divReplace2((document.getElementById('pause').value),(document.getElementById('chId').value))"/>
+           <input Type= "button" id="end" value=@AppConstants.TASK_EVENT_TYPE_COMPLETE onclick="divReplace4((document.getElementById('end').value),(document.getElementById('chId').value))"/>
+           <input Type= "button" id="cancel" value=@AppConstants.TASK_EVENT_TYPE_CANCEL onclick="divReplace4((document.getElementById('cancel').value),(document.getElementById('chId').value))"/><br><br>
+           <select name="userName" id="userName1">
+             @for((c, u) <- User.getOtherUsernameAsMap(sessionUserName)){
+               <option value="@c">@u</option>
+           }
+           </select>
+           <input Type= "button" id="reassign" value=@AppConstants.TASK_EVENT_TYPE_REASSIGN onclick="divReplace2((document.getElementById('reassign').value),(document.getElementById('chId').value))"/>
+         </div>
+         <div id="mode3" style="display: none">
+           <input Type= "button"  id="resume" value=@AppConstants.TASK_EVENT_TYPE_RESUME onclick="divReplace3((document.getElementById('resume').value),(document.getElementById('chId').value))"/>
+           <input Type= "button"  id="end" value=@AppConstants.TASK_EVENT_TYPE_COMPLETE onclick="divReplace4((document.getElementById('end').value),(document.getElementById('chId').value))"/>
+           <input Type= "button"  id="cancel" value=@AppConstants.TASK_EVENT_TYPE_CANCEL onclick="divReplace4((document.getElementById('cancel').value),(document.getElementById('chId').value))"/><br><br>
+            <select name="userName" id="userName2">
+             @for((c, u) <- User.getOtherUsernameAsMap(sessionUserName)){
+               <option value="@c">@u</option>
+           }
+           </select>
+           <input Type= "button" id="reassign" value=@AppConstants.TASK_EVENT_TYPE_REASSIGN onclick="divReplace2((document.getElementById('reassign').value),(document.getElementById('chId').value))"/>
+         </div>
+         <br> 
+       </form> 
+    </fieldset></div>
+  </td>
+</tr>
+</table>
+ <div id="div2"></div>
+     <div id="div4"></div>
+     
+
+
+}

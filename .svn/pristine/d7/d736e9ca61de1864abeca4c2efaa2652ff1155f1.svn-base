@@ -1,0 +1,68 @@
+
+package views.html.region
+
+import play.templates._
+import play.templates.TemplateMagic._
+
+import play.api.templates._
+import play.api.templates.PlayMagic._
+import models._
+import controllers._
+import java.lang._
+import java.util._
+import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
+import play.api.i18n._
+import play.core.j.PlayMagicForJava._
+import play.mvc._
+import play.data._
+import play.api.data.Field
+import play.mvc.Http.Context.Implicit._
+import views.html._
+/**/
+object edit extends BaseScalaTemplate[play.api.templates.Html,Format[play.api.templates.Html]](play.api.templates.HtmlFormat) with play.api.templates.Template1[Form[models.geo.Region],play.api.templates.Html] {
+
+    /**/
+    def apply/*1.2*/(regionForm: Form[models.geo.Region]):play.api.templates.Html = {
+        _display_ {import helper._
+
+
+Seq[Any](format.raw/*1.39*/("""
+"""),format.raw/*3.1*/("""
+"""),_display_(Seq[Any](/*4.2*/main("Edit Region Page")/*4.26*/{_display_(Seq[Any](format.raw/*4.27*/("""
+<h2>Update the Region having Id """),_display_(Seq[Any](/*5.34*/regionForm/*5.44*/.get.id)),format.raw/*5.51*/("""</h2><br/><br/>
+
+"""),_display_(Seq[Any](/*7.2*/form(action=routes.RegionManagement.update())/*7.47*/ {_display_(Seq[Any](format.raw/*7.49*/("""
+
+<br/>
+
+<input type="hidden" name="id" value="""),_display_(Seq[Any](/*11.39*/regionForm/*11.49*/.get.id)),format.raw/*11.56*/(""">
+
+"""),_display_(Seq[Any](/*13.2*/inputText(field=regionForm("name"), args='_label->"Region Name"))),format.raw/*13.66*/("""
+<br/>
+"""),_display_(Seq[Any](/*15.2*/inputText(field=regionForm("managerName"), args='_label->"managerName"))),format.raw/*15.73*/("""
+<br/>
+
+<input type="submit" value="Save">
+
+""")))})),format.raw/*20.2*/("""
+""")))})))}
+    }
+    
+    def render(regionForm:Form[models.geo.Region]): play.api.templates.Html = apply(regionForm)
+    
+    def f:((Form[models.geo.Region]) => play.api.templates.Html) = (regionForm) => apply(regionForm)
+    
+    def ref: this.type = this
+
+}
+                /*
+                    -- GENERATED --
+                    DATE: Wed Aug 13 12:31:58 ALMT 2014
+                    SOURCE: E:/j2ee-workspace/service-delivery-model/app/views/region/edit.scala.html
+                    HASH: c785220bee36063ff2f06d45acf82a6719e6e83a
+                    MATRIX: 746->1|877->38|905->58|942->61|974->85|1012->86|1082->121|1100->131|1128->138|1182->158|1235->203|1274->205|1361->256|1380->266|1409->273|1450->279|1536->343|1581->353|1674->424|1755->474
+                    LINES: 26->1|30->1|31->3|32->4|32->4|32->4|33->5|33->5|33->5|35->7|35->7|35->7|39->11|39->11|39->11|41->13|41->13|43->15|43->15|48->20
+                    -- GENERATED --
+                */
+            

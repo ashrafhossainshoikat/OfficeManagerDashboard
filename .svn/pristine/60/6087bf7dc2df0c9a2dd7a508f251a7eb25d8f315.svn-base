@@ -1,0 +1,32 @@
+@(taskTypes: List[models.task.TaskType])
+
+
+@import helper._
+@import services.AppConstants
+
+@main("List of TaskType"){
+
+  <table>
+	<tr>
+	  <th> Task Type Id</th>
+      <th> Is BSSO Task</th>
+      <th> Task Name</th>
+	</tr>
+	@for(t <- taskTypes) {
+	<tr>
+      <td><a href="@routes.TaskTypeManagement.show(t.id)">@t.id</a></td>
+	  <td> <input type="checkbox" disabled=true @(if(t.isBssoTask) "checked")></td>
+	  <td> @t.taskName</td>
+	  <td>
+	    <form action="@routes.TaskTypeManagement.approveCreate()" method="post">
+	      <input type="hidden" name=@AppConstants.FORM_FIELD_NAME_TASK_TYPE_ID value="@t.id">
+	  	  <input type="Submit" value="Approve">
+		</form>
+	  </td>
+	</tr>
+	}
+  </table>
+ 
+  <br/>
+  Select any of the TaskType (click on Id) to view its detail information.
+}

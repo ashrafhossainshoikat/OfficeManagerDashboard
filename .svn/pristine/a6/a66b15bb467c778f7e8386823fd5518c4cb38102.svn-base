@@ -1,0 +1,23 @@
+@(regionId: Int)
+
+@import helper._
+@import helper.bootstrap._
+
+@main("Add Branch to Region"){
+  <form action="@routes.RegionManagement.addBranch(0, 0)">
+  	<table>
+      <tr>
+        <td>Region Id</td>
+        <td><input type="text" name="regionId" value="@regionId" /></td>
+      </tr>
+      <tr>
+        <td>Branch SOL ID</td>
+        <td><input type="text" name="sol" /></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><input type="submit" value="Add Branch" /></td>
+      </tr>
+    </table>
+  </form>
+}

@@ -1,0 +1,27 @@
+@import connectplus.models.geo.Branch;
+@import helper._
+
+
+<html>
+<head>
+
+</head>
+<body>
+
+
+<form action="/simulator/punch-in" method="get">
+
+              <label>Select a Branch:</label>
+                 <select name="branchId" id="branchId">
+                 @for((c, t) <- Branch.getAsMapForPunchIn()){
+                   <option value="@c">@t</option>
+                 }
+                </select> 
+             
+             <br>
+  <input type="submit" value="Punch In">
+
+</body>
+</html>
+
+            

@@ -1,0 +1,16 @@
+@(regionForm: Form[models.geo.Region])
+
+@import helper._
+@import helper.bootstrap._
+
+@main("Edit Region Page"){
+<h2>Update the Region @regionForm("name").value</h2><br/><br/>
+
+@form(action=routes.RegionManagement.update()) {
+  <input type="hidden" name="id" value=@regionForm("id").value>
+  <input type="hidden" name="version" value=@regionForm("version").value>
+  @inputText(field=regionForm("name"), args='_label->"Region Name", '_showConstraints -> false)<br/>
+  @inputText(field=regionForm("zoneId"), args='_label->"Zone ID", '_showConstraints -> false)<br/>
+  <input type="submit" value="Save">
+}
+}

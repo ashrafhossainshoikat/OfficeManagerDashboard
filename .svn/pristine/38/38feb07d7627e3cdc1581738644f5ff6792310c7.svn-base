@@ -1,0 +1,58 @@
+
+package controllers;
+
+
+import models.Card;
+import models.Role;
+import models.TaskEventType;
+import play.*;
+import play.mvc.*;
+import play.data.*;
+import views.html.taskeventtype.*;
+
+public class TaskEventTypeManagement extends Controller {
+
+	static Form<TaskEventType> taskEventTypeForm = Form.form(TaskEventType.class);
+
+	public static Result create() {
+		return ok(create.render(taskEventTypeForm));
+	}
+
+	public static Result insert() {
+		Form<TaskEventType> filledForm = taskEventTypeForm.bindFromRequest();
+		if (filledForm.hasErrors()) {
+			return badRequest(create.render(filledForm));
+
+		} else {
+			TaskEventType.create(filledForm.get());
+			flash("msg", "A new Task Event Type User has been created successfully.");
+			return redirect(routes.TaskEventTypeManagement.list());
+		}
+	}
+
+	public static Result list() {
+		return ok(list.render(TaskEventType.all()));
+	}
+
+	public static Result show(int id) {
+		TaskEventType taskEventType = TaskEventType.get(id);
+		return ok(show.render(taskEventType));
+	}
+
+	public static Result edit(int id) {
+		TaskEventType taskEventType= TaskEventType.get(id);
+		return ok(edit.render(taskEventTypeForm.fill(taskEventType)));
+	}
+
+    public static Result update() {
+		Form<TaskEventType> filledForm = taskEventTypeForm.bindFromRequest();
+		if (filledForm.hasErrors()) {
+			return badRequest(edit.render(filledForm));
+		} else {
+			TaskEventType taskEventType = filledForm.get();
+			TaskEventType.update(taskEventType);
+			flash("msg", "task event type " + taskEventType.id + " has been updated");
+			return ok(show.render(taskEventType));
+		}
+	}
+}

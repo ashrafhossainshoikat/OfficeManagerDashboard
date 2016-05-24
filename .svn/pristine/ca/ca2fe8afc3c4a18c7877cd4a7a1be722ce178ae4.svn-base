@@ -1,0 +1,55 @@
+
+package views.html
+
+import play.templates._
+import play.templates.TemplateMagic._
+
+import play.api.templates._
+import play.api.templates.PlayMagic._
+import models._
+import controllers._
+import java.lang._
+import java.util._
+import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
+import play.api.i18n._
+import play.core.j.PlayMagicForJava._
+import play.mvc._
+import play.data._
+import play.api.data.Field
+import play.mvc.Http.Context.Implicit._
+import views.html._
+/**/
+object accessFailed extends BaseScalaTemplate[play.api.templates.Html,Format[play.api.templates.Html]](play.api.templates.HtmlFormat) with play.api.templates.Template0[play.api.templates.Html] {
+
+    /**/
+    def apply/*1.2*/():play.api.templates.Html = {
+        _display_ {
+
+Seq[Any](format.raw/*1.4*/("""
+
+"""),_display_(Seq[Any](/*3.2*/main("Welcome to Play 2.1")/*3.29*/ {_display_(Seq[Any](format.raw/*3.31*/("""
+    
+    Done
+    
+""")))})),format.raw/*7.2*/("""
+"""))}
+    }
+    
+    def render(): play.api.templates.Html = apply()
+    
+    def f:(() => play.api.templates.Html) = () => apply()
+    
+    def ref: this.type = this
+
+}
+                /*
+                    -- GENERATED --
+                    DATE: Wed Aug 13 12:31:58 ALMT 2014
+                    SOURCE: E:/j2ee-workspace/service-delivery-model/app/views/accessFailed.scala.html
+                    HASH: d46de8b9f10c00b6da96b6720540e4ae0c92ee16
+                    MATRIX: 723->1|801->3|838->6|873->33|912->35|963->56
+                    LINES: 26->1|29->1|31->3|31->3|31->3|35->7
+                    -- GENERATED --
+                */
+            

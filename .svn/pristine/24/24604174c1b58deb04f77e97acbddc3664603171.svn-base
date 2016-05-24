@@ -1,0 +1,25 @@
+@(regions: List[models.geo.Region])
+
+@import helper._
+@import helper.bootstrap._
+
+@main("List of Region"){
+  <table>
+	<tr>
+	  <th>Region Name</th>
+	  <th>Zone ID</th>
+	  <th>Active?</th>
+	  <th>Approved?</th>
+	</tr>
+	@for(r <- regions) {
+	<tr>
+	  <td><a href="@routes.RegionManagement.show(r.id)">@r.name</a></td>
+	  <td>@r.zoneId</td>
+	  <td><input type="checkbox" disabled=true @(if(r.isActive) "checked")></td>
+	  <td><input type="checkbox" disabled=true @(if(r.isApproved) "checked")></td>
+	</tr>
+	}
+  </table>
+  <br/>
+  Select any of the region (click on ID) to view its detail information.
+}

@@ -1,0 +1,81 @@
+@(title: String)(content: Html)
+@import services.AppConstants
+
+@import models.customer.CustomerHistory
+@import models.task.TaskType
+@import models.customer.CustomerCriteria;
+
+<html>
+
+<head>
+
+	<title>@title</title>
+   
+    
+    <meta name="description" content="Web Application" />
+    <meta name="keywords" content="web, application" />
+  
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.tokeninput.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.11.0.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.leanModal.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/leanModal-modified-for-onload.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/script.js")"></script>
+    
+   
+    
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/style.css")">
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/card_notification.css")">
+   
+   <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.js")"></script>
+   <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.datetimepicker.js")"></script>
+   <script type="text/javascript" src="@routes.Assets.at("javascripts/date.format.js")"></script>
+   <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/admin/grid.css")">
+   <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/admin/styles.css")">
+   
+   <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/menubar.css")">
+   
+   <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/jquery.datetimepicker.css")">
+   
+   
+   <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/jquery.timepicker.js")">
+   <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.datetimepicker.js")"></script>
+   
+   <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.timepicker.js")"></script>
+   <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/jquery.timepicker.css")">
+   
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+   </head>
+
+<body>
+    <div id="wrapper">
+        
+    @menuBar.render()
+    
+<hr style="margin-top: 0px;">
+    @if(flash.get(AppConstants.FLASH_KEY_INFO)) {
+  		<font color="green"><b>@flash.get(AppConstants.FLASH_KEY_INFO)</b></font>
+  	}
+    @if(flash.get(AppConstants.FLASH_KEY_ERROR)) {
+  		<font color="red"><b>@flash.get(AppConstants.FLASH_KEY_ERROR)</b></font>
+  	}
+
+	
+  <h3>@title</h3>
+    <div>@content</div>  
+    
+    <div style="clear: both;"></div>
+    </div>  
+    
+    <!-- end #content -->
+    <div id="sidebar"></div>
+  
+
+   <div style="position:relative; bottom:0; width:100%;height:60px;">
+     <hr style="margin-top: 0px;">
+     <p ALIGN=CENTER>Copyright &#169; 2015 BRAC IT Services Ltd. All rights reserved.</p>
+   </div>
+</body>
+</html>

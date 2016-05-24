@@ -1,0 +1,208 @@
+// @SOURCE:E:/j2ee-workspace/service-delivery-model/conf/routes
+// @HASH:fef7899bc0d012e5647fdf18a83c1711a57f19e5
+// @DATE:Wed Aug 13 12:31:58 ALMT 2014
+
+
+import play.core._
+import play.core.Router._
+import play.core.j._
+
+import play.api.mvc._
+import play.libs.F
+
+import Router.queryString
+
+object Routes extends Router.Routes {
+
+private var _prefix = "/"
+
+def setPrefix(prefix: String) {
+  _prefix = prefix  
+  List[(String,Routes)]().foreach {
+    case (p, router) => router.setPrefix(prefix + (if(prefix.endsWith("/")) "" else "/") + p)
+  }
+}
+
+def prefix = _prefix
+
+lazy val defaultPrefix = { if(Routes.prefix.endsWith("/")) "" else "/" } 
+
+
+// @LINE:6
+private[this] lazy val controllers_Application_index0 = Route("GET", PathPattern(List(StaticPart(Routes.prefix))))
+        
+
+// @LINE:9
+private[this] lazy val controllers_Assets_at1 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("assets/"),DynamicPart("file", """.+""",false))))
+        
+
+// @LINE:13
+private[this] lazy val controllers_RegionManagement_create2 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("region/create"))))
+        
+
+// @LINE:14
+private[this] lazy val controllers_RegionManagement_insert3 = Route("POST", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("region/create"))))
+        
+
+// @LINE:15
+private[this] lazy val controllers_RegionManagement_list4 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("region/list"))))
+        
+
+// @LINE:16
+private[this] lazy val controllers_RegionManagement_show5 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("region/show/"),DynamicPart("uid", """[^/]+""",true))))
+        
+
+// @LINE:17
+private[this] lazy val controllers_RegionManagement_edit6 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("region/edit/"),DynamicPart("uid", """[^/]+""",true))))
+        
+
+// @LINE:18
+private[this] lazy val controllers_RegionManagement_update7 = Route("POST", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("region/edit"))))
+        
+
+// @LINE:22
+private[this] lazy val controllers_BranchManagement_create8 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("branch/create"))))
+        
+
+// @LINE:23
+private[this] lazy val controllers_BranchManagement_insert9 = Route("POST", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("branch/create"))))
+        
+
+// @LINE:24
+private[this] lazy val controllers_BranchManagement_list10 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("branch/list"))))
+        
+
+// @LINE:25
+private[this] lazy val controllers_BranchManagement_show11 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("branch/show/"),DynamicPart("uid", """[^/]+""",true))))
+        
+
+// @LINE:26
+private[this] lazy val controllers_BranchManagement_edit12 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("branch/edit/"),DynamicPart("uid", """[^/]+""",true))))
+        
+
+// @LINE:27
+private[this] lazy val controllers_BranchManagement_update13 = Route("POST", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("branch/edit"))))
+        
+def documentation = List(("""GET""", prefix,"""controllers.Application.index()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """assets/$file<.+>""","""controllers.Assets.at(path:String = "/public", file:String)"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """region/create""","""controllers.RegionManagement.create()"""),("""POST""", prefix + (if(prefix.endsWith("/")) "" else "/") + """region/create""","""controllers.RegionManagement.insert()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """region/list""","""controllers.RegionManagement.list()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """region/show/$uid<[^/]+>""","""controllers.RegionManagement.show(uid:Int)"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """region/edit/$uid<[^/]+>""","""controllers.RegionManagement.edit(uid:Int)"""),("""POST""", prefix + (if(prefix.endsWith("/")) "" else "/") + """region/edit""","""controllers.RegionManagement.update()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """branch/create""","""controllers.BranchManagement.create()"""),("""POST""", prefix + (if(prefix.endsWith("/")) "" else "/") + """branch/create""","""controllers.BranchManagement.insert()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """branch/list""","""controllers.BranchManagement.list()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """branch/show/$uid<[^/]+>""","""controllers.BranchManagement.show(uid:Int)"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """branch/edit/$uid<[^/]+>""","""controllers.BranchManagement.edit(uid:Int)"""),("""POST""", prefix + (if(prefix.endsWith("/")) "" else "/") + """branch/edit""","""controllers.BranchManagement.update()""")).foldLeft(List.empty[(String,String,String)]) { (s,e) => e.asInstanceOf[Any] match {
+  case r @ (_,_,_) => s :+ r.asInstanceOf[(String,String,String)]
+  case l => s ++ l.asInstanceOf[List[(String,String,String)]] 
+}}
+       
+    
+def routes:PartialFunction[RequestHeader,Handler] = {        
+
+// @LINE:6
+case controllers_Application_index0(params) => {
+   call { 
+        invokeHandler(controllers.Application.index(), HandlerDef(this, "controllers.Application", "index", Nil,"GET", """ Home page""", Routes.prefix + """"""))
+   }
+}
+        
+
+// @LINE:9
+case controllers_Assets_at1(params) => {
+   call(Param[String]("path", Right("/public")), params.fromPath[String]("file", None)) { (path, file) =>
+        invokeHandler(controllers.Assets.at(path, file), HandlerDef(this, "controllers.Assets", "at", Seq(classOf[String], classOf[String]),"GET", """ Map static resources from the /public folder to the /assets URL path""", Routes.prefix + """assets/$file<.+>"""))
+   }
+}
+        
+
+// @LINE:13
+case controllers_RegionManagement_create2(params) => {
+   call { 
+        invokeHandler(controllers.RegionManagement.create(), HandlerDef(this, "controllers.RegionManagement", "create", Nil,"GET", """""", Routes.prefix + """region/create"""))
+   }
+}
+        
+
+// @LINE:14
+case controllers_RegionManagement_insert3(params) => {
+   call { 
+        invokeHandler(controllers.RegionManagement.insert(), HandlerDef(this, "controllers.RegionManagement", "insert", Nil,"POST", """""", Routes.prefix + """region/create"""))
+   }
+}
+        
+
+// @LINE:15
+case controllers_RegionManagement_list4(params) => {
+   call { 
+        invokeHandler(controllers.RegionManagement.list(), HandlerDef(this, "controllers.RegionManagement", "list", Nil,"GET", """""", Routes.prefix + """region/list"""))
+   }
+}
+        
+
+// @LINE:16
+case controllers_RegionManagement_show5(params) => {
+   call(params.fromPath[Int]("uid", None)) { (uid) =>
+        invokeHandler(controllers.RegionManagement.show(uid), HandlerDef(this, "controllers.RegionManagement", "show", Seq(classOf[Int]),"GET", """""", Routes.prefix + """region/show/$uid<[^/]+>"""))
+   }
+}
+        
+
+// @LINE:17
+case controllers_RegionManagement_edit6(params) => {
+   call(params.fromPath[Int]("uid", None)) { (uid) =>
+        invokeHandler(controllers.RegionManagement.edit(uid), HandlerDef(this, "controllers.RegionManagement", "edit", Seq(classOf[Int]),"GET", """""", Routes.prefix + """region/edit/$uid<[^/]+>"""))
+   }
+}
+        
+
+// @LINE:18
+case controllers_RegionManagement_update7(params) => {
+   call { 
+        invokeHandler(controllers.RegionManagement.update(), HandlerDef(this, "controllers.RegionManagement", "update", Nil,"POST", """""", Routes.prefix + """region/edit"""))
+   }
+}
+        
+
+// @LINE:22
+case controllers_BranchManagement_create8(params) => {
+   call { 
+        invokeHandler(controllers.BranchManagement.create(), HandlerDef(this, "controllers.BranchManagement", "create", Nil,"GET", """ Create Branch Registration page""", Routes.prefix + """branch/create"""))
+   }
+}
+        
+
+// @LINE:23
+case controllers_BranchManagement_insert9(params) => {
+   call { 
+        invokeHandler(controllers.BranchManagement.insert(), HandlerDef(this, "controllers.BranchManagement", "insert", Nil,"POST", """""", Routes.prefix + """branch/create"""))
+   }
+}
+        
+
+// @LINE:24
+case controllers_BranchManagement_list10(params) => {
+   call { 
+        invokeHandler(controllers.BranchManagement.list(), HandlerDef(this, "controllers.BranchManagement", "list", Nil,"GET", """""", Routes.prefix + """branch/list"""))
+   }
+}
+        
+
+// @LINE:25
+case controllers_BranchManagement_show11(params) => {
+   call(params.fromPath[Int]("uid", None)) { (uid) =>
+        invokeHandler(controllers.BranchManagement.show(uid), HandlerDef(this, "controllers.BranchManagement", "show", Seq(classOf[Int]),"GET", """""", Routes.prefix + """branch/show/$uid<[^/]+>"""))
+   }
+}
+        
+
+// @LINE:26
+case controllers_BranchManagement_edit12(params) => {
+   call(params.fromPath[Int]("uid", None)) { (uid) =>
+        invokeHandler(controllers.BranchManagement.edit(uid), HandlerDef(this, "controllers.BranchManagement", "edit", Seq(classOf[Int]),"GET", """""", Routes.prefix + """branch/edit/$uid<[^/]+>"""))
+   }
+}
+        
+
+// @LINE:27
+case controllers_BranchManagement_update13(params) => {
+   call { 
+        invokeHandler(controllers.BranchManagement.update(), HandlerDef(this, "controllers.BranchManagement", "update", Nil,"POST", """""", Routes.prefix + """branch/edit"""))
+   }
+}
+        
+}
+    
+}
+        

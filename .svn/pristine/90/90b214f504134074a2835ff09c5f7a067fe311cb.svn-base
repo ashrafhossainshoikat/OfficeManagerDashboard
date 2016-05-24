@@ -1,0 +1,10 @@
+@import helper._
+
+
+
+
+@main("Page Not Found") {
+
+<h2>Error: 404. Page Not found.</h2>
+}
+

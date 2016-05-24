@@ -1,0 +1,115 @@
+@(dtrForm: Form[dummymodels.reports.StartAndEndDate], dataSet: Array[Array[String]])
+
+@import services.AppConstants
+@import helper._
+@import helper.bootstrap._
+@import dummymodels.reports.StartAndEndDate
+
+
+@main("Detailed Token Report") {
+	
+    <style type="text/css">
+      .custom-date-style {
+      background-color: red !important;
+   }
+   </style>
+  
+    <script>
+       function submitForm(isPdfValue){
+          $('#isPdf').val(isPdfValue);
+          document.getElementById("dtrForm").submit();
+       }
+   </script>
+   
+   <div>
+    <fieldset>
+     
+  @form(action=routes.ReportManagement.generateDetailedTokenReport(), 'id -> "dtrForm") {
+   
+  <table>
+    <tr>
+      <td>
+         <input type="hidden" name="isPdf" value="" id="isPdf" />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        @inputText(field=dtrForm("startDate") , '_label->"Start Date", 'id -> "startDate" , '_showConstraints -> false)<br/>
+      </td>
+      <td> 
+        @inputText(field=dtrForm("endDate") , '_label->"End Date", 'id -> "endDate" ,  '_showConstraints -> false)<br/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input type="submit" value="Search" id="search" onclick="submitForm('');"/>
+      </td>
+      <td>
+        <input type="button" value="Download PDF" id="downloadPdf" onclick="submitForm('on');"/>
+      </td>
+      <td>
+        <input type="button" value="Download EXCEL" id="downloadXls" onclick="submitForm('off');"/>
+      </td>
+    </tr>
+  </table> 
+   } 
+   </fieldset></div><br/>
+
+  <table>
+    <tr>
+      <th class="tabledata">Outlet Name</th>
+      <th class="tabledata">Token No</th>
+      <th class="tabledata">Service</th>
+      <th class="tabledata">User</th>
+      <th class="tabledata">Date</th>
+      <th class="tabledata">Counter</th>
+      <th class="tabledata">Benchmark Time</th>
+      <th class="tabledata">Issue Time</th>
+      <th class="tabledata">Call Time</th>
+      <th class="tabledata">Served Time</th>
+      <th class="tabledata">End Time</th>
+      <th class="tabledata">Waiting Time</th>
+    </tr>
+    @if(dataSet != null){
+       @for((row, idx)<-  dataSet.zipWithIndex){
+     	 <tr @if(idx%2==0){class="even"}else{class="odd"}>
+     	 @for(cell <- row){
+     	   <td class="tabledata">@cell</td>
+     	 }
+     	 </tr>
+       }
+     }
+  </table>
+  
+  
+  <script>
+   /*
+     window.onerror = function(errorMsg) {
+     $('#console').html($('#console').html()+'<br>'+errorMsg)
+     }
+  */
+     
+     $('#startDate').datetimepicker({
+     dayOfWeekStart : 1,
+     lang:'en',
+     format:'@AppConstants.REPORT_DEFAULT_DATE_FORMAT_JQ_DATEPICKER',
+     //value: (new Date()).format('@AppConstants.REPORT_DEFAULT_DATE_FORMAT_JS_FORMATTER'),
+     //value: (new Date()).format("dd-mm-yyyy")+" 00:00",
+     value: new Date((new Date()).setHours(0,0,0,0)).format('@AppConstants.REPORT_DEFAULT_DATE_FORMAT_JS_FORMATTER'),
+     step: @AppConstants.REPORT_DEFAULT_TIME_STEP
+     });
+
+
+     $('#endDate').datetimepicker({
+     dayOfWeekStart : 1,
+     lang:'en',
+     format:'@AppConstants.REPORT_DEFAULT_DATE_FORMAT_JQ_DATEPICKER',
+     //value: (new Date()).format('@AppConstants.REPORT_DEFAULT_DATE_FORMAT_JS_FORMATTER'),
+     //value: (new Date()).format("dd-mm-yyyy")+" 00:00",
+     value: new Date((new Date()).getTime()).format('@AppConstants.REPORT_DEFAULT_DATE_FORMAT_JS_FORMATTER'),
+     step: @AppConstants.REPORT_DEFAULT_TIME_STEP
+     });
+  </script> 
+  
+}
+

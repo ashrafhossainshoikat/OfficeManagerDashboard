@@ -1,0 +1,58 @@
+
+package controllers;
+
+
+import models.Card;
+import models.Role;
+import models.TaskType;
+import play.*;
+import play.mvc.*;
+import play.data.*;
+import views.html.tasktypemanagement.*;
+
+public class TaskTypeManagement extends Controller {
+
+	static Form<TaskType> taskTypeForm = Form.form(TaskType.class);
+
+	public static Result create() {
+		return ok(create.render(taskTypeForm));
+	}
+
+	public static Result insert() {
+		Form<TaskType> filledForm = taskTypeForm.bindFromRequest();
+		if (filledForm.hasErrors()) {
+			return badRequest(create.render(filledForm));
+
+		} else {
+			TaskType.create(filledForm.get());
+			flash("msg", "A new Task Type User has been created successfully.");
+			return redirect(routes.TaskTypeManagement.list());
+		}
+	}
+
+	public static Result list() {
+		return ok(list.render(TaskType.all()));
+	}
+
+	public static Result show(int id) {
+		TaskType taskType = TaskType.get(id);
+		return ok(show.render(taskType));
+	}
+
+	public static Result edit(int id) {
+		TaskType taskType= TaskType.get(id);
+		return ok(edit.render(taskTypeForm.fill(taskType)));
+	}
+
+    public static Result update() {
+		Form<TaskType> filledForm = taskTypeForm.bindFromRequest();
+		if (filledForm.hasErrors()) {
+			return badRequest(edit.render(filledForm));
+		} else {
+			TaskType taskType = filledForm.get();
+			TaskType.update(taskType);
+			flash("msg", "task type " + taskType.id + " has been updated");
+			return ok(show.render(taskType));
+		}
+	}
+}

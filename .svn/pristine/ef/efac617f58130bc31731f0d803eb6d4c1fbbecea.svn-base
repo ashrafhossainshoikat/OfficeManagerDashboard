@@ -1,0 +1,127 @@
+@(swrForm: Form[dummymodels.reports.ServiceWiseReport], dataSet: Array[Array[String]])
+
+@import connectplus.models.geo.Branch
+@import services.AppConstants
+@import helper._
+@import helper.bootstrap._
+@import dummymodels.reports.ServiceWiseReport
+
+
+@main("Service Wise Report") {
+	
+  <style type="text/css">
+    .custom-date-style {
+    background-color: red !important;
+    }
+  </style>
+  
+  <script>
+    function submitForm(isPdfValue){
+      $('#isPdf').val(isPdfValue);
+      document.getElementById("swrForm").submit();
+    }
+  </script>
+   <div>
+    <fieldset>
+      
+  @form(action=routes.ReportManagement.generateServiceWiseReport() , 'id -> "swrForm") {
+  
+  <input type="hidden" name="isPdf" value="" id="isPdf" />
+  <table>
+    <tr>
+      <td> 
+       @select(swrForm("sol"),
+          options(Branch.getAsMapForCurrentUser()),
+          '_label -> "Outlet Name",
+          '_default -> "All",
+          '_showConstraints -> false
+        )
+        
+        @*<label>Outlet Name:</label>
+        <select name="taskTypeId" id="taskTypeid">
+            @for((c, t) <- Branch.getAsMapForCurrentUser()){
+              <option value="@c">@t</option>
+            }
+          </select>*@
+      </td>
+    </tr>
+    <tr>  
+      <td> 
+        <dl id="counter" class="">
+          <dt>
+            <label for="counter">Counter</label>
+           </dt>
+           <dd>&nbsp;&nbsp;
+             <input type="radio" name="isBssoCounter" value="" @if(swrForm("isBssoCounter").value==""){checked}>ALL &nbsp;&nbsp;&nbsp;
+             <input type="radio" name="isBssoCounter" value="true" @if(swrForm("isBssoCounter").value=="true"){checked}>BSSO &nbsp;&nbsp;&nbsp;
+             <input type="radio" name="isBssoCounter" value="false" @if(swrForm("isBssoCounter").value=="false"){checked}>CCSO<br>
+           </dd>
+         </dl>
+       </td>
+     </tr>
+     <tr>
+       <td>
+         <input type="submit" value="Search" id="search" onclick="submitForm('');"/>
+       </td>
+       <td>
+         <input type="button" value="Download PDF" id="downloadPdf" onclick="submitForm('on');"/>
+       </td>
+       <td>
+         <input type="button" value="Download EXCEL" id="downloadXls" onclick="submitForm('off');"/>
+       </td>
+     </tr>
+   </table>
+    } 
+    </fieldset></div><br/>
+   
+  
+   
+   <table>
+     <tr>
+       <th class="tabledata">Name of Services</th>
+       <th class="tabledata">Number</th>
+       <th class="tabledata">Time</th>
+     </tr>
+     @if(dataSet != null){
+         @for((row , idx)<-  dataSet.zipWithIndex){
+     	   <tr @if(idx%2==0){class="even"}else{class="odd"}>
+     	     @for(cell <- row){
+     	       <td class="tabledata">@cell</td>
+     	   }
+     	   </tr>
+       }
+     }
+   </table>
+   
+  
+   <script>
+     /*
+       window.onerror = function(errorMsg) {
+       $('#console').html($('#console').html()+'<br>'+errorMsg)
+       }
+    */
+
+    $('#startDate').datetimepicker({
+    dayOfWeekStart : 1,
+    lang:'en',
+    format:'@AppConstants.REPORT_DEFAULT_DATE_FORMAT_JQ_DATEPICKER',
+    //value: (new Date()).format('@AppConstants.REPORT_DEFAULT_DATE_FORMAT_JS_FORMATTER'),
+    //value: (new Date()).format("dd-mm-yyyy")+" 00:00",
+    value: new Date((new Date()).setHours(0,0,0,0)).format('@AppConstants.REPORT_DEFAULT_DATE_FORMAT_JS_FORMATTER'),
+    step: @AppConstants.REPORT_DEFAULT_TIME_STEP
+    });
+
+
+    $('#endDate').datetimepicker({
+    dayOfWeekStart : 1,
+    lang:'en',
+    format:'@AppConstants.REPORT_DEFAULT_DATE_FORMAT_JQ_DATEPICKER',
+    //value: (new Date()).format('@AppConstants.REPORT_DEFAULT_DATE_FORMAT_JS_FORMATTER'),
+    //value: (new Date()).format("dd-mm-yyyy")+" 00:00",
+    value: new Date((new Date()).getTime()).format('@AppConstants.REPORT_DEFAULT_DATE_FORMAT_JS_FORMATTER'),
+    step: @AppConstants.REPORT_DEFAULT_TIME_STEP
+    });
+  </script>
+  
+}
+

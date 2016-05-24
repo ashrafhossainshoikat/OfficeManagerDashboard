@@ -1,0 +1,12 @@
+@(regionId: Int)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("Add Branch to Region"){
+  <form action="@routes.RegionManagement.addBranch(0, 0)">
+    <input type="text" name="regionId" value="@regionId" />
+    <input type="text" name="sol" />
+    <input type="submit" value="Add Branch" />
+  </form>
+}

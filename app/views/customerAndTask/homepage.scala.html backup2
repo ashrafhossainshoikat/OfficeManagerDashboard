@@ -1,0 +1,213 @@
+@import models.customer.CustomerHistory
+@import models.task.TaskType
+@import models.customer.CustomerServiceTask
+@import models.customer.CustomerCriteria;
+@import java.text.SimpleDateFormat
+@import services.ScalaUtils
+@import helper._
+
+
+@main("Customer & Task Management") {
+
+
+<script>
+  function automaticFillupData(cn) {
+    $.ajax({
+          url:"@routes.CustomerAndTaskManagement.getCustomerAsJson("")"+cn,
+          success:function(result){
+          if(result.success==true){
+          
+          $('#cardNumber').val(result.obj.cardNumber);
+          $('#customerName').val(result.obj.customerName);
+          $('#accountNumber').val(result.obj.accountNumber);
+          $('#customerPhone').val(result.obj.customerPhone);
+          $('#customerAddress').val(result.obj.customerAddress);
+          $('#customerPunchIn').val(result.obj.punchInTime);
+          $('#accountNumber').val(result.obj.accountNumber);
+          $('#id').val(result.obj.id);
+          $('#version').val(result.obj.version);
+          $('#customerCriteriaId').val(result.obj.customerCriteriaId);
+          
+          
+          
+          
+          }
+         
+     }});
+  }
+</script>
+
+
+
+
+<script>
+
+function addTaskInList() {
+	var v = document.getElementById("taskName").value;
+	document.getElementById("div1").innerHTML=v;
+  
+  
+  }
+
+</script>
+
+<script>
+
+function ajaxCallToLoadTaskList(){
+     
+     $("#div2").empty(); 
+
+	 $.ajax({
+         url:"@routes.Test.jsonArray()",
+         success:function(result){
+         if(result.success==true){
+         
+          var tbl=$("<table/>").attr("id","mytable");
+          var a= "<tr><th>Task Name</th><th>Start Time</th><th>End Time</th><th>Remarks</th></tr>"
+         
+          $("#div2").append(tbl);
+          
+           $("#mytable").append(a); 
+         
+         for (var i = 0; i < result.obj.length; i++) {
+         
+          var tr="<tr>";
+          var td1="<td>"+result.obj[i]["id"]+"</td>";
+          var td2="<td>"+result.obj[i]["version"]+"</td>";
+          var td3="<td>"+result.obj[i]["taskStartTime"]+"</td></tr>";
+          $("#mytable").append(tr+td1+td2+td3); 
+          
+         
+}
+        
+         
+        
+         }
+        
+    }});
+ 
+	  
+}
+
+
+</script>
+
+
+<table>
+  <tr>
+    <td>
+      <div>
+         <h3>Card List</h3>
+         <fieldset>
+           <ul>
+            @for(ch <- CustomerHistory.getCurrentCustomers()){
+             <li>
+               <input type="button" value=@ch.cardNumber id="cardItem" onclick="automaticFillupData('@ch.cardNumber');">
+             </li>
+            }
+           </ul>
+         </fieldset>
+       </div>
+     </td>
+     <td>
+       <div>
+         <h3>Customer History</h3>
+         <form action="@routes.CustomerAndTaskManagement.updateCustomerHistory()" method="post" name="chForm" id="chForm">
+           <fieldset>
+             <div>
+               <input type="hidden" name="version" id="version" value="version">
+               <input type="hidden" name="id" id="id" value="id">
+             </div>
+             <div>
+               <label>Card Number:</label>
+               <input type="text" name="cardNumber" id="cardNumber">
+             </div>
+             <br>
+             <div>
+               <label>Criteria ID:</label>
+               <input type="Text" name="customerCriteriaId" id="customerCriteriaId">
+             </div>
+             <br>
+             <div>
+               <label>Customer Criteria:</label>
+                 <select name="customerCriteria.id" id="criteriaId">
+                 @for((c, t) <- CustomerCriteria.getAsMap()){
+                   <option value="@c">@t</option>
+                 }
+                </select> 
+             </div>
+             <br>
+             <div>
+               <label>Customer Name:</label>
+               <input type="text" name="customerName" id="customerName">
+             </div>
+             <br>
+             <div>
+               <label>Account Number:</label>
+               <input type="text" name="accountNumber" id="accountNumber">
+             </div>
+             <br>
+             <div>
+               <label>Customer Phone:</label>
+               <input type="text" name="customerPhone" id="customerPhone">
+            </div>
+            <br>         
+            <div>
+              <label>Customer Address:</label>
+              <input type="text" name="customerAddress" id="customerAddress">
+            </div>
+            <br>
+            <div>
+              <label>Customer Punch In:</label>
+              <input type="text" name="customerPunchIn" id="customerPunchIn">
+            </div><br>
+            <div>
+              <input type="submit" name="update" value="Update" id="update">
+           </div>
+           <br>
+         </fieldset>
+       </form>
+     </div>
+   </td>
+   <td>
+     <div>
+       <h3>Task Entry</h3>
+       <form method="post" action="@routes.CustomerAndTaskManagement.createCustomerServiceTask()" name="tEForm" id="tEForm">
+         <div>
+           <label>Task Type:</label>
+            <select name="taskEventType" id="taskEventType">
+            @for((c, t) <- TaskType.getAllAsMap()){
+              <option value="@c">@t</option>
+            }
+            </select>
+          </div>
+          <br><br>
+          <div>
+            <input type="submit" value="Add to Me" id="add">
+            <input type="submit" value="Assign to Others" id="assign">
+          </div> 
+          <br> 
+       </form>
+       <br>
+     </div>
+     <div>
+     <div id="div2"></div>
+     <div>
+       <input type="button" value="showData" id="showData" onclick="ajaxCallToLoadTaskList();">
+     </div>
+   </div>
+ </td>
+ </tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+}

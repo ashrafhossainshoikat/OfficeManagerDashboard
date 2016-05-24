@@ -1,0 +1,292 @@
+package controllers;
+
+import java.util.List;
+import java.util.Map;
+
+import play.*;
+import play.mvc.*;
+import play.data.*;
+import be.objectify.deadbolt.java.actions.Dynamic;
+import be.objectify.deadbolt.java.actions.SubjectPresent;
+import services.deadbolt.DeadboltHandler;
+import models.geo.Branch;
+import models.usermanagement.Role;
+import models.usermanagement.User;
+import dummymodels.DummyUser;
+import dummymodels.DummyUserPass;
+import dummymodels.Login;
+import services.AppConstants;
+import services.JavaUtils;
+import services.ScalaUtils;
+import views.html.user.*;
+import views.html.error.userVerifyFailed;
+
+
+public class UserManagement extends Controller {
+	static Form<DummyUserPass> userPassForm = Form.form(DummyUserPass.class);
+	static Form<DummyUser> dummyUserForm = Form.form(DummyUser.class);
+	static Form<User> userForm = Form.form(User.class);
+
+
+    @Dynamic(value = "1102", handler = DeadboltHandler.class)
+    public static Result create() {
+		return ok(create.render(dummyUserForm));
+	}
+
+    @Dynamic(value = "1102", handler = DeadboltHandler.class)
+	public static Result insert() {
+		Form<DummyUser> filledForm = dummyUserForm.bindFromRequest();
+		if (filledForm.hasErrors()) {
+			return badRequest(create.render(filledForm));
+		} else {
+			DummyUser dUser = filledForm.get();
+			if(dUser.role==null || dUser.role.id==null) {
+				flash("error", "You must choose a valid Role for this user.");
+				filledForm.reject("You must choose a valid Role for this user.");
+				return badRequest(create.render(filledForm));
+			}
+
+			User usr = dUser.getUser();
+			int userId = User.create(usr);
+			flash("msg", "A new user with ID " + userId +" has been created successfully.");
+			return redirect(routes.UserManagement.show(userId));
+		}
+	}
+
+	@Dynamic(value = "1104", handler = DeadboltHandler.class)
+	public static Result show(Integer id) {
+		User user = User.get(id);
+		return ok(show.render(user));
+	}
+	
+	@Dynamic(value = "1103", handler = DeadboltHandler.class)
+	public static Result list() {
+		return ok(list.render(User.all()));
+	}
+
+	@Dynamic(value = "1105", handler = DeadboltHandler.class)
+	public static Result edit(Integer id) {
+		User user = User.get(id);
+		//DummyUser dUser = DummyUser.getDummyUserFromUser(user);
+		//return ok(edit.render(dummyUserForm.fill(dUser)));
+		return ok(edit.render(userForm.fill(user)));
+	}
+	
+	@Dynamic(value = "1107", handler = DeadboltHandler.class)
+    public static Result update() {
+		Form<User> filledForm = userForm.bindFromRequest();
+		//Form<DummyUser> filledForm = dummyUserForm.bindFromRequest();
+		if (filledForm.hasErrors()) {
+			return badRequest(edit.render(filledForm));
+		} else {
+			//User usr = filledForm.get().getUser();
+			User usr = filledForm.get();
+			User existingUsr = User.get(usr.id);
+			if(existingUsr==null) {
+				flash("error", "User not found for editing.");
+				return redirect(routes.UserManagement.list());
+			}
+			
+			// ** set updated values **
+			Role userRole = Role.get(usr.role.id);
+			if(!existingUsr.fullName.equals(usr.fullName))
+				existingUsr.fullName = usr.fullName;
+			if(!existingUsr.email.equals(usr.email))
+				existingUsr.email = usr.email;
+			if(!existingUsr.phone.equals(usr.phone))
+				existingUsr.phone = usr.phone;
+			if(existingUsr.role.id.longValue() != userRole.id.longValue())
+				existingUsr.role = Role.get(usr.role.id);
+			if(existingUsr.isLastLoginSuccessful != usr.isLastLoginSuccessful)
+				existingUsr.isLastLoginSuccessful = usr.isLastLoginSuccessful;
+			if(existingUsr.pwdChangeForced != usr.pwdChangeForced)
+				existingUsr.pwdChangeForced = usr.pwdChangeForced;
+			if(existingUsr.isActive != usr.isActive)
+				existingUsr.isActive = usr.isActive;
+			if(existingUsr.isVerified != usr.isVerified)
+				existingUsr.isVerified = usr.isVerified;
+			if(existingUsr.verificationDate.getTime() != usr.verificationDate.getTime())
+				existingUsr.verificationDate = usr.verificationDate;
+
+			existingUsr.update(existingUsr.id);
+			flash("msg", "User '" + existingUsr.username + "' has been updated successfully.");
+			return redirect(routes.UserManagement.show(existingUsr.id));
+		}
+	}
+	
+	// ** Set password of any user
+	@Dynamic(value = "1108", handler = DeadboltHandler.class)
+    public static Result setPassword() {
+		return ok(setPassword.render());
+	}
+    
+    @Dynamic(value = "1108", handler = DeadboltHandler.class)
+	public static Result resetPassword() {
+    	final Map<String, String[]> values = request().body().asFormUrlEncoded();
+    	String username = values.get("username")[0];
+    	if(username == null || username.trim().isEmpty()){
+    		flash(AppConstants.FLASH_KEY_ERROR, "Invalid Username is chosen");
+    		return badRequest(setPassword.render());
+    	}
+    	User.resetPassword(username, true);
+    	
+		flash("msg", "An email is sent to the user '" + username + "' with his new password.");
+		return redirect(routes.UserManagement.list());
+
+	}
+	
+    // ** Change own password
+    public static Result changePassword() {
+    	String username = session(AppConstants.SESN_USERNAME);
+    	if(username==null || username.trim().isEmpty())
+    		return redirect(routes.UserManagement.login());
+    	
+    	User user = User.findByUsername(username);
+    	if(user==null)
+    		return redirect(routes.UserManagement.login());
+    	
+		return ok(changePassword.render(userPassForm, username));
+	}
+	
+    @SubjectPresent(handler = DeadboltHandler.class)
+    public static Result updatePassword() {
+    	String username = session(AppConstants.SESN_USERNAME);
+    	User usr = User.findActiveUserByUsername(username);
+		if (usr == null)
+			return redirect(routes.UserManagement.login());
+    	
+    	Form<DummyUserPass> filledForm = userPassForm.bindFromRequest();
+    	if (filledForm.hasErrors()) {
+			//System.out.println(filledForm.errors().toString());
+			return badRequest(changePassword.render(filledForm, username));
+		} else {
+			DummyUserPass dup = filledForm.get();
+			if (!usr.password.equals(ScalaUtils.hashPassword(username, dup.oldPassword))) {
+				filledForm.reject("oldPassword", "Current passowrd does not match.");
+				return badRequest(changePassword.render(filledForm, username));
+			}
+
+			User.resetPassword(username, dup.password);
+			flash("msg", "Your Password has been updated successfully.");
+			return redirect(routes.Application.dashboard());
+		}
+	}
+    
+    // ** Password change is forced, User is recently activated ** //
+ 	public static Result forcedChangePassword() {
+ 		return ok(forcedChangePassword.render(userPassForm, session(AppConstants.SESSION_PWD_USER)));
+ 	}
+	
+    @Dynamic(value = "1109", handler = DeadboltHandler.class)
+    public static Result listInactiveUsers() {
+    	return ok(activateUser.render(User.getInactiveUsers()));
+    }
+    
+    @Dynamic(value = "1109", handler = DeadboltHandler.class)
+    public static Result activateUser() {
+    	final Map<String, String[]> values = request().body().asFormUrlEncoded();
+    	int id = Integer.parseInt(values.get(AppConstants.POST_FORM_USER_ID)[0]);
+    	
+    	if(!User.activateUser(id))
+    		flash("error", "User to be activated was not found.");
+    	
+    	return redirect(routes.UserManagement.listInactiveUsers());
+    }
+    
+    @Dynamic(value = "1110", handler = DeadboltHandler.class)
+    public static Result listUnverifiedUsers() {
+    	return ok(listUnverifiedUser.render(User.getUnvarifiedUsers()));
+    }
+    
+    @Dynamic(value = "1110", handler = DeadboltHandler.class)
+    public static Result verifySendEmail() {
+    	final Map<String, String[]> values = request().body().asFormUrlEncoded();
+    	int userId = Integer.parseInt(values.get(AppConstants.POST_FORM_USER_ID)[0]);
+    	
+    	User user = User.get(userId);
+    	if(user == null)
+    		return ok(userVerifyFailed.render());
+    	
+    	ScalaUtils.sendVerifyEmailToUser(user);
+    	return ok(listUnverifiedUser.render(User.getUnvarifiedUsers()));
+    }
+    
+    public static Result verify(String vid) {
+    	User user = User.findByVerificationId(vid);
+    	if(user == null)
+    		return ok(userVerifyFailed.render());
+    	
+    	User.verifyUser(user);
+    	return ok(verify.render(user));
+    }
+    
+	// ** Login Page ** //
+	public static Result login() {
+		String username = session(AppConstants.SESN_USERNAME);
+		if (username != null && !username.trim().isEmpty()) {
+			return redirect(routes.Application.dashboard());
+		} else {
+			return ok(login.render(Form.form(Login.class)));
+		}
+	}
+
+ 	// ** Login form submission ** //
+	public static Result authenticate() {
+		Form<Login> loginForm = Form.form(Login.class).bindFromRequest();
+		if (loginForm.hasErrors()) {
+			return badRequest(login.render(loginForm));
+		} else {
+			Login login = loginForm.get();
+			String username = login.username;
+			User user = User.findByUsername(username);
+			session().clear();
+			if (user.pwdChangeForced) {
+				session(AppConstants.SESSION_PWD_USER, username);
+				return redirect(routes.UserManagement.forcedChangePassword());
+			} else {
+				session(AppConstants.SESN_USERNAME, username);
+				return redirect(routes.Application.dashboard());
+			}
+
+		}
+	}
+
+	// ** Logout Page ** //
+	public static Result logout() {
+		session().clear();
+		flash("success", "You've been logged out");
+		return redirect(routes.UserManagement.login());
+	}
+
+    //** utility function for user creation view
+    public static boolean isRoleSelected(Form<DummyUser> userForm, String roleId){
+    	try {
+    		return Integer.parseInt(roleId) == userForm.get().role.id.intValue();
+    	} catch(Exception ex) {
+    		return false;
+    	}
+    }
+    
+    
+    
+    public static Result showCreateApprovalForm() {
+		List<User> listOfUser = User.allUnapproved();
+		return ok(approve.render(listOfUser));
+	}
+	
+	public static Result approveCreate() {
+		final Map<String,String[]> data = request().body().asFormUrlEncoded();
+		String userIdStr = data.get(AppConstants.FORM_FIELD_NAME_USER_ID)[0];
+		
+		int userId = 0;
+		if(userIdStr!=null && !userIdStr.isEmpty())
+			userId = Integer.parseInt(userIdStr);
+
+		User.approveById(userId);
+		
+		return redirect(routes.UserManagement.list());
+	}
+
+    
+    	
+}

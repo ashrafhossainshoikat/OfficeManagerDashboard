@@ -1,0 +1,73 @@
+
+package views.html.branch
+
+import play.templates._
+import play.templates.TemplateMagic._
+
+import play.api.templates._
+import play.api.templates.PlayMagic._
+import models._
+import controllers._
+import java.lang._
+import java.util._
+import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
+import play.api.i18n._
+import play.core.j.PlayMagicForJava._
+import play.mvc._
+import play.data._
+import play.api.data.Field
+import play.mvc.Http.Context.Implicit._
+import views.html._
+/**/
+object create extends BaseScalaTemplate[play.api.templates.Html,Format[play.api.templates.Html]](play.api.templates.HtmlFormat) with play.api.templates.Template1[Form[models.geo.Branch],play.api.templates.Html] {
+
+    /**/
+    def apply/*1.2*/(branchForm: Form[models.geo.Branch]):play.api.templates.Html = {
+        _display_ {import models.geo.Region
+
+import helper._
+
+
+Seq[Any](format.raw/*1.39*/("""
+
+"""),format.raw/*5.1*/("""
+
+"""),_display_(Seq[Any](/*7.2*/main("Branch Create Form")/*7.28*/ {_display_(Seq[Any](format.raw/*7.30*/("""
+
+"""),_display_(Seq[Any](/*9.2*/form(action=routes.BranchManagement.insert())/*9.47*/ {_display_(Seq[Any](format.raw/*9.49*/("""
+  """),_display_(Seq[Any](/*10.4*/inputText(field=branchForm("name") , '_label->"Branch Name"))),format.raw/*10.64*/("""<br/>
+  """),_display_(Seq[Any](/*11.4*/inputText(field=branchForm("branchCode") , '_label->"Branch Code"))),format.raw/*11.70*/("""<br/>
+  """),_display_(Seq[Any](/*12.4*/inputText(field=branchForm("branchManagerName") , '_label->"Branch Manager Name"))),format.raw/*12.85*/("""<br/>
+  """),_display_(Seq[Any](/*13.4*/inputText(field=branchForm("address") , '_label->"Address"))),format.raw/*13.63*/("""<br/>
+  """),_display_(Seq[Any](/*14.4*/inputText(field=branchForm("contactPersonName") , '_label->"Contact Person Name"))),format.raw/*14.85*/("""<br/>
+  """),_display_(Seq[Any](/*15.4*/inputText(field=branchForm("contactPersonPhone") , '_label->"Contact Person Phone"))),format.raw/*15.87*/("""<br/>
+  """),_display_(Seq[Any](/*16.4*/inputText(field=branchForm("contactPersonEmail") , '_label->"Contact Person Email"))),format.raw/*16.87*/("""<br/>
+  """),_display_(Seq[Any](/*17.4*/select(
+  	 branchForm("region.id"),
+     options(Region.getRegionAsMap),
+     '_label -> "Region", '_default -> "-- Choose a region --",
+     '_showConstraints -> false
+  ))),format.raw/*22.4*/("""<br/>
+  <input type="submit" value="Create new Branch">
+""")))})),format.raw/*24.2*/("""
+""")))})))}
+    }
+    
+    def render(branchForm:Form[models.geo.Branch]): play.api.templates.Html = apply(branchForm)
+    
+    def f:((Form[models.geo.Branch]) => play.api.templates.Html) = (branchForm) => apply(branchForm)
+    
+    def ref: this.type = this
+
+}
+                /*
+                    -- GENERATED --
+                    DATE: Wed Aug 13 12:31:58 ALMT 2014
+                    SOURCE: E:/j2ee-workspace/service-delivery-model/app/views/branch/create.scala.html
+                    HASH: 4658bdeb62a8dfdd5d36be47bea1a44960eec856
+                    MATRIX: 748->1|906->38|936->87|975->92|1009->118|1048->120|1087->125|1140->170|1179->172|1219->177|1301->237|1346->247|1434->313|1479->323|1582->404|1627->414|1708->473|1753->483|1856->564|1901->574|2006->657|2051->667|2156->750|2201->760|2400->938|2490->997
+                    LINES: 26->1|32->1|34->5|36->7|36->7|36->7|38->9|38->9|38->9|39->10|39->10|40->11|40->11|41->12|41->12|42->13|42->13|43->14|43->14|44->15|44->15|45->16|45->16|46->17|51->22|53->24
+                    -- GENERATED --
+                */
+            

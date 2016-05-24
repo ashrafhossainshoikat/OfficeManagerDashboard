@@ -1,0 +1,22 @@
+@(taskEventTypeForm: Form[models.task.TaskEventType])
+
+
+@import helper._
+
+@main("Edit TaskEventType Page"){
+<h2>Update the TaskEventType having Id @taskEventTypeForm("id").value</h2><br/><br/>
+
+@form(action=routes.TaskEventTypeManagement.update()) {
+
+<br/>
+
+  <input type="hidden" name="id" value=@taskEventTypeForm("id").value>
+  <input type="hidden" name="version" value=@taskEventTypeForm("version").value>
+
+   @inputText(field=taskEventTypeForm("eventName") , '_label->"Event Name")<br/>
+   @checkbox(field=taskEventTypeForm("isActive") , '_label->"Is Active")<br/>
+  
+  <input type="submit" value="Save">
+
+}
+}

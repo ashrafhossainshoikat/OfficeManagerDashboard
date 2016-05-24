@@ -1,0 +1,23 @@
+#noti_Container {
+	position: relative;
+	/* border:1px solid blue;
+    width:16px;
+    height:16px; */
+}
+
+.noti_bubble {
+	position: absolute;
+	top: -2px;
+	/* right:-6px;
+    right:-118px; */
+	right: 28px;
+	padding: 1px 2px 1px 2px;
+	background-color: red;
+	color: white;
+	font-weight: bold;
+	/* font-size:0.55em; */
+	font-size: 0.85em;
+	/* border-radius:30px; */
+	border-radius: 8px;
+	box-shadow: 1px 1px 1px gray;
+}

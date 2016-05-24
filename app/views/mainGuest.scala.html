@@ -1,0 +1,36 @@
+@(content: Html)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Welcome to pay24bd.com</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("javascripts/css/jquery-ui.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/admin/grid.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/admin/styles.css")">
+
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+
+        <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
+
+        <script src="@routes.Assets.at("javascripts/jquery.validationEngine-en.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("javascripts/jquery.validationEngine.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("javascripts/jquery-ui.js")" type="text/javascript"></script>
+
+
+    </head>
+    <body>
+    @headerGuest.render
+    
+    <div class="container_12">         
+            <!-- Dashboard icons -->
+           <div class="grid_7">
+        
+	        @content
+	        </div>
+	  </div>
+
+	   @footerGuest.render
+    </body>
+</html>

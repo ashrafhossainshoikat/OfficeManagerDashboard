@@ -1,0 +1,17 @@
+@(taskEventTypeForm: Form[models.task.TaskEventType])
+
+
+@import helper._
+
+
+@main("TaskEventType Create Form") {
+
+@form(action=routes.TaskEventTypeManagement.insert()) {
+	
+  @inputText(field=taskEventTypeForm("eventName") , '_label->"Event Name")<br/>
+  @checkbox(field=taskEventTypeForm("isActive") , '_label->"Is Active")<br/>
+ 
+  
+  <input type="submit" value="Create new TaskEventType">
+}
+}

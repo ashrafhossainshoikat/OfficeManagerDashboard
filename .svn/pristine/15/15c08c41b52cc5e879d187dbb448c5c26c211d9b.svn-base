@@ -1,0 +1,26 @@
+@()
+@import models.usermanagement.User
+@import services.JavaUtils
+@import scala.collection.immutable.Map
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("Set Password"){
+  <h2>Reset Password of Other Users</h2><br/><br/>
+  
+  @form(routes.UserManagement.resetPassword(), 'id->"userForm") {
+    <div id="username_field" class="clearfix">
+      <label for="username">Username</label>
+      <div class="input">
+        <select name="username" id="username">
+          @for((id, name) <- User.getUsernameAsMap){
+          	@if(JavaUtils.getCurrentUsername != name){
+          		<option value="@id" >@name</option>
+          	}
+          }
+        </select>
+      </div>
+    </div><br /><br />
+    <input type="submit" value="Change Password">
+  }
+}

@@ -1,0 +1,108 @@
+# This is the main configuration file for the application.
+# ~~~~~
+
+# Secret key
+# ~~~~~
+# The secret key is used to secure cryptographics functions.
+# If you deploy your application to several instances be sure to use the same key!
+application.secret="2=AJ8hvCmI/AeWE5Zc;ujOKcrB^H2tK/@ZEHlll?TX@hV3FGcWX^thHZ7KLoDO>K"
+
+# The application languages
+# ~~~~~
+application.langs="en"
+
+# Global object class
+# ~~~~~
+# Define the Global object class for this application.
+# Default to Global in the root package.
+# application.global=Global
+
+# Router 
+# ~~~~~
+# Define the Router object to use for this application.
+# This router will be looked up first when the application is starting up,
+# so make sure this is the entry point. 
+# Furthermore, it's assumed your route file is named properly. 
+# So for an application router like `conf/my.application.Router`,
+# you may need to define a router file `my.application.routes`.
+# Default to Routes in the root package (and `conf/routes`)
+# application.router=my.application.Routes
+
+# Database configuration
+# ~~~~~ 
+# You can declare as many datasources as you want.
+# By convention, the default datasource is named `default`
+# Oracle database connection in localhost
+# ~~~~~ 
+#db.default.driver=oracle.jdbc.driver.OracleDriver
+#db.default.url="jdbc:oracle:thin:@10.100.17.134:1521:orcl"
+#db.default.user="c##sdm"
+#db.default.password="sdm123"
+db.default.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver
+db.default.url="jdbc:sqlserver://10.100.17.134:42787;databaseName=sdm"
+db.default.user=sdm
+db.default.password="Abc123456"
+
+# You can expose this datasource via JNDI if needed (Useful for JPA)
+# db.default.jndiName=DefaultDS
+
+
+# DB query/action log
+db.default.logStatements=true
+logger.com.jolbox=DEBUG
+
+# Evolutions
+# ~~~~~
+# You can disable evolutions if needed
+#evolutionplugin=disabled
+#applyEvolutions.default=true
+#applyEvolutions.connectplus=false
+
+
+# Ebean configuration
+# ~~~~~
+# You can declare as many Ebean servers as you want.
+# By convention, the default server is named `default`
+#
+ebean.default="models.*"
+
+# Logger
+# ~~~~~
+# You can also configure logback (http://logback.qos.ch/), by providing a logger.xml file in the conf directory .
+
+# Root logger:
+logger.root=ERROR
+
+# Logger used by the framework:
+logger.play=INFO
+
+# Logger provided to your application:
+logger.application=DEBUG
+
+
+# Web service call configurations
+# Follow redirects (default true)
+ws.followRedirects=true
+# Connection timeout in ms (default 120000)
+ws.timeout=120000
+# Whether to use http.proxy* JVM system properties (default true)
+ws.useProxyProperties=true
+# A user agent string to set on each request (default none)
+ws.useragent="Mozilla/5.0 (Windows NT 6.1; WOW64; rv:32.0) Gecko/20100101 Firefox/32.0"
+
+
+# Connect Plus configurations
+db.connectplus.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver
+db.connectplus.url="jdbc:sqlserver://10.5.14.162:1433"
+db.connectplus.user=eoperation
+db.connectplus.password="12345678"
+
+ebean.connectplus="connectplus.models.*"
+db.connectplus.logStatements=true
+
+# BioStar device DB
+#db.biostar.driver=oracle.jdbc.driver.OracleDriver
+#db.biostar.url="jdbc:oracle:thin:@10.100.17.127:1521:xe"
+#db.biostar.user=biostar
+#db.biostar.password="Abc123456"
+#db.biostar.logStatements=true

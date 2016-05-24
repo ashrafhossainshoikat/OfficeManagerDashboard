@@ -1,0 +1,60 @@
+
+package controllers;
+
+
+import models.Region;
+
+import play.*;
+import play.mvc.*;
+import play.data.*;
+
+import views.html.region.*;
+
+public class RegionManagement extends Controller {
+
+	static Form<Region> regionForm = Form.form(Region.class);
+
+	public static Result create() {
+		return ok(create.render(regionForm));
+	}
+
+	public static Result insert() {
+		
+		Form<Region> filledForm = regionForm.bindFromRequest();
+		
+		if (filledForm.hasErrors()) {
+			return badRequest(create.render(filledForm));
+
+		} else {
+			Region.create(filledForm.get());
+			flash("msg", "A new Card User has been created successfully.");
+			return redirect(routes.RegionManagement.list());
+		}
+	}
+
+	public static Result list() {
+		return ok(list.render(Region.all()));
+	}
+
+	public static Result show(int id) {
+		Region region = Region.get(id);
+		return ok(show.render(region));
+	}
+
+	public static Result edit(int id) {
+		Region region= Region.get(id);
+		return ok(edit.render(regionForm.fill(region)));
+	}
+
+    public static Result update() {
+		Form<Region> filledForm = regionForm.bindFromRequest();
+		if (filledForm.hasErrors()) {
+			return badRequest(edit.render(filledForm));
+		} else {
+			Region region = filledForm.get();
+			Region.update(region);
+			flash("msg", "region " + region.id + " has been updated");
+			return ok(show.render(region));
+		}
+	}
+}

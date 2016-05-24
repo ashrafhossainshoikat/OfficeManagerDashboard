@@ -1,0 +1,57 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET    /                             controllers.Application.index()
+
+# Map static resources from the /public folder to the /assets URL path
+GET    /assets/*file                 controllers.Assets.at(path="/public", file)
+
+# Create User Registration page
+GET    /user/create                  controllers.UserManagement.create()
+POST   /user/create                  controllers.UserManagement.insert()
+GET    /user/list                    controllers.UserManagement.list()
+GET    /user/show/:uid               controllers.UserManagement.show(uid: Long)
+GET    /user/edit/:uid               controllers.UserManagement.edit(uid: Long)
+POST   /user/edit                    controllers.UserManagement.update()
+
+# Create Branch Registration page
+GET    /branch/create                controllers.BranchManagement.create()
+POST   /branch/create                controllers.BranchManagement.insert()
+GET    /branch/list                  controllers.BranchManagement.list()
+GET    /branch/show/:uid             controllers.BranchManagement.show(uid: Long)
+GET    /branch/edit/:uid             controllers.BranchManagement.edit(uid: Long)
+POST   /branch/edit                  controllers.BranchManagement.update()
+
+# Create Region Registration page
+GET    /region/create                controllers.RegionManagement.create()
+POST   /region/create                controllers.RegionManagement.insert()
+GET    /region/list                  controllers.RegionManagement.list()
+GET    /region/show/:uid             controllers.RegionManagement.show(uid: Long)
+GET    /region/edit/:uid             controllers.RegionManagement.edit(uid: Long)
+POST   /region/edit                  controllers.RegionManagement.update()
+
+# Create Role Registration page
+GET    /role/create                  controllers.RoleManagement.create()
+POST   /role/create                  controllers.RoleManagement.insert()
+GET    /role/list                    controllers.RoleManagement.list()
+GET    /role/show/:uid               controllers.RoleManagement.show(uid: Long)
+GET    /role/edit/:uid               controllers.RoleManagement.edit(uid: Long)
+POST   /role/edit                    controllers.RoleManagement.update()
+
+# Create Task Type Registration page
+GET    /tasktype/create              controllers.TaskTypeManagement.create()
+POST   /tasktype/create              controllers.TaskTypeManagement.insert()
+GET    /tasktype/list                controllers.TaskTypeManagement.list()
+GET    /tasktype/show/:uid           controllers.TaskTypeManagement.show(uid: Long)
+GET    /tasktype/edit/:uid           controllers.TaskTypeManagement.edit(uid: Long)
+POST   /tasktype/edit                controllers.TaskTypeManagement.update()
+
+# Create Card Registration page
+GET    /card/create                  controllers.CardManagement.create()
+POST   /card/create                  controllers.CardManagement.insert()
+GET    /card/list                    controllers.CardManagement.list()
+GET    /card/show/:uid               controllers.CardManagement.show(uid: Long)
+GET    /card/edit/:uid               controllers.CardManagement.edit(uid: Long)
+POST   /card/edit                    controllers.CardManagement.update()

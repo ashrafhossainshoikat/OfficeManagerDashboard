@@ -1,0 +1,31 @@
+@()
+
+@import services.JavaUtils
+@import services.AppConstants
+
+@defining(JavaUtils.getCurrentUser){currUser =>
+  @defining(currUser.permissionFlag){permissions =>
+  
+  <div id="sdm-bootstrap-menu" class="navbar navbar-default " role="navigation">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse navbar-menubuilder">
+            <ul class="nav navbar-nav navbar-left">
+              <li><h1 style="font-size: 20px;">Service Delivery Model</h1></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-left" style="float: right; important!">
+              @if(permissions.contains(AppConstants.MENU_FLAG_TASK_ENTRY)){
+               <li><a href="@routes.CustomerAndTaskManagement.homepage()">Task Entry</a></li>
+              }
+              @if(permissions.contains(AppConstants.MENU_FLAG_REPORT)){
+                <li><a href="@routes.ReportManagement.menu()">Reports</a></li>
+              }
+              @if(permissions.contains(AppConstants.MENU_FLAG_BACK_OFFICE)){
+                <li><a href="@routes.Application.backOffice()">Back Office</a></li>
+              }
+                <li><a href="@connectplus.controllers.routes.UserManagement.logout()">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+  </div>
+  }
+}

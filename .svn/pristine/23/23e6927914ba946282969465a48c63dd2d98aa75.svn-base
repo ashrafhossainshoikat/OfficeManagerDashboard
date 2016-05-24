@@ -1,0 +1,27 @@
+@(users: List[models.usermanagement.User])
+@import helper._
+
+@main("List of User"){
+
+<table>
+<tr>
+<th> User Id</th>
+<th> User Name</th>
+<th> User Email</th>
+</tr>
+@for(u <- users) {
+<tr>
+
+    <td><a href="@routes.UserManagement.show(u.id)">@u.id</a></td>
+	<td> @u.username</td>
+	<td> @u.email</td>
+	
+</tr>
+ 
+}
+ </table>
+ 
+ <br/>
+  Select any of the User (click on Id) to view its detail information.
+
+}

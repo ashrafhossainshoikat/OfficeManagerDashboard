@@ -1,0 +1,77 @@
+
+package views.html.branch
+
+import play.templates._
+import play.templates.TemplateMagic._
+
+import play.api.templates._
+import play.api.templates.PlayMagic._
+import models._
+import controllers._
+import java.lang._
+import java.util._
+import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
+import play.api.i18n._
+import play.core.j.PlayMagicForJava._
+import play.mvc._
+import play.data._
+import play.api.data.Field
+import play.mvc.Http.Context.Implicit._
+import views.html._
+/**/
+object show extends BaseScalaTemplate[play.api.templates.Html,Format[play.api.templates.Html]](play.api.templates.HtmlFormat) with play.api.templates.Template1[models.geo.Branch,play.api.templates.Html] {
+
+    /**/
+    def apply/*1.2*/(branch: models.geo.Branch):play.api.templates.Html = {
+        _display_ {import helper._
+
+
+Seq[Any](format.raw/*1.29*/("""
+"""),format.raw/*3.1*/("""
+"""),_display_(Seq[Any](/*4.2*/main("Branch Information")/*4.28*/{_display_(Seq[Any](format.raw/*4.29*/("""
+  """),_display_(Seq[Any](/*5.4*/if(flash.get("msg"))/*5.24*/ {_display_(Seq[Any](format.raw/*5.26*/("""
+  	<b>"""),_display_(Seq[Any](/*6.8*/flash/*6.13*/.get("msg"))),format.raw/*6.24*/("""</b>
+  """)))})),format.raw/*7.4*/("""
+
+  
+
+  <table border=1>
+    <tr> <th align ="left">Branch Name</th> <td>"""),_display_(Seq[Any](/*12.50*/branch/*12.56*/.name)),format.raw/*12.61*/("""</td> </tr>
+    <tr> <th align ="left">Branch Code</th> <td>"""),_display_(Seq[Any](/*13.50*/branch/*13.56*/.branchCode)),format.raw/*13.67*/("""</td> </tr>
+    <tr> <th align ="left">Branch Manager Name</th> <td>"""),_display_(Seq[Any](/*14.58*/branch/*14.64*/.branchManagerName)),format.raw/*14.82*/("""</td> </tr>
+    <tr> <th align ="left">Address</th> <td>"""),_display_(Seq[Any](/*15.46*/branch/*15.52*/.address)),format.raw/*15.60*/("""</td> </tr>
+    <tr> <th align ="left">Contact Person Name</th> <td>"""),_display_(Seq[Any](/*16.58*/branch/*16.64*/.contactPersonName)),format.raw/*16.82*/("""</td> </tr>
+    <tr> <th align ="left">Contact Person Email</th> <td>"""),_display_(Seq[Any](/*17.59*/branch/*17.65*/.contactPersonEmail)),format.raw/*17.84*/("""</td> </tr>
+    <tr> <th align ="left">Contact Person Phone</th> <td>"""),_display_(Seq[Any](/*18.59*/branch/*18.65*/.contactPersonPhone)),format.raw/*18.84*/("""</td> </tr>
+    <tr> <th align ="left">Region Id</th> <td>"""),_display_(Seq[Any](/*19.48*/branch/*19.54*/.region)),format.raw/*19.61*/("""</td> </tr>
+    <br/>
+
+</table>
+
+<br><br>
+
+ """),_display_(Seq[Any](/*26.3*/form(routes.BranchManagement.edit(branch.id))/*26.48*/ {_display_(Seq[Any](format.raw/*26.50*/("""
+    <input type="submit" value="Edit">
+  """)))})),format.raw/*28.4*/("""
+
+""")))})))}
+    }
+    
+    def render(branch:models.geo.Branch): play.api.templates.Html = apply(branch)
+    
+    def f:((models.geo.Branch) => play.api.templates.Html) = (branch) => apply(branch)
+    
+    def ref: this.type = this
+
+}
+                /*
+                    -- GENERATED --
+                    DATE: Wed Aug 13 12:31:58 ALMT 2014
+                    SOURCE: E:/j2ee-workspace/service-delivery-model/app/views/branch/show.scala.html
+                    HASH: f00f229552f60bb7a801361ecf491616424d090a
+                    MATRIX: 740->1|861->28|889->48|926->51|960->77|998->78|1037->83|1065->103|1104->105|1147->114|1160->119|1192->130|1231->139|1346->218|1361->224|1388->229|1486->291|1501->297|1534->308|1640->378|1655->384|1695->402|1789->460|1804->466|1834->474|1940->544|1955->550|1995->568|2102->639|2117->645|2158->664|2265->735|2280->741|2321->760|2417->820|2432->826|2461->833|2548->885|2602->930|2642->932|2718->977
+                    LINES: 26->1|30->1|31->3|32->4|32->4|32->4|33->5|33->5|33->5|34->6|34->6|34->6|35->7|40->12|40->12|40->12|41->13|41->13|41->13|42->14|42->14|42->14|43->15|43->15|43->15|44->16|44->16|44->16|45->17|45->17|45->17|46->18|46->18|46->18|47->19|47->19|47->19|54->26|54->26|54->26|56->28
+                    -- GENERATED --
+                */
+            

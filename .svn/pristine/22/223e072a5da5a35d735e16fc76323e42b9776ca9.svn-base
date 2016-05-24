@@ -1,0 +1,24 @@
+@(branchForm: Form[models.geo.Branch])
+
+@import models.geo.Region
+@import helper._
+
+
+@main("Branch Create Form") {
+
+@form(action=routes.BranchManagement.insert()) {
+  @inputText(field=branchForm("name") , '_label->"Branch Name")<br/>
+  @inputText(field=branchForm("branchCode") , '_label->"Branch Code")<br/>
+  @inputText(field=branchForm("contactPersonName") , '_label->"Contact Person Name")<br/>
+  @inputText(field=branchForm("contactPersonPhone") , '_label->"Contact Person Phone")<br/>
+  @inputText(field=branchForm("contactPersonEmail") , '_label->"Contact Person Email")<br/>
+  @checkbox(field=branchForm("isActive") , '_label->"Active?")<br/>
+  @select(
+  	 branchForm("region.id"),
+     options(Region.getAsMap),
+     '_label -> "Region", '_default -> "-- Choose a region --",
+     '_showConstraints -> false
+  )<br/>
+  <input type="submit" value="Create new Branch">
+}
+}

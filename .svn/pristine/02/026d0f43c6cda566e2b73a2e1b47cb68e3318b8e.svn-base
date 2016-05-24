@@ -1,0 +1,25 @@
+// @SOURCE:E:/j2ee-workspace/service-delivery-model/conf/routes
+// @HASH:fef7899bc0d012e5647fdf18a83c1711a57f19e5
+// @DATE:Wed Aug 13 12:31:58 ALMT 2014
+
+package controllers;
+
+public class routes {
+public static final controllers.ReverseApplication Application = new controllers.ReverseApplication();
+public static final controllers.ReverseAssets Assets = new controllers.ReverseAssets();
+public static final controllers.ReverseBranchManagement BranchManagement = new controllers.ReverseBranchManagement();
+public static final controllers.ReverseRegionManagement RegionManagement = new controllers.ReverseRegionManagement();
+public static class javascript {
+public static final controllers.javascript.ReverseApplication Application = new controllers.javascript.ReverseApplication();
+public static final controllers.javascript.ReverseAssets Assets = new controllers.javascript.ReverseAssets();
+public static final controllers.javascript.ReverseBranchManagement BranchManagement = new controllers.javascript.ReverseBranchManagement();
+public static final controllers.javascript.ReverseRegionManagement RegionManagement = new controllers.javascript.ReverseRegionManagement();    
+}   
+public static class ref {
+public static final controllers.ref.ReverseApplication Application = new controllers.ref.ReverseApplication();
+public static final controllers.ref.ReverseAssets Assets = new controllers.ref.ReverseAssets();
+public static final controllers.ref.ReverseBranchManagement BranchManagement = new controllers.ref.ReverseBranchManagement();
+public static final controllers.ref.ReverseRegionManagement RegionManagement = new controllers.ref.ReverseRegionManagement();    
+} 
+}
+              

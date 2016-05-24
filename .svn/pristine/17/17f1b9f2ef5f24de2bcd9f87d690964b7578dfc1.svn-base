@@ -1,0 +1,158 @@
+@(sdrForm: Form[dummymodels.reports.ServiceDetail], dataSet: Array[Array[String]])
+
+@import connectplus.models.User
+@import models.task.TaskType
+@import services.AppConstants
+@import dummymodels.reports.ServiceDetail
+@import helper._
+@import helper.bootstrap._
+
+
+@main("Service Detailed Report") {
+
+  <style type="text/css">
+    .custom-date-style {
+    background-color: red !important;
+  }
+  </style>
+  
+  <script>
+    function submitForm(isPdfValue){
+      $('#isPdf').val(isPdfValue);
+      document.getElementById("sdrForm").submit();
+    }
+  </script>
+  <div>
+    <fieldset>
+      
+  @form(action=routes.ReportManagement.generateServiceDetailedReport() , 'id -> "sdrForm") {
+  	<input type="hidden" name="isPdf" value="" id="isPdf" />
+ 	
+    <table>
+      <tr>
+        <td>
+          @inputText(field=sdrForm("startDate") , '_label->"Start Date", 'id -> "startDate" , '_showConstraints -> false)
+        </td>
+        <td> 
+          @inputText(field=sdrForm("endDate") , '_label->"End Date", 'id -> "endDate" , '_showConstraints -> false)
+        </td>
+      </tr>
+      <tr>
+        <td>        
+          @select(sdrForm("username"),
+          options(User.getUsernameAsMapForReportFilter()),
+          '_label -> "User",
+          '_default -> "All",
+          '_showConstraints -> false
+        )
+         
+          @*<label>User:</label>
+          <select name="username">
+            @for((c, t) <- User.getUsernameAsMapForReportFilter()){
+              <option value="@c">@t</option>
+            }
+          </select>*@
+        </td>
+        <td>
+          @select(sdrForm("taskTypeId"),
+          options(TaskType.getAllAsMap()),
+          '_label -> "Service",
+          '_default -> "All",
+          '_showConstraints -> false
+        )
+          @*<label>Service:</label> 
+          <select name="taskTypeId" id="taskTypeid">
+            @for((c, t) <- TaskType.getAllAsMap()){
+              <option value="@c">@t</option>
+            }
+          </select>*@
+       </td>
+     </tr>
+     <tr>
+       <td> 
+         <dl id="counter" class="">
+           <dt>
+             <label for="counter">Counter</label>
+           </dt>
+           <dd>&nbsp;&nbsp;
+             <input type="radio" name="isBssoCounter" value="" @if(sdrForm("isBssoCounter").value=="" || sdrForm("isBssoCounter").value==null){checked}>ALL &nbsp;&nbsp;&nbsp;
+             <input type="radio" name="isBssoCounter" value="true" @if(sdrForm("isBssoCounter").value=="true"){checked}>BSSO &nbsp;&nbsp;&nbsp;
+             <input type="radio" name="isBssoCounter" value="false" @if(sdrForm("isBssoCounter").value=="false"){checked}>CCSO
+           </dd>
+         </dl>
+       </td>        
+     </tr>
+     <tr>
+       <td>
+         <input type="submit" value="Search" id="search" onclick="submitForm('');"/>
+       </td>
+       <td>
+         <input type="button" value="Download PDF" id="downloadPdf" onclick="submitForm('on');"/>
+       </td>
+       <td>
+         <input type="button" value="Download EXCEL" id="downloadXls" onclick="submitForm('off');"/>
+       </td>
+     </tr>
+   </table> 
+   }
+    </fieldset></div><br/>
+
+   <table>
+     <tr>
+       <th class="tabledata">Service Name</th>
+       <th class="tabledata">Issue Date</th>
+       <th class="tabledata">Token No</th>
+       <th class="tabledata">Counter No</th>
+       <th class="tabledata">Issue Time</th>
+       <th class="tabledata">Start Time</th>
+       <th class="tabledata">Waiting Time</th>
+       <th class="tabledata">End Time</th>
+       <th class="tabledata">TAT</th>
+     </tr>
+     @if(dataSet != null){
+       @for((row , idx)<-  dataSet.zipWithIndex){
+     	 <tr @if(idx%2==0){class="even"}else{class="odd"}>
+     	 @for(cell <- row){
+     	   <td class="tabledata">@cell</td>
+     	 }
+     	 </tr>
+       }
+     }
+   </table>
+  
+   <script>
+     /*
+       window.onerror = function(errorMsg) {
+       $('#console').html($('#console').html()+'<br>'+errorMsg)
+       }
+    */
+
+    $('#startDate').datetimepicker({
+    dayOfWeekStart : 1,
+    lang:'en',
+    format:'@AppConstants.REPORT_DEFAULT_DATE_FORMAT_JQ_DATEPICKER',
+    //value: (new Date()).format('@AppConstants.REPORT_DEFAULT_DATE_FORMAT_JS_FORMATTER'),
+    //value: (new Date()).format("dd-mm-yyyy")+" 00:00",
+    @if(dataSet==null){
+      value: new Date((new Date()).setHours(0,0,0,0)).format('@AppConstants.REPORT_DEFAULT_DATE_FORMAT_JS_FORMATTER'),
+    }
+    step: @AppConstants.REPORT_DEFAULT_TIME_STEP
+    });
+
+   $('#endDate').datetimepicker({
+   dayOfWeekStart : 1,
+   lang:'en',
+   format:'@AppConstants.REPORT_DEFAULT_DATE_FORMAT_JQ_DATEPICKER',
+   //value: (new Date()).format('@AppConstants.REPORT_DEFAULT_DATE_FORMAT_JS_FORMATTER'),
+   //value: (new Date()).format("dd-mm-yyyy")+" 00:00",
+   @if(dataSet==null){
+     value: new Date((new Date()).getTime()).format('@AppConstants.REPORT_DEFAULT_DATE_FORMAT_JS_FORMATTER'),
+   }
+   step: @AppConstants.REPORT_DEFAULT_TIME_STEP
+   });
+ </script>
+
+}
+
+
+

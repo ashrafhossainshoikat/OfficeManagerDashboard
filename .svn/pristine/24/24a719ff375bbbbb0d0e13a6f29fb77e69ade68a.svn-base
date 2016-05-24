@@ -1,0 +1,46 @@
+@(taskTypeForm: Form[models.task.TaskType])
+
+
+@import models.task.TaskCategory
+@import helper._
+@import helper.bootstrap._
+
+@main("TaskType Create Form") {
+
+@form(action=routes.TaskTypeManagement.insert()) {
+  @inputText(field=taskTypeForm("taskName") , '_label->"Task Name")<br/>
+ 
+  <div id="isBssoCard_field" class="clearfix  ">
+    <label for="isBssoTask">Service Type
+      <span style="color:red !important;">*</span>
+    </label>
+    <div class="input">
+    <input type="radio" name="isBssoTask" value="true" @if(taskTypeForm("isBssoTask").value=="true"){checked}>BSSO &nbsp;&nbsp;&nbsp;
+    <input type="radio" name="isBssoTask" value="false" @if(taskTypeForm("isBssoTask").value=="false" || taskTypeForm("isBssoTask").value==null){checked}>CCSO<br>
+    <span class="help-inline"></span>
+    </div>
+  </div> </br>
+  
+  
+   @select(taskTypeForm("taskCategory.id"),
+          options(TaskCategory.getAllAsMap()),
+          '_label -> "Category Type"
+        )<br/>
+  @*<label>Category Type:</label>
+       <select name="TaskCategory.id">
+                 @for((c, t) <- TaskCategory.getAllAsMap()){
+                   <option value="@c">@t</option>
+                 }
+                </select>*@ 
+   @inputText(field=taskTypeForm("benchmarkTime") , '_label->"Bench mark Time:" , 'id -> "benchMarkTimePicker")<br/>
+  
+  <input type="submit" value="Create new Task Type">
+  
+  <script>
+            jQuery('#benchMarkTimePicker').datetimepicker({
+                datepicker:false,
+                format:'H:i:s'
+              });
+            </script> 
+}
+}

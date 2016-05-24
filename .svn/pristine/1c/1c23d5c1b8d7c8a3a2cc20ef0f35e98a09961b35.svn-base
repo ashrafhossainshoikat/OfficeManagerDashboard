@@ -1,0 +1,10 @@
+@(taskCategoryForm: Form[models.task.TaskCategory])
+
+@import helper._
+
+@main("Task_Category Create Form"){
+@form(action=routes.CategoryManagement.insert()) {
+  @inputText(field=taskCategoryForm("categoryName") , '_label->"Category Name")<br/>
+  <input type="submit" value="Create new Category">
+}
+}

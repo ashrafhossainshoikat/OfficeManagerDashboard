@@ -1,0 +1,33 @@
+@(taskType:models.task.TaskType)
+@import helper._
+
+@main("Task Type Information"){
+  @if(flash.get("msg")) {
+  	<b>@flash.get("msg")</b>
+  }
+
+  
+
+  <table border=1>
+    <tr> <th align ="left">Task Type Name</th> <td>@taskType.taskName</td> </tr>
+    <tr><th align ="left">Service Type</th><td>@if(taskType.isBssoTask) {BSSO} else {CCSO}</td></tr>
+    <tr><th align ="left">Bench Mark Time</th> <td>@taskType.benchmarkTime</td> </tr>
+    <tr><th align ="left">Is Active?</th> <td>@if(taskType.isActive) {Active} else {Not Active}</td></tr>
+    <tr><th align ="left">Is Approved?</th><td>@if(taskType.isApproved) {Approved} else {Not Approved}</td></tr>
+    <tr><th align ="left">Task Category</th> <td>@taskType.taskCategory.categoryName</td> </tr>
+    <tr> <th align ="left">Create Date</th> <td>@taskType.createDate</td></tr>
+    <tr> <th align ="left">Created By</th> <td>@taskType.createdBy</td> </tr>
+    <tr> <th align ="left">Last Update Date</th> <td>@taskType.lastUpdateDate</td> </tr>
+    <tr> <th align ="left">Last Updated By</th> <td>@taskType.lastUpdatedBy</td></tr>
+    
+    <br/>
+
+</table>
+
+<br><br>
+
+ @form(routes.TaskTypeManagement.edit(taskType.id)) {
+    <input type="submit" value="Edit">
+  }
+
+}

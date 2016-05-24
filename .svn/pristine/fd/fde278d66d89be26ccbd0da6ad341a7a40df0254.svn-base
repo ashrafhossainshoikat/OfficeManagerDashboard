@@ -1,0 +1,37 @@
+@(cardForm: Form[models.punchcard.Card])
+
+@import connectplus.models.geo.Branch
+@import helper._
+
+@main("Edit Card Page"){
+<h2>Update the Card having Id @cardForm("id").value</h2><br/><br/>
+
+@form(action=routes.CardManagement.update()) {
+
+<br/>
+
+  <input type="hidden" name="id" value=@cardForm("id").value>
+  <input type="hidden" name="version" value=@cardForm("version").value>
+
+  @inputText(field=cardForm("cardNumber") , '_label->"Card Number", '_showConstraints -> false)<br/>
+   
+  @select(cardForm("branchSolId"),
+          options(Branch.getAsMap()),
+          '_label -> "Select a Branch :",
+          '_showConstraints -> false
+        )
+        <br/><br/>
+   
+   
+   <dl id="isBssoCard_field" class=" ">
+    <dt><label for="isBssoCard">Service Type </label></dt>
+    <dd>
+      <input type="radio" name="isBssoCard" value="true" @if(cardForm("isBssoCard").value=="true"){checked}>BSSO &nbsp;&nbsp;&nbsp;
+      <input type="radio" name="isBssoCard" value="false" @if(cardForm("isBssoCard").value=="false"){checked}>CCSO<br>
+    </dd>
+  </dl>   
+  
+  <input type="submit" value="Save">
+
+}
+}

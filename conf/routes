@@ -1,0 +1,204 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET    /                                 controllers.Application.index()
+GET    /dashboard                        controllers.Application.dashboard()
+
+# Map static resources from the /public folder to the /assets URL path
+GET    /assets/*file                     controllers.Assets.at(path="/public", file)
+
+# User Management through ConnectPlus
+GET    /login                            connectplus.controllers.UserManagement.login()
+POST   /login                            connectplus.controllers.UserManagement.authenticate()
+GET    /logout                           connectplus.controllers.UserManagement.logout()
+
+# Project Home Page
+GET    /home/show                        controllers.CustomerAndTaskManagement.homepage()
+GET    /home/get-card-info               controllers.CustomerAndTaskManagement.getCustomerAsJson(cardNumber)
+POST   /home/show                        controllers.CustomerAndTaskManagement.updateCustomerHistory()
+#POST   /home/show/task-add           controllers.CustomerAndTaskManagement.createCustomerServiceTask(customerHistoryId, userName)
+GET    /home/show/task-add               controllers.CustomerAndTaskManagement.createCustomerServiceTask(userName)
+GET    /home/tasklist                    controllers.CustomerAndTaskManagement.getAllTaskList()
+GET    /home/show/task-event-add         controllers.CustomerAndTaskManagement.createTaskEventHistory(userName)
+#GET    /home/show/get-paused-task    controllers.CustomerAndTaskManagement.getMyPausedTask(cstId)
+GET    /home/json-array                  controllers.CustomerAndTaskManagement.jsonArray(customerHistoryId)
+POST   /home/getassinedTask              controllers.CustomerAndTaskManagement.getMyAssinedTask()
+
+GET    /home/get-single-task             controllers.CustomerAndTaskManagement.getCustomerServiceTaskAsJson(cstId)
+
+GET    /acc-info                         controllers.CustomerAndTaskManagement.accInfoPage()
+GET    /account-details/:accountNumber   controllers.CustomerAndTaskManagement.getAccountDetails(accountNumber)
+GET    /ws-request                       controllers.CustomerAndTaskManagement.getAllAccountInfo()
+
+
+GET    /get-all-punched-in-customer      controllers.CustomerAndTaskManagement.getPunchedInCustomerList()
+
+
+
+GET    /manual-input                     controllers.CustomerAndTaskManagement.manualCardInput()
+POST   /manual-input                     controllers.CustomerAndTaskManagement.createNewCustomerHistory()
+
+GET    /punch-out-customer               controllers.CustomerAndTaskManagement.punchOutCustomer(customerHistoryId)
+
+
+
+# Report Generation
+GET    /report/manu                      controllers.ReportManagement.menu()
+
+GET    /report/search-sdr                controllers.ReportManagement.searchServiceDetailedReport()
+POST   /report/search-sdr                controllers.ReportManagement.generateServiceDetailedReport()
+
+GET    /report/search-ptr                controllers.ReportManagement.searchPendingTokenReport()
+POST   /report/search-ptr                controllers.ReportManagement.generatePendingTokenReport()
+
+GET    /report/search-swr                controllers.ReportManagement.searchServiceWiseReport()
+POST   /report/search-swr                controllers.ReportManagement.generateServiceWiseReport()
+
+GET    /report/search-cws                controllers.ReportManagement.searchCounterWiseSummary()
+POST   /report/search-cws                controllers.ReportManagement.generateCounterWiseSummary()
+
+GET    /report/search-ctr                controllers.ReportManagement.searchCcsoTransactionReport()
+POST   /report/search-ctr                controllers.ReportManagement.generateCcsoTransactionReport()
+
+GET    /report/search-liv                controllers.ReportManagement.searchLiveInterfaceView()
+POST   /report/search-liv                controllers.ReportManagement.generateLiveInterfaceView()
+
+GET    /report/search-usp                controllers.ReportManagement.searchUserSummaryProfile()
+POST   /report/search-usp                controllers.ReportManagement.generateUserSummaryProfile()
+
+GET    /report/search-dtr                controllers.ReportManagement.searchDetailedTokenReport()
+POST   /report/search-dtr                controllers.ReportManagement.generateDetailedTokenReport()
+
+GET    /report/search-br                 controllers.ReportManagement.searchBreakReport()
+POST   /report/search-br                 controllers.ReportManagement.generateBreakReport()
+
+GET    /back-office/menu                 controllers.Application.backOffice()
+
+# Region
+GET    /region/create                    controllers.RegionManagement.create()
+POST   /region/create                    controllers.RegionManagement.insert()
+GET    /region/list                      controllers.RegionManagement.list()
+GET    /region/show/:id                  controllers.RegionManagement.show(id: Int)
+GET    /region/edit/:id                  controllers.RegionManagement.edit(id: Int)
+POST   /region/edit                      controllers.RegionManagement.update()
+GET    /region/create/approve            controllers.RegionManagement.showCreateApprovalForm()
+POST   /region/create/approve            controllers.RegionManagement.approveCreate()
+GET    /region/branch/edit/:id           controllers.RegionManagement.showEditBranchForm(id: Int)
+GET    /region/branch/remove             controllers.RegionManagement.removeBranch(regionId: Int, sol: Int)
+GET    /region/branch/add                controllers.RegionManagement.addBranch(regionId: Int, sol: Int)
+GET    /region/branch/add/:id            controllers.RegionManagement.addBranchForm(id: Int)
+
+
+
+
+# Category
+GET    /category/create                  controllers.CategoryManagement.create()
+POST   /category/create                  controllers.CategoryManagement.insert()
+GET    /category/list                    controllers.CategoryManagement.list()
+GET    /category/show/:uid               controllers.CategoryManagement.show(uid: Int)
+GET    /category/edit/:uid               controllers.CategoryManagement.edit(uid: Int)
+POST   /category/edit                    controllers.CategoryManagement.update()
+GET    /category/create/approve          controllers.CategoryManagement.showCreateApprovalForm()
+POST   /category/create/approve          controllers.CategoryManagement.approveCreate()
+
+
+# Branch
+#GET    /branch/create                    controllers.BranchManagement.create()
+#POST   /branch/create                    controllers.BranchManagement.insert()
+#GET    /branch/list                      controllers.BranchManagement.list()
+#GET    /branch/show/:uid                 controllers.BranchManagement.show(uid: Int)
+#GET    /branch/edit/:uid                 controllers.BranchManagement.edit(uid: Int)
+#POST   /branch/edit                      controllers.BranchManagement.update()
+#GET    /branch/create/approve            controllers.BranchManagement.showCreateApprovalForm()
+#POST   /branch/create/approve            controllers.BranchManagement.approveCreate()
+
+
+# TaskType
+GET    /tasktype/create                  controllers.TaskTypeManagement.create()
+POST   /tasktype/create                  controllers.TaskTypeManagement.insert()
+GET    /tasktype/list                    controllers.TaskTypeManagement.list()
+GET    /tasktype/show/:id                controllers.TaskTypeManagement.show(id: Int)
+GET    /tasktype/edit/:id                controllers.TaskTypeManagement.edit(id: Int)
+POST   /tasktype/edit                    controllers.TaskTypeManagement.update()
+GET    /tasktype/create/approve          controllers.TaskTypeManagement.showCreateApprovalForm()
+POST   /tasktype/create/approve          controllers.TaskTypeManagement.approveCreate()
+
+
+
+# Card
+#GET    /card/create                      controllers.CardManagement.create()
+#POST   /card/create                      controllers.CardManagement.insert()
+GET    /card/list                        controllers.CardManagement.list()
+GET    /card/show/:id                    controllers.CardManagement.show(id: Int)
+GET    /card/edit/:id                    controllers.CardManagement.edit(id: Int)
+POST   /card/edit                        controllers.CardManagement.update()
+GET    /card/create/approve              controllers.CardManagement.showCreateApprovalForm()
+POST   /card/create/approve              controllers.CardManagement.approveCreate()
+
+
+# Role
+#GET    /role/create                      controllers.RoleManagement.create()
+#POST   /role/create                      controllers.RoleManagement.insert()
+#GET    /role/list                        controllers.RoleManagement.list()
+#GET    /role/show/:uid                   controllers.RoleManagement.show(uid: Int)
+#GET    /role/edit/:uid                   controllers.RoleManagement.edit(uid: Int)
+#POST   /role/edit                        controllers.RoleManagement.update()
+#GET    /role/create/approve              controllers.RoleManagement.showCreateApprovalForm()
+#POST   /role/create/approve              controllers.RoleManagement.approveCreate()
+
+# User
+#GET    /user/login                       controllers.UserManagement.login()
+#POST   /user/login                       controllers.UserManagement.authenticate()
+#GET    /user/logout                      controllers.UserManagement.logout()
+#GET    /user/create                      controllers.UserManagement.create()
+#POST   /user/create                      controllers.UserManagement.insert()
+#GET    /user/list                        controllers.UserManagement.list()
+#GET    /user/show/:uid                   controllers.UserManagement.show(uid: Int)
+#GET    /user/edit/:uid                   controllers.UserManagement.edit(uid: Int)
+#POST   /user/edit                        controllers.UserManagement.update()
+#GET    /user/password/set                controllers.UserManagement.setPassword()
+#POST   /user/password/set                controllers.UserManagement.resetPassword()
+#GET    /user/password/change             controllers.UserManagement.changePassword()
+#POST   /user/password/change             controllers.UserManagement.updatePassword()
+#GET    /user/must/change/password        controllers.UserManagement.forcedChangePassword()
+#POST	/user/must/change/password	 			           controllers.UserManagement.updatePassword()
+#GET    /user/activate                    controllers.UserManagement.listInactiveUsers()
+#POST   /user/activate                    controllers.UserManagement.activateUser()
+#GET    /user/verify                      controllers.UserManagement.verify(vid)
+#GET    /user/list/unverified             controllers.UserManagement.listUnverifiedUsers()
+#POST   /user/unverified/send-email       controllers.UserManagement.verifySendEmail()
+#GET    /user/create/approve              controllers.UserManagement.showCreateApprovalForm()
+#POST   /user/create/approve              controllers.UserManagement.approveCreate()
+
+## Tests
+#GET    /test/role-menu                   controllers.Test.roleMenu()
+GET    /test/login/:username             controllers.Test.login(username)
+GET    /test/logout                      controllers.Test.logout()
+GET    /test/permission                  controllers.Test.permission()
+#GET    /simulator/punch-in               controllers.Test.punchIn(branchId: Int)
+GET    /test/json-array                  controllers.Test.jsonArray(customerHistoryId)
+GET    /test/getuser                     controllers.Test.currentUser()
+#GET    /test/getassinedTask/:username/:customerHistoryId   controllers.Test.getMyAssinedTask(username: String, customerHistoryId: String)
+POST   /test/getassinedTask              controllers.Test.getMyAssinedTask()
+
+GET    /test/other-user                  controllers.Test.otherUser()
+
+GET    /test/chkPattern/:username        controllers.Test.chkMethod(username)
+#GET    /test/chkPattern                                   controllers.Test.chkMethod()
+GET    /getjson/:accNum                  controllers.Test.accInfoToJson(accNum)
+#GET    /test/ebean/custom-data-type      controllers.Test.ebeanCustomDataType()
+GET    /test/interval                    controllers.Test.intervalShow()
+POST   /test/interval                    controllers.Test.intervalSubmit()
+#GET    /test/time-strip                  controllers.Test.timeStrip()
+#GET    /test/sub-report                  controllers.Test.subReport()
+GET    /test/sp                          controllers.Test.storedProcedure()
+
+GET    /test/time-test                    controllers.Test.testTime()
+
+#GET    /test/list-zip                    controllers.Test.listTest()
+#GET    /test/array-zip                   controllers.Test.arrayTest()
+
+#Simulator
+#GET    /branch_simulator                 controllers.Test.simulatorPunchIn()

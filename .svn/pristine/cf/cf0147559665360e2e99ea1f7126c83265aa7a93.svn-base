@@ -1,0 +1,46 @@
+@(cardForm: Form[models.punchcard.Card])
+
+@import connectplus.models.geo.Branch
+@import helper._
+@import helper.bootstrap._
+
+@main("Edit Card Page"){
+@* <h2>Update the Card having Id @cardForm("id").value</h2><br/><br/> *@
+
+@form(action=routes.CardManagement.update()) {
+
+<br/>
+
+  <input type="hidden" name="id" value=@cardForm("id").value>
+  <input type="hidden" name="version" value=@cardForm("version").value>
+
+  @inputText(field=cardForm("cardNumber") , '_label->"Card Number", '_showConstraints -> false, 'disabled -> true)<br/>
+   
+  @select(cardForm("branchSolId"),
+          options(Branch.getAsMap()),
+          '_label -> "Select a Branch"
+        )
+        <br/><br/>
+   <div id="isBssoCard_field" class="clearfix  ">
+    <label for="isBssoCard">Service Type
+      <span style="color:red !important;">*</span>
+    </label>
+    <div class="input">
+    <input type="radio" name="isBssoCard" value="true" @(if(cardForm("isBssoCard").value=="true"){"checked"})>BSSO &nbsp;&nbsp;&nbsp;
+    <input type="radio" name="isBssoCard" value="false" @(if(cardForm("isBssoCard").value=="false"){"checked"})>CCSO<br>
+    <span class="help-inline"></span>
+    </div>
+  </div> </br>
+   @*
+   <dl id="isBssoCard_field" class=" ">
+    <dt><label for="isBssoCard">Service Type </label></dt>
+    <dd>
+      <input type="radio" name="isBssoCard" value="true" @if(cardForm("isBssoCard").value=="true"){checked}>BSSO &nbsp;&nbsp;&nbsp;
+      <input type="radio" name="isBssoCard" value="false" @if(cardForm("isBssoCard").value=="false"){checked}>CCSO<br>
+    </dd>
+  </dl> *@   
+  
+  <input type="submit" value="Save">
+
+}
+}

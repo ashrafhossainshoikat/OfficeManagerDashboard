@@ -1,0 +1,38 @@
+@(userForm: Form[dummymodels.DummyUser])
+
+@import models.geo.Region
+@import models.geo.Branch
+@import models.usermanagement.Role
+@import helper._
+
+@main("User Create Form") {
+@form(action=routes.UserManagement.insert()) {
+  @inputText(field=userForm("username") , '_label->"Username")<br/>
+  @inputText(field=userForm("fullName") , '_label->"Full Name")<br/>
+  @inputPassword(field=userForm("password") , '_label->"Password")<br/>
+  @inputText(field=userForm("email") , '_label->"Email")<br/>
+  @inputText(field=userForm("phone") , '_label->"Phone")<br/>
+  @checkbox(field=userForm("isActive") , '_label->"Is Active")<br/>
+  @select(
+  	 userForm("branch.id"),
+     options(Branch.getAsMap),
+     '_label -> "Branch", '_default -> "-- Choose a Branch --",
+     '_showConstraints -> false
+  )<br/>
+  
+   @select(
+  	 userForm("region.id"),
+     options(Region.getAsMap),
+     '_label -> "Region", '_default -> "-- Choose a Region --",
+     '_showConstraints -> false
+  )<br/>
+  
+   @select(
+  	 userForm("role.id"),
+     options(Role.getAsMap),
+     '_label -> "Role", '_default -> "-- Choose a Role --",
+     '_showConstraints -> false
+  )<br/>
+  <input type="submit" value="Create new User">
+}
+}

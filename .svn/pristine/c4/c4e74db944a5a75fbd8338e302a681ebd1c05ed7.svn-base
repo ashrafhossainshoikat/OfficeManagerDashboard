@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="live_interface_view" pageWidth="700" pageHeight="842" columnWidth="660" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="9faaa92f-356f-4930-a6bc-a8d2569b2cda">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="12"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="tm1" class="javax.swing.table.TableModel">
+		<defaultValueExpression><![CDATA[new javax.swing.table.DefaultTableModel(new String[][]{{}}, new String[] { "category", "visitor_type", "token_served", "avg_waiting_time" })]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tm2" class="javax.swing.table.TableModel">
+		<defaultValueExpression><![CDATA[new javax.swing.table.DefaultTableModel(new String[][]{{}}, new String[] { "category", "visitor_type", "services" })]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tm3" class="javax.swing.table.TableModel">
+		<defaultValueExpression><![CDATA[new javax.swing.table.DefaultTableModel(new String[][]{{}}, new String[] { "services", "total", "served", "serving", "waiting", "cancelled" })]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["E:\\Workspaces\\j2ee-workspace\\service-delivery-model\\public\\reports\\jasper-template\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="token_no" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="95" splitType="Stretch">
+			<staticText>
+				<reportElement x="175" y="0" width="147" height="30" uuid="a606b215-10e5-427b-9aa9-c0fd36af0ecc"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Live Interface View]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="52" width="92" height="20" uuid="a1fb68fe-e19e-4384-85d0-e32986a033c9"/>
+				<text><![CDATA[Token No:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="92" y="52" width="83" height="20" uuid="2dd80379-f9cc-4cff-b40b-a28123b7b5d9"/>
+				<textFieldExpression><![CDATA[$P{token_no}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="231" splitType="Stretch">
+			<subreport>
+				<reportElement positionType="Float" x="0" y="0" width="659" height="231" uuid="18e2f7ee-4104-4156-8ad8-89c24c3720de">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRTableModelDataSource($P{tm1})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"live_interface_view_subreport1_xls.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="200">
+			<subreport>
+				<reportElement positionType="Float" x="0" y="0" width="659" height="199" uuid="a5d2ef3f-99a5-4f11-9d30-33d9edb67c21">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRTableModelDataSource($P{tm2})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"live_interface_view_subreport2_xls.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="200">
+			<subreport>
+				<reportElement positionType="Float" x="0" y="0" width="659" height="199" uuid="a5d2ef3f-99a5-4f11-9d30-33d9edb67c21">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRTableModelDataSource($P{tm3})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"live_interface_view_subreport3_xls.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

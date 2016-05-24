@@ -1,0 +1,72 @@
+02.11.2014
+
+new task add: manually card info entry system------> finish
+
+Create: task category Management(Cash,Customer Services, Remittance)----> finish
+
+
+05.11.2014
+
+* connect plus----> user, role, menu, permission ------> finish
+
+* task type need task category dropdown ------> finish
+* task_category insert,update, delete, Controllers------> finish
+* region permission
+* 
+
+* isBBSSO as radio button ------> finish
+
+* list show all field of models ------> finish
+
+*bootstrap css for table column will be added in future
+
+11.11.2014
+
+*create Report Menu bar
+*create query to generate data for report ------>finish
+
+
+12.11.2014
+
+* tweeter bootstrap will be added in all view page in future
+
+*radio button for isBSSO will be generate with tweeter bootstrap
+
+17.11.2014
+
+* live Interface view---------> pending
+* create Manually input option
+
+
+19.11.2014
+
+* modify customer & task management
+
+20.11.2014
+
+*in future Set check condition in all view & controllers.... 
+*task event view need confirm/alert msg for cancel & end event....
+
+23.11.2014
+
+* Menu bar add needed
+
+* Header & footer add needed
+
+* Default 404= page not found & 500 page design needed
+
+26.11.2014
+
+* when a task is assigned but not started....then it is re-assigned to others. the overall output status is assign
+* create a checking... when a BSSO/CCSO start a task...then branch manager doesn't assign the same task to any other..
+
+* report filter field need appropriate dropdown...
+
+* only approved values are shown in all dropdown...so, query need change..
+
+27.11.2014
+
+* approved data only show in all dropdown...
+* approved List query needed
+*homepage.scala.html need modification.....
+the whole UI need modification like without selecting card number task_Entry option will be disabled.

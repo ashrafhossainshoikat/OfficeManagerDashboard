@@ -1,0 +1,134 @@
+package models.geo;
+
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Version;
+
+import play.db.ebean.Model;
+import services.JavaUtils;
+import models.usermanagement.Role;
+import models.usermanagement.User;
+
+@Entity
+public class Branch extends Model {
+
+	@Id
+	public Integer id;
+
+	@Version
+	@Column(name = "edit_count", nullable = false)
+	public int version = 1;
+
+	public String name;
+
+	//public String branchCode;
+
+	// public String branchManagerName;
+
+	//public String address;
+
+	//public String contactPersonName;
+
+	//public String contactPersonPhone;
+
+	//public String contactPersonEmail;
+	
+	public String district;
+	
+	public String division;
+	
+	public String sol;
+	
+
+	@Column(nullable = false)
+	public boolean isActive;
+
+	@Column(nullable = false)
+	public boolean isApproved; // ** for checker
+	
+	@Column(nullable = false)
+	public Date createDate;
+	
+	@Column(nullable = false)
+	public String createdBy;
+	
+	public Date lastUpdateDate;
+	
+	public String lastUpdatedBy;
+
+	@ManyToOne
+	@JoinColumn(name = "region_id", referencedColumnName = "id")
+	public Region region;
+
+	@OneToMany(mappedBy = "branch")
+	public List<User> users;
+
+	// --------------------------------------------- //
+	public static Finder<Integer, Branch> find = new Finder(Integer.class, Branch.class);
+
+	public Integer create() {
+		String username = JavaUtils.getCurrentUsername();
+		if(username.isEmpty())
+			return null;
+		
+		try {
+			this.createDate = new Date();
+			this.createdBy = username;
+			
+			this.save();
+			return this.id;
+			
+		} catch(Exception e){
+			return null;
+		}
+	}
+
+	public static void update(Branch branch) {
+		branch.update();
+	}
+
+	public static List<Branch> all() {
+		return find.all();
+	}
+
+	public static Branch get(int id) {
+		return find.where().eq("id", id).findUnique();
+	}
+
+	public static Map<String, String> getAsMap() {
+		LinkedHashMap<String, String> branchs = new LinkedHashMap<String, String>();
+		for (Branch branch : Branch.find.orderBy("name").findList()) {
+			branchs.put(branch.id.toString(), branch.name);
+		}
+
+		return branchs;
+	}
+
+	public static List<Branch> allUnapproved() {
+		return find.where().eq("isApproved", false).orderBy("name").findList();
+	}
+
+	public static boolean approveById(int id) {
+		Branch branch = get(id);
+		if (branch == null)
+			return false;
+
+		try {
+			branch.isApproved = true;
+			branch.update();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+}

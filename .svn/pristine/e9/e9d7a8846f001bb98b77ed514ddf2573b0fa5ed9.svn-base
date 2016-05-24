@@ -1,0 +1,760 @@
+@(sessionUserName: String, isBssoOrCcso: Boolean)
+
+@import models.customer.CustomerHistory
+@import connectplus.models.User
+@import models.task.TaskType
+@import models.task.TaskEventHistory
+@import models.customer.CustomerServiceTask
+@import models.customer.CustomerCriteria;
+@import java.text.SimpleDateFormat
+@import services.ScalaUtils
+@import services.AppConstants
+@import services.JavaUtils
+@import helper._
+@import helper.twitterBootstrap._
+
+
+@main("Customer & Task Management") {
+
+
+<script>
+
+    @* JS method for load all punched In Customer when page is loaded *@
+    $( document ).ready(function() {
+      getAllPunchedInCustomer();
+     // setInterval(function(){
+       // getAllPunchedInCustomer() // this will run after every 5 seconds
+   // }, 5000);
+      defaultOrentaionOfTaskEventEntry();
+      console.log( "document loaded" );
+    });
+    $( window ).load(function() {
+    
+      console.log( "window loaded" );
+    });
+</script>
+
+<script>
+function punchOutCustomer(chId){
+
+        var x = confirm("Are you sure to punch out?");
+	    if (x){
+        
+	    $.ajax({
+         url:"@routes.CustomerAndTaskManagement.punchOutCustomer("")"+chId,
+         type : 'GET',
+         success:function(result){
+          if(result.success==true){
+          $("#div2").empty(); 
+          getAllPunchedInCustomer();
+          document.getElementById("chForm").reset();
+          $("#chForm").reset();
+          $('#popup_content').hide();
+          $('#errorMsgContent').hide(); 
+         }
+	 else{
+	   var a=result.obj.length;
+	   $('#popup_content').hide();
+       $('#errorMsgContent').show(); 
+       $('#errorText').text("This Customer Have "+a+"  not ended task.");
+	  
+	 }
+     },
+     error: function(XMLHttpRequest, textStatus, errorThrown) {
+              @* alert('ajax response fail.'); *@
+               $('#popup_content').hide();
+               $('#errorMsgContent').show(); 
+               $('#errorText').text("To Punch Out, first select a card.");
+            
+     } 
+     });
+    }
+    else{
+      
+    
+    }	  
+}
+</script>
+
+	
+<script>
+ @* JS method for get All Punched In Customer from Controller *@
+function getAllPunchedInCustomer(){
+
+    $.ajax({
+              
+         url:"@routes.CustomerAndTaskManagement.getPunchedInCustomerList()",
+         type : 'GET',
+         success:function(result){
+           if(result.success==true){
+             $("#tokenDiv").empty(); 
+             var tbl=$("<table/>").attr("id","tokenTable");
+             $("#tokenDiv").append(tbl);
+             for (var i = 0; i < result.obj.length; i++) {
+             var tr="<tr>";
+             var td1= "<td>";
+             var td2="";
+             if(result.obj[i]["taskCount"] > 0){
+               //td2="<input type=\"button\" onclick=\"automaticFillupData('" + result.obj[i]["cardNumber"] + "')\" value=\"" + result.obj[i]["cardNumber"] + " - " + result.obj[i]["taskCount"] + "\"></input>";
+               td2 = "<div id=\"noti_Container\">";
+               td2 = td2 + "<input type=\"button\" onclick=\"automaticFillupData('" + result.obj[i]["cardNumber"] + "')\" value=\"" + result.obj[i]["cardNumber"] + "\"></input>";
+               td2 = td2 + "<div class=\"noti_bubble\">" + result.obj[i]["taskCount"] + "</div>";
+               td2 = td2 + "</div>";
+            
+             } else {
+               td2="<input type=\"button\" onclick=\"automaticFillupData('" + result.obj[i]["cardNumber"] + "')\" value=\"" + result.obj[i]["cardNumber"] + "\"></input>";
+             }
+             var td3="</td></tr>";
+             $("#tokenTable").append(tr+td1+td2+td3); 
+           }}
+    },
+    
+     error: function (xhr, ajaxOptions, thrownError) {
+            alert('could not get all punched in card number(ajax error).');
+        }
+         
+      });
+}
+</script>
+	
+<script>
+function defaultOrentaionOfTaskEventEntry(){
+
+	 $('#taskId').val("");
+     $('#taskTypeName').val("");
+     buttonOrientationForEnd();
+     $('#start').prop('disabled', true);
+     $('#cancel').prop('disabled', true);
+     
+}
+</script>
+
+
+<script>
+  function automaticFillupData(cn) {
+    $.ajax({
+          url:"@routes.CustomerAndTaskManagement.getCustomerAsJson("")"+cn,
+          success:function(result){
+          if(result.success==true){
+         
+          $('#chId').val(result.obj.id);
+          $('#cardNumber').val(result.obj.cardNumber);
+          $('#customerName').val(result.obj.customerName);
+          $('#accountNumber').val(result.obj.accountNumber);
+          $('#customerPhone').val(result.obj.customerPhone);
+          $('#customerAddress').val(result.obj.customerAddress);
+          $('#customerPunchIn').val(result.obj.punchInTime);
+          $('#accountNumber').val(result.obj.accountNumber);
+          $('#id').val(result.obj.id);
+          $('#version').val(result.obj.version);
+          $('#customerCriteriaId').val(result.obj.customerCriteriaId);
+          
+          $('#criteriaId').val(result.obj.customerCriteriaId);
+          showTaskList(result.obj.id);
+          defaultOrentaionOfTaskEventEntry();
+          }
+          else{
+              alert('This card Number has no customer history Data.');
+          }
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+                @*alert('could not get customer history Data(ajax error).');*@
+          }
+         });
+}
+</script>
+
+<script>
+@* JS method to load & show all task of a single cardNumber *@
+function showTaskList(chId){
+     
+     $("#div2").empty(); 
+     $.ajax({
+           url:"@routes.CustomerAndTaskManagement.jsonArray("")"+chId,
+           success:function(result){ 
+           if(result.success==true){
+           $("#mytable").empty(); 
+           var tbl=$("<table/>").attr("id","mytable");
+           var a= "<tr><th>Task Name</th><th>User Name</th><th>Card Number</th><th>Start Time</th><th>End Time</th><th>Status</th></tr>"
+           $("#div2").append(tbl);
+           $("#mytable").append(a); 
+           for (var i = 0; i < result.obj.length; i++) {
+           var tr="<tr>";
+           @*var td1="<td><input type=\"button\" onclick=\"getTaskByCustomerHistoryId('" + result.obj[i]["id"] + "')\" value=\"" + result.obj[i]["taskTypeName"] + "\"></input></td>";*@
+           var td1="<td><a onclick=\"getTaskByCustomerHistoryId('" + result.obj[i]["id"] + "')\">" + result.obj[i]["taskTypeName"] + "</a></td>";
+           var td2= "<td>"+result.obj[i]["username"]+"</td>";
+           var td3= "<td>"+result.obj[i]["cardNumber"]+"</td>";
+           var td4="<td>"+result.obj[i]["taskStartTime"]+"</td>";
+           var td5="<td>"+result.obj[i]["taskEndTime"]+"</td>";
+           var td6="<td>"+result.obj[i]["taskStatus"]+"</td></tr>";
+           $("#mytable").append(tr+td1+td2+td3+td4+td5+td6); 
+           }}
+           else{
+              
+          }
+         },
+         error: function(XMLHttpRequest, textStatus, errorThrown) {
+                @* alert('could not get customer Service Data.(ajax error).');*@
+          }
+    });
+}
+</script>
+
+
+<script>
+  function createCustomerServiceTask(chId,userName){
+     
+      $.ajax({
+          url:"@routes.CustomerAndTaskManagement.createCustomerServiceTask("")"+userName,
+          type : 'GET',
+          data : $("#tEForm").serialize(),
+          success:function(result){
+             if(result=="@AppConstants.RESPONSE_MSG_SUCCESS"){
+             defaultOrentaionOfTaskEventEntry();
+             showTaskList(chId);
+          
+
+         } },
+         
+         error: function(XMLHttpRequest, textStatus, errorThrown) {
+               @* alert('ajax response fail.'); *@
+          } 
+          
+          });
+}
+</script>
+
+<script>
+function getTaskByCustomerHistoryId(cn){
+
+  $.ajax({
+        url:"@routes.CustomerAndTaskManagement.getCustomerServiceTaskAsJson("")"+cn,
+        success:function(result){
+          if(result.success==true){
+          
+          $('#taskTypeName').val("");
+          $('#taskTypeName').val(result.obj.taskTypeName);
+          
+          $('#taskId').val("");
+          $('#taskId').val(result.obj.id);
+          
+          
+          if(result.obj.taskStatus=="@AppConstants.TASK_STATUS_ASSIGNED"){
+                 $('#mode2').hide();
+                 $('#mode3').hide();
+                 $('#mode1').show();
+                 $('#start').prop('disabled', false);
+                 $('#cancel').prop('disabled', false);
+            }
+            
+           if(result.obj.taskStatus=="@AppConstants.TASK_STATUS_ACTIVE"){
+              $('#mode1').hide();
+              $('#mode3').hide();
+              $('#mode2').show();
+           
+           }
+            
+          
+          if(result.obj.taskStatus=="@AppConstants.TASK_STATUS_PAUSED"){
+               
+               $('#mode1').hide();
+               $('#mode2').hide();
+               $('#mode3').show();
+           
+           } 
+           
+         if(result.obj.taskStatus=="@AppConstants.TASK_STATUS_ENDED"){
+                $('#mode2').hide();
+                $('#mode3').hide();
+                $('#mode1').show();
+           
+           } 
+          
+           
+        
+        }}
+    });
+  }
+</script>
+
+<script>
+  function createTaskEventHistory(te,chId,un){
+  
+      $('#taskEventType').val(te);
+      $.ajax({
+          url:"@routes.CustomerAndTaskManagement.createTaskEventHistory("")"+un,
+          type : 'GET',
+          data : $("#tEHForm").serialize() ,
+          success:function(result){
+          if(result=="@AppConstants.RESPONSE_MSG_SUCCESS"){
+             $("#div2").empty(); 
+             showTaskList(chId);
+          }
+         
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+                @*alert('ajax response fail.'); *@
+          } 
+     
+     });
+    
+ }
+</script>
+<script>
+function divReplace1(en,chId,un){
+
+ createTaskEventHistory(en,chId,un);
+ showTaskList(chId);
+ $('#mode1').hide();
+ $('#mode3').hide();
+ $('#mode2').show();
+ 
+}
+
+function divReplace2(en,chId,un){
+
+ createTaskEventHistory(en,chId,un);
+ showTaskList(chId);
+ $('#mode1').hide();
+ $('#mode2').hide();
+ $('#mode3').show();
+}
+
+function divReplace3(en,chId,un){
+ createTaskEventHistory(en,chId,un)
+ showTaskList(chId);
+ $('#mode1').hide();
+ $('#mode3').hide();
+ $('#mode2').show();
+}
+
+function divReplace4(en,chId,un){
+
+	var x = confirm("Are you sure you want to Approve?");
+	if (x){
+
+		 createTaskEventHistory(en,chId,un)
+         showTaskList(chId);
+		 $('#mode2').hide();
+		 $('#mode3').hide();
+		 $('#mode1').show();
+		 return true;
+
+	    }
+	
+	else{
+
+		return false;
+	  }
+	
+
+}
+
+function divReplace5(en,chId,un){
+   createTaskEventHistory(en,chId,un);
+   showTaskList(chId);
+   $('#mode1').hide();
+   $('#mode2').hide();
+   $('#mode3').show();
+  }
+
+</script>
+
+<script>
+function assignedTaskFinder(username,chId){
+
+     	  $.ajax({
+          url:"@routes.CustomerAndTaskManagement.getMyAssinedTask()",
+          type : 'POST',
+          data: { userName: username, customerHistoryId: chId },
+          success:function(result){
+          if(result.success==true){
+           
+             $('#start').prop('disabled', false);
+             $('#cancel').prop('disabled', false);
+          
+            if(result.obj.id==(document.getElementById('taskId').value)){
+           
+             $('#taskId').val(result.obj.id);
+             $('#taskTypeName').val(result.obj.taskTypeName);
+             
+             
+           
+             if(result.obj.taskStatus=="@AppConstants.TASK_STATUS_ASSIGNED"){
+                 $('#mode2').hide();
+                 $('#mode3').hide();
+                 $('#mode1').show();
+            }
+            
+           if(result.obj.taskStatus=="@AppConstants.TASK_STATUS_ACTIVE"){
+              $('#mode1').hide();
+	          $('#mode3').hide();
+	          $('#mode2').show();
+           
+           }
+            
+          
+          if(result.obj.taskStatus=="@AppConstants.TASK_STATUS_PAUSED"){
+               
+               
+               $('#mode1').hide();
+	           $('#mode2').hide();
+	           $('#mode3').show();
+           
+           } 
+           
+         if(result.obj.taskStatus=="@AppConstants.TASK_STATUS_ENDED"){
+                $('#mode2').hide();
+                $('#mode3').hide();
+                $('#mode1').show();
+           
+           } 
+           
+              
+           }
+           
+           else{
+            $('#taskId').val(result.obj.id);
+            $('#taskTypeName').val(result.obj.taskTypeName);
+           
+                        
+            if(result.obj.taskStatus=="@AppConstants.TASK_STATUS_ASSIGNED"){
+                 $('#mode2').hide();
+                 $('#mode3').hide();
+                 $('#mode1').show();
+            }
+            
+           if(result.obj.taskStatus=="@AppConstants.TASK_STATUS_ACTIVE"){
+              $('#mode1').hide();
+	          $('#mode3').hide();
+	          $('#mode2').show();
+           
+           }
+            
+          
+          if(result.obj.taskStatus=="@AppConstants.TASK_STATUS_PAUSED"){
+              
+               $('#mode1').hide();
+	           $('#mode2').hide();
+	           $('#mode3').show();
+           
+           } 
+           
+         if(result.obj.taskStatus=="@AppConstants.TASK_STATUS_ENDED"){
+                $('#mode2').hide();
+                $('#mode3').hide();
+                $('#mode1').show();
+           
+           } 
+           
+           }
+         }
+          
+          else{
+          
+          $('#taskTypeName').val("");
+          $('#taskId').val("");
+          buttonOrientationForEnd();
+          $('#start').prop('disabled', true);
+          $('#cancel').prop('disabled', true);
+         }
+          
+            
+          $('#test').val(result.obj.username);
+          
+          }});
+      }
+</script>
+
+<script>
+function buttonOrientationForStart(){
+
+    $('#mode1').hide();
+	$('#mode3').hide();
+	$('#mode2').show();
+	  
+}
+
+function buttonOrientationForPause(){
+
+	
+	  
+
+	 $('#mode1').hide();
+	 $('#mode2').hide();
+	 $('#mode3').show();
+      
+  }
+
+function buttonOrientationForResume(){
+
+	
+    
+     $('#mode2').hide();
+     $('#mode3').hide();
+     $('#mode1').show();
+      
+  }
+
+function buttonOrientationForEnd(){
+
+
+     $('#mode2').hide();
+     $('#mode3').hide();
+     $('#mode1').show();
+      
+  }
+</script>
+
+<script>
+  function accountDataFetch() {
+      $.ajax({
+          @* url:"@routes.CustomerAndTaskManagement.getAllAccountInfo()", *@
+          url:"@routes.CustomerAndTaskManagement.getAccountDetails("")" + document.getElementById('accountNumber').value,
+          type : 'GET',
+          success:function(result) {
+          
+            if(result.success==true){
+            
+                $('#errorMsgContent').hide();
+                $('#popup_content').show();
+            
+                $('#ACCOUNT_NAME').val(result.obj.ACCOUNT_NAME);
+                $('#CURRENT_BALANCE').val(result.obj.CURRENT_BALANCE);
+                $('#PHONE_NUMBER').val(result.obj.PHONE_NUMBER);
+                $('#ACCOUNT_NO').val(result.obj.ACCOUNT_NO);
+                $('#ACCOUNT_TYPE').val(result.obj.ACCOUNT_TYPE);
+                $('#STATUS').val(result.obj.STATUS);
+            
+            } else {
+               $('#popup_content').hide();
+               $('#errorMsgContent').show(); 
+               $('#errorText').text(result.error);
+            }
+          
+       },
+       error: function(XMLHttpRequest, textStatus, errorThrown) {
+         $('#popup_content').hide();
+         $('#errorMsgContent').show(); 
+         $('#errorText').text("@AppConstants.ERR_MSG_AJAX_RESPONSE");
+       }
+    });
+    
+  }
+</script>
+
+<input type="hidden" id="test" name="test"/>
+
+<table>
+  <tr>
+    <td><fieldset>
+      <legend>Card List</legend>
+       <div id="tokenDiv">
+       
+       </div>
+     </td></fieldset>
+     <td>
+      
+       <div id="customerHistory">
+       <fieldset>
+       <legend>Customer History</legend>
+      
+        <form action="@routes.CustomerAndTaskManagement.updateCustomerHistory()" method="post" name="chForm" id="chForm">
+           <div>
+               <input type="hidden" name="version" id="version" value="version">
+               <input type="hidden" name="id" id="id" value="id">
+             </div>
+             <div>
+               <label>Card Number</label>
+               <input type="text"  id="cardNumber" readonly/>
+             </div>
+             <br>
+             <div>
+               <label>Customer Criteria</label>
+                 <select name="customerCriteria.id" id="criteriaId">
+                 @for((c, t) <- CustomerCriteria.getAsMap()){
+                   <option value="@c">@t</option>
+                 }
+                </select> 
+             </div>
+             <br>
+             <div>
+               <label>Customer Name</label>
+               <input type="text" name="customerName" id="customerName">
+             </div>
+             <br>
+             <div>
+               <label>Account Number</label>
+               <input type="text" name="accountNumber" id="accountNumber">
+             </div>
+             <br>
+             <div>
+               <label>Customer Phone</label>
+               <input type="text" name="customerPhone" id="customerPhone">
+            </div>
+            <br>         
+            <div>
+              <label>Customer Address</label>
+              <input type="text" name="customerAddress" id="customerAddress">
+            </div>
+            <br>
+            <div>
+              <label>Punch In Time</label>
+              <input type="text" id="customerPunchIn" readonly>
+            </div><br><br>
+            <div>
+              <input type="submit" name="update" value="Update" id="update">
+              <a href="#" class="topopup"><input type="button" name="showAccInfo" value="Account Deatils" id="showAccInfo" onclick="accountDataFetch();"></a>
+              <a href="#" class="topopup"><input Type= "button" id="punchOut" value="Punch Out" onclick="punchOutCustomer(document.getElementById('chId').value);"/></a>
+           </div>
+          </form>
+        </fieldset>
+     </div>
+   </td>
+   <td>
+     <div id="taskEntry"><fieldset>
+       <legend>Task Entry</legend>
+       <form method="post" action="" name="tEForm" id="tEForm">
+         <div>
+           <input type="hidden" name="customerHistory.id" id="chId" >       
+         </div>
+         <div>
+           <label>Task Type</label>
+            <select name="taskType.id" id="taskTypeid">
+            @for((c, t) <- TaskType.getAllAsMap()){
+              <option value="@c">@t</option>
+            }
+            </select>
+          </div>
+        </form>
+       <br>
+       
+       <div>
+           @if(isBssoOrCcso){
+              <input type="button" value="Add to Me" id="addToMe" onclick="createCustomerServiceTask(document.getElementById('chId').value, '@sessionUserName');">
+            }
+            <select name="username" id="username">
+            @for((c, u) <- User.getOtherBssoOrCcsoUsernameAsMap(sessionUserName)){
+              <option value="@u">@u</option>
+            }
+            </select>
+            <input type="button" value="Assign to Others" id="assignToOthers" onclick="createCustomerServiceTask((document.getElementById('chId').value),(document.getElementById('username').value));">
+          </div> 
+          <br> 
+     </fieldset></div>
+     @if(isBssoOrCcso){
+     <div id="taskEventEntry"><fieldset>
+       <legend>Task Event Entry</legend>
+       <form method="get" action="" name="tEHForm" id="tEHForm">
+       
+         <div>
+          <input type="hidden" id="taskEventType" name="taskEventType">
+         </div>
+         
+         <div>
+          <input type="hidden" id="taskId" name="customerServiceTask.id">
+         </div>
+         <div>
+           <label>Task Name</label>
+           <input type="text" id="taskTypeName" readonly>
+         </div>
+         <br>
+         <div>
+           <label>Remarks</label>
+           <textarea name="remarks" id="remarks"></textarea>
+         </div>
+         <br><br>
+         <div>
+           <select name="userName" id="userName1">
+             @for((c, u) <- User.getOtherBssoOrCcsoUsernameAsMap(sessionUserName)){
+               <option value="@c">@u</option>
+           }
+           </select>
+           <input Type= "button" id="reassign" value=@AppConstants.TASK_EVENT_TYPE_REASSIGN onclick="divReplace5('@AppConstants.TASK_EVENT_TYPE_REASSIGN',(document.getElementById('chId').value),(document.getElementById('userName1').value));"/>
+         </div><br><br>
+         <div id="mode1">
+           <input Type= "button" id="start" value=@AppConstants.TASK_EVENT_TYPE_START onclick="divReplace1('@AppConstants.TASK_EVENT_TYPE_START',(document.getElementById('chId').value),'@sessionUserName');"/>
+           <input Type= "button" id="cancel" value=@AppConstants.TASK_EVENT_TYPE_CANCEL onclick="divReplace4('@AppConstants.TASK_EVENT_TYPE_CANCEL',(document.getElementById('chId').value),'@sessionUserName');"/>
+          
+         </div>
+         <div id="mode2" style="display: none">
+           <input Type= "button" id="pause" value=@AppConstants.TASK_EVENT_TYPE_PAUSE onclick="divReplace2('@AppConstants.TASK_EVENT_TYPE_PAUSE',(document.getElementById('chId').value),'@sessionUserName');"/>
+           <input Type= "button" id="end" value=@AppConstants.TASK_EVENT_TYPE_COMPLETE onclick="divReplace4('@AppConstants.TASK_EVENT_TYPE_COMPLETE',(document.getElementById('chId').value),'@sessionUserName');"/>
+           <input Type= "button" id="cancel" value=@AppConstants.TASK_EVENT_TYPE_CANCEL onclick="divReplace4('@AppConstants.TASK_EVENT_TYPE_CANCEL',(document.getElementById('chId').value),'@sessionUserName');"/><br><br>
+         </div>
+         <div id="mode3" style="display: none">
+           <input Type= "button"  id="resume" value=@AppConstants.TASK_EVENT_TYPE_RESUME onclick="divReplace3('@AppConstants.TASK_EVENT_TYPE_RESUME',(document.getElementById('chId').value),'@sessionUserName');"/>
+           <input Type= "button"  id="end" value=@AppConstants.TASK_EVENT_TYPE_COMPLETE onclick="divReplace4('@AppConstants.TASK_EVENT_TYPE_COMPLETE',(document.getElementById('chId').value),'@sessionUserName');"/>
+           <input Type= "button"  id="cancel" value=@AppConstants.TASK_EVENT_TYPE_CANCEL onclick="divReplace4('@AppConstants.TASK_EVENT_TYPE_CANCEL',(document.getElementById('chId').value),'@sessionUserName');"/><br><br>
+         </div>
+         <br> 
+       </form> 
+    </fieldset></div>
+    }
+  </td>
+</tr>
+</table>
+ <div id="div2"></div>
+     <div id="div4"></div>
+     
+     
+     <div id="div5"></div>
+     
+     <div id="toPopup"> 
+    	
+        <div class="close"></div>
+       	<span class="ecs_tooltip">Press Esc to close <span class="arrow"></span></span>
+        
+        
+               
+        <div id="errorMsgContent">
+        <p id="errorText"></p>
+        </div>
+        
+        
+        
+		<div id="popup_content"> <!--your content start-->
+            <div>
+           <fieldset>
+           <legend>Account Details</legend>
+	         <div>
+               <label>Account Name</label>
+               <input type="text"  id="ACCOUNT_NAME" />
+             </div>
+             <br>
+	         <div>
+               <label>Account Number</label>
+               <input type="text"  id="ACCOUNT_NO" />
+             </div>
+             <br>
+             <div>
+               <label>Current Balance</label>
+               <input type="text"  id="CURRENT_BALANCE" />
+             </div>
+             <br>
+             <div>
+               <label>Phone No</label>
+              <input type="text"  id="PHONE_NUMBER" />
+             </div>
+             <br>
+             <div>
+               <label>Account Type</label>
+               <input type="text" id="ACCOUNT_TYPE"  />
+             </div>
+             <br>
+             <div>
+               <label>Status</label>
+               <input type="text" id="STATUS">
+            </div>
+            <br>   
+         </fieldset> 
+         </div>     
+        </div> <!--your content end-->
+    
+    </div> <!--toPopup end-->
+    
+	<div class="loader"></div>
+   	<div id="backgroundPopup"></div>
+
+
+}

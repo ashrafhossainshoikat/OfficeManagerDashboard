@@ -1,0 +1,28 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET    /                             controllers.Application.index()
+
+# Map static resources from the /public folder to the /assets URL path
+GET    /assets/*file                 controllers.Assets.at(path="/public", file)
+
+# Create Region Registration page
+
+GET    /region/create                controllers.RegionManagement.create()
+POST   /region/create                controllers.RegionManagement.insert()
+GET    /region/list                  controllers.RegionManagement.list()
+GET    /region/show/:uid             controllers.RegionManagement.show(uid: Int)
+GET    /region/edit/:uid             controllers.RegionManagement.edit(uid: Int)
+POST   /region/edit                  controllers.RegionManagement.update()
+
+
+# Create Branch Registration page
+GET    /branch/create                controllers.BranchManagement.create()
+POST   /branch/create                controllers.BranchManagement.insert()
+GET    /branch/list                  controllers.BranchManagement.list()
+GET    /branch/show/:uid             controllers.BranchManagement.show(uid: Int)
+GET    /branch/edit/:uid             controllers.BranchManagement.edit(uid: Int)
+POST   /branch/edit                  controllers.BranchManagement.update()
+

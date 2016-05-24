@@ -1,0 +1,59 @@
+INSERT INTO task_type VALUES(1, 1, 'Account Opening (Individual-Single - Welcome Pack)', 1, 1, sysDate,'abul',sysDate,'abul',1 );
+INSERT INTO task_type VALUES(2, 1, 'Account Opening (Individual-Single - System)', 1, 1, sysdate,'ratul',sysdate,'ratul',1 );
+INSERT INTO task_type VALUES(3, 1, 'Account Opening (Individual-Joint)', 1, 1, sysdate,'shaon', sysdate,'shaon',1);
+
+INSERT INTO customer_criteria VALUES(1, 'A/C Holder', sysdate, 'abul', sysdate, 'abul');
+INSERT INTO customer_criteria VALUES(2, 'Bearer', sysdate, 'ratul', sysdate, 'ratul');
+INSERT INTO customer_criteria VALUES(3, 'Walk-in', sysdate, 'shamir', sysdate, 'shamir');
+
+
+
+INSERT INTO card VALUES(1,'C001', 1, 1, 1,sysdate,'abul',sysdate,'abul' ,0);
+INSERT INTO card VALUES(2,'C002', 1, 1, 1, sysdate,'abul',sysdate,'abul',0);
+INSERT INTO card VALUES(3,'C003', 1, 1, 1, sysdate,'abul',sysdate,'abul',0);
+INSERT INTO card VALUES(4,'C004', 1, 1, 1, sysdate,'abul',sysdate,'abul',0);
+INSERT INTO card VALUES(5,'C005', 1, 1, 1, sysdate,'abul',sysdate,'abul',0);
+INSERT INTO card VALUES(6,'C006', 1, 1, 1, sysdate,'abul',sysdate,'abul',0);
+INSERT INTO card VALUES(7,'C007', 1, 1, 1, sysdate,'abul',sysdate,'abul',0);
+INSERT INTO card VALUES(8,'C008', 1, 1, 1, sysdate,'abul',sysdate,'abul',0);
+INSERT INTO card VALUES(9,'C009', 1, 1, 1, sysdate,'abul',sysdate,'abul',0);
+INSERT INTO card VALUES(10,'C010', 1, 1, 1, sysdate,'abul',sysdate,'abul',0);
+INSERT INTO card VALUES(11,'C011', 1, 1, 1, sysdate,'abul',sysdate,'abul',0);
+INSERT INTO card VALUES(12,'C012', 1, 1, 1, sysdate,'abul',sysdate,'abul',0);
+INSERT INTO card VALUES(13,'C013', 1, 1, 1, sysdate,'abul',sysdate,'abul',0);
+INSERT INTO card VALUES(14,'C014', 1, 1, 1, sysdate,'abul',sysdate,'abul',0);
+INSERT INTO card VALUES(15,'C015', 1, 1, 1, sysdate,'abul',sysdate,'abul',0);
+
+INSERT INTO card VALUES(52,'S023', 0, 1, 1,sysdate,'abul',sysdate,'abul', 0);
+INSERT INTO card VALUES(53,'S024', 0, 1, 1, sysdate,'abul',sysdate,'abul',0);
+INSERT INTO card VALUES(54,'S025', 0, 1, 1,sysdate,'abul',sysdate,'abul', 0);
+INSERT INTO card VALUES(55,'S026', 0, 1, 1, sysdate,'abul',sysdate,'abul',0);
+INSERT INTO card VALUES(56,'S027', 0, 1, 1, sysdate,'abul',sysdate,'abul',0);
+
+INSERT INTO customer_history VALUES(1,'ashraf', 0000015, 01712, 'Dhaka',sysdate, null,'abul','C003',3,null, 0);
+INSERT INTO customer_history VALUES(2,'ratul', 0000016, 01713, 'Dhaka',sysdate, null,'abul','C006',null,null, 0);
+
+
+
+INSERT INTO role VALUES (0, 'Super-admin','','' 'Backend Office Administrator', 1, 1, 1);
+INSERT INTO role VALUES (1, 'Admin', 'Administrator', 1, 1, 1);
+INSERT INTO role VALUES (2, 'BSSO', 'BSSO User', 1, 1, 1);
+INSERT INTO role VALUES (3, 'CCSO', 'BSSO User', 1, 1, 1);
+INSERT INTO role VALUES (4, 'Time Entry', 'Can only entry the start and ending time', 1, 1, 1);
+INSERT INTO role VALUES (5, 'Branch Manager', 'Branch Manager', 1, 1, 1);
+INSERT INTO role VALUES (6, 'Customer Service Manager', 'Customer Service Manager', 1, 1, 1);
+INSERT INTO role VALUES (7, 'Region Manager', 'Region Manager', 1, 1, 1);
+INSERT INTO role VALUES (8, 'Head of SMESC/Krishi', 'Head of SMESC/Krishi', 1, 1, 1);
+INSERT INTO role VALUES (9, 'Head of SME', 'Head of SME', 1, 1, 1);
+
+
+
+
+INSERT INTO app_user VALUES (1, 'habul', 'Habul Khan', '','','',0,'','','','',1, 1,'', 1, '',sysdate, 1,'','',1,1,'','','',1);
+INSERT INTO app_user VALUES (2, 'abul', 'Abul Khan', '','','',0,'','','','',1, 1,'', 1, '',sysdate, 1,'','',1,1,'','','',1);
+INSERT INTO app_user VALUES (3, 'ratul', 'Ratul Khan', '','','',0,'','','','',1, 1,'', 1, '',sysdate, 1,'','',1,1,'','','',1);
+INSERT INTO app_user VALUES (4, 'rakibul', 'Rakibul Khan', '','','',0,'','','','',1, 1,'', 1, '',sysdate, 1,'','',1,1,'','','',1);
+
+
+
+

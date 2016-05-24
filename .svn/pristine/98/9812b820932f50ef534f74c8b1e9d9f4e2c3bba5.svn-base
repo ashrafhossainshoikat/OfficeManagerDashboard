@@ -1,0 +1,352 @@
+@(listOfTask: List[models.task.TaskType])
+
+@import models.customer.CustomerHistory
+@import java.text.SimpleDateFormat
+@import services.ScalaUtils
+
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>Service Delivery Model</title>
+	<meta name="description" content="Web Application" />
+	<meta name="keywords" content="web, application" />
+	
+	<script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.tokeninput.js")"></script>
+
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/token-input.css")" type="text/css" />
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/token-input-facebook.css")" type="text/css" />
+	
+	<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+	<link href="css/main.css" rel="stylesheet" type="text/css" />
+	
+	
+<script>
+
+      $(document).ready(function(){
+	  $("#start").click(function(){
+	    $("#mode1").css("display","none");
+	    $("#mode2").css("display","block");
+	    $("#mode3").css("display","none");
+	    }
+	    
+	  });
+
+	  </script>
+	
+	
+
+
+
+
+
+
+
+<script>
+	function splitTimeStampToTime(punchInTime) {
+
+		var date = new Date();
+		// hours part from the timestamp
+		var hours = date.getHours();
+		// minutes part from the timestamp
+		var minutes = date.getMinutes();
+		// seconds part from the timestamp
+		var seconds = date.getSeconds();
+
+		// will display time in 10:30:23 format
+		var formattedTime = hours + ':' + minutes + ':' + seconds;
+		
+	}
+
+</script>
+
+<!-- 
+<script>
+		function automaticFillupData(cardNumber) {
+			var xmlhttp=false;
+		
+		   try{
+		      // Opera 8.0+, Firefox, Safari
+		      xmlhttp = new XMLHttpRequest();
+		   } catch (e){
+		      // Internet Explorer Browsers
+		      try{
+		         xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+		      } catch (e) {
+		         try{
+		            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		         } catch (e){
+		            // Something went wrong
+		            // alert("Your browser broke!");
+		            return false;
+		         }
+		      }
+		   }
+		   var url = "@routes.CustomerAndTaskManagement.getCustomerAsJson("")";
+		   
+		   xmlhttp.open("GET", url+cardNumber, true);
+		   xmlhttp.onreadystatechange= function() {
+		      if (xmlhttp.readyState==4) {
+		         document.getElementById('result').innerHTML = xmlhttp.responseText;
+		      }
+		   }
+		   xmlhttp.send(null);
+		   return false;
+
+        //document.getElementById('cardNumber').value=cardNumber;
+		//document.getElementById('customerPunchIn').value=punchInTime;
+	}
+
+</script>
+-->
+
+@* <script>
+
+$(document).ready(function(){
+  $("#cardItem").click(function(card_number){
+    $.ajax({
+    url:"@routes.CustomerAndTaskManagement.getCustomerAsJson("C019")",
+    success:function(result){
+    
+      $('#cardNumber').val(result.obj.cardNumber);
+      $('#customerName').val(result.obj.customerName);
+      $('#accountNumber').val(result.obj.accountNumber);
+      $('#customerPhone').val(result.obj.customerPhone);
+      $('#customerAddress').val(result.obj.customerAddress);
+      $('#customerPunchIn').val(result.obj.punchInTime);
+      $('#accountNumber').val(result.obj.accountNumber);
+      
+    }});
+    
+  });
+});
+</script>
+*@
+
+<script>
+	function automaticFillupData(cn) {
+		$.ajax({
+		    url:"@routes.CustomerAndTaskManagement.getCustomerAsJson("")"+cn,
+		    success:function(result){
+		      $('#cardNumber').val(result.obj.cardNumber);
+		      $('#customerName').val(result.obj.customerName);
+		      $('#accountNumber').val(result.obj.accountNumber);
+		      $('#customerPhone').val(result.obj.customerPhone);
+		      $('#customerAddress').val(result.obj.customerAddress);
+		      $('#customerPunchIn').val(result.obj.punchInTime);
+		      $('#accountNumber').val(result.obj.accountNumber);
+		 }});
+	}
+</script>
+	
+	
+</head>
+<body>
+	<div id="header">
+		<h1><a href="#">Service Delivery Model</a></h1>
+		<ul id="menu">
+			<li class="active"><a href="#">Home</a></li>
+			<li><a href="#">Account</a></li>
+			<li><a href="#">About</a></li>
+			<li><a href="#">Help</a></li>
+			<li><a href="#">Log Out</a></li>
+		</ul>
+	</div>
+
+	<div id="teaser">
+		<div class="wrap">
+			<div id="image"></div>
+			<div class="box">
+				<h2>Welcome to <em title="Sharing, Data Management and Collaboration">Service Delivery Model</em></h2>
+				<p>
+				This will track & measure Service Delivery with Time frame. 
+				It will Capture data on services & will cover all types of customer services including cash. The aim is to focus & make decision based on actual statistics in respect of Efficiency, area for improvement to increase employee productivity, addressing customers's queue time, directing customers to alternate channel in customers' conveniences.
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div id="bar">
+		<div class="wrap">
+			<span class="step"><a>1</a> Punched Card List</span>
+			<span class="step"><a>2</a> Customer History</span>
+			<span class="step"><a>3</a> Task Entry</span>
+		</div>
+	</div>
+	
+	<table class="tablePosition">
+	<tr>
+	<td>
+	
+	
+	<div class="col">
+			<h3>Card<span class="red"> List</span></h3>
+	           <fieldset>
+                        <ul class="navcontainer">
+					
+						
+						 @for(ch <- CustomerHistory.getCurrentCustomers()){
+						 	@* <li><input type="button" value=@ch.cardNumber id="cardItem" ></li> *@
+						 	<li><input type="button" value=@ch.cardNumber id="cardItem" onclick="automaticFillupData('@ch.cardNumber');"></li>
+						 	
+						 	<!--@ch.cardNumber,@ch.punchInTime-->
+						 }
+						</ul>
+					</fieldset>
+		     </div>
+		   
+		     
+		 </td>
+		 
+		 <td>
+		
+		
+		 <div class="col">
+			<h3>Customer <span class="red">History</span></h3>
+			
+			
+			<form action="" method="get">
+	           <div id="form-content">
+                  <fieldset><br>
+				  
+				     
+					  
+					  <div class="space">
+                      <label>Card Number:</label>
+                      <input type="text" name="cardNumber" id="cardNumber">
+                      </div><br>
+					
+				     
+					 <div class="space">
+                        <label>Customer Criteria:</label>
+                        <select name="customerCriteria" id="customerCriteria">
+                        
+                          <option>A/C Holder</option>
+						  <option>Bearer</option>
+						   <option>Walk-in</option>
+						</select> 
+                     </div><br>
+			   
+			          <div class="space">
+                      <label>Customer Name:</label>
+                      <input type="text" name="customerName" id="customerName">
+                      </div><br>
+					  
+					  <div class="space">
+                      <label>Account Number:</label>
+                      <input type="text" name="accountNumber" id="accountNumber">
+                      </div><br>
+					  
+					   <div class="space">
+                      <label>Customer Phone:</label>
+                      <input type="text" name="customerPhone" id="customerPhone">
+                      </div><br>
+					  
+					  <div class="space">
+                      <label>Customer Address:</label>
+                      <input type="text" name="customerAddress" id="customerAddress">
+                      </div><br>
+					  
+					  <div class="space">
+                      <label>Customer Punch In:</label>
+                      <input type="text" name="customerPunchIn" id="customerPunchIn">
+                      </div><br>
+					  
+			
+                      
+                       <div class="space">
+                        <label>Task Type:</label>
+                       <select name="taskType" id="taskType">
+                         @for(t <- m) {
+					<option>@user.taskName</option>
+				}
+			</select> 
+                     </div><br>
+                     
+                     
+                  <div class="space">
+                      <input type="button" name="save" value="Save">
+                      <input type="button" name="update" value="Update">
+                      </div><br>
+                          
+		</fieldset>
+    </div>
+</form>
+</div>
+ 
+	 </td>
+	
+	
+	<td>
+	
+	   
+	  
+		<div class="col">
+			<h3>Task <span class="red">Entry</span></h3>
+			<form action="" method="get">
+	           <div id="form-content">
+                     <div>
+                     <fieldset>
+                     
+                        <ul class="navcontainer">
+						<li><a href="">Account Opening Form(Individual-Single-welcome Pack)</a><br><br>
+						
+						<div id="mode1">
+						<input type="button" name="start" value="Start" id="start">
+                        <input type="button" name="assign" value="Assign" id="assign"><br><br>
+						</div>
+						
+						<div id="mode2">
+						<input type="button" name="pause" value="Pause" id="pause">
+                        <input type="button" name="reassign" value="Re-assign" id="reassign">
+                        <input type="button" name="cancel" value="Cancel" id="cancel">
+                        <input type="button" name="end" value="End" id="end"><br><br>
+						</div>
+						
+						<div id="mode3">
+						<input type="button" name="resume" value="Resume" id="resume">
+                        <input type="button" name="reassign" value="Re-assign" id="reassign">
+                        <input type="button" name="cancel" value="Cancel" id="cancel">
+                        <input type="button" name="end" value="End" id="end"><br><br>
+						</div>
+						
+						</li>
+						
+						<li><a href="">Debit Card Requisition</a><br><br>
+						<label>Remarks:<label><br>
+						<textarea rows="4" cols="25"></textarea><br><br>
+						<input type="button" name="pause" value="Pause">
+                        <input type="button" name="reassign" value="Re-assign">
+                        <input type="button" name="cancel" value="Cancel">
+                        <input type="button" name="end" value="End"><br><br>
+						
+						</li>
+						<li><a href="">DPS Opening</a><br><br>
+						<label>Remarks:<label><br>
+						<textarea rows="4" cols="25"></textarea><br><br>
+						<input type="button" name="resume" value="Resume">
+                        <input type="button" name="reassign" value="Re-assign">
+                        <input type="button" name="cancel" value="Cancel">
+                        <input type="button" name="end" value="End"><br><br>
+						
+						
+						</li>
+						</ul>
+					</div>
+					</fieldset>
+    </div>
+</form>
+</div>
+</td>
+</tr>
+</table>
+</div>
+		
+	</div>
+		
+	<div id="footer">
+		<p class="right">Design: Shoikat Hossain, <a title="Awsome Web Templates" href="http://www.shoikat.hossain.facebook.com/">Shoikat</a></p>
+		<p>&copy; Copyright 2014 <a href="#">www.bracits.com</a> &middot; All Rights Reserved</p>
+	</div>
+</body>
+</html>

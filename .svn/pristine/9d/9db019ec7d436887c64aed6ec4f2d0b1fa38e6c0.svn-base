@@ -1,0 +1,86 @@
+package controllers;
+
+import java.util.List;
+import java.util.Map;
+
+import play.data.Form;
+import play.mvc.Controller;
+import play.mvc.Result;
+import services.AppConstants;
+import models.geo.Branch;
+import models.usermanagement.Role;
+import views.html.role.*;
+
+
+public class RoleManagement extends Controller {
+
+	static Form<Role> roleForm = Form.form(Role.class);
+
+	// **show Role create Form //
+	public static Result create() {
+		return ok(create.render(roleForm));
+	}
+
+	// ** Bind & store the Role from View //
+	public static Result insert() {
+
+		Form<Role> filledForm = roleForm.bindFromRequest();
+
+		if (filledForm.hasErrors()) {
+			return badRequest(create.render(filledForm));
+		} else {
+			Role role = filledForm.get();
+			Role.create(role);
+			flash("A new Role is created Successfully..");
+			return redirect(controllers.routes.RoleManagement.list());
+		}
+	}
+
+	// ** show the list of Role //
+	public static Result list() {
+		List<Role> listOfRole = Role.all();
+		return ok(list.render(listOfRole));
+	}
+
+	// ** show each Role details //
+	public static Result show(int id) {
+		Role role = Role.get(id);
+		return ok(show.render(role));
+	}
+
+	public static Result edit(int id) {
+		Role role = Role.get(id);
+		return ok(edit.render(roleForm.fill(role)));
+	}
+
+	public static Result update() {
+		Form<Role> filledForm = roleForm.bindFromRequest();
+		if (filledForm.hasErrors()) {
+			return badRequest(edit.render(filledForm));
+		} else {
+			Role role = filledForm.get();
+			Role.update(role);
+			flash("msg", "Role " + role.roleName + " has been updated");
+			return ok(show.render(role));
+		}
+	}
+	
+	public static Result showCreateApprovalForm() {
+		List<Role> listOfRole = Role.allUnapproved();
+		return ok(approve.render(listOfRole));
+	}
+	
+	public static Result approveCreate() {
+		final Map<String,String[]> data = request().body().asFormUrlEncoded();
+		String roleIdStr = data.get(AppConstants.FORM_FIELD_NAME_ROLE_ID)[0];
+		
+		int roleId = 0;
+		if(roleIdStr!=null && !roleIdStr.isEmpty())
+			roleId = Integer.parseInt(roleIdStr);
+
+		Role.approveById(roleId);
+		
+		return redirect(routes.RoleManagement.list());
+	}
+
+}

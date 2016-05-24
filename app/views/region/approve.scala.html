@@ -1,0 +1,33 @@
+@(regions: List[models.geo.Region])
+
+@import helper._
+@import helper.bootstrap._
+@import services.AppConstants
+
+@main("List of Region"){
+
+  <table>
+	<tr>
+	  <th>Region ID</td>
+	  <th>Region Name</th>
+	  <th>Zone ID</th>
+	  <th>Active?</th>
+	</tr>
+	@for(r <- regions) {
+	<tr>
+      <td><a href="@routes.RegionManagement.show(r.id)">@r.id</a></td>
+	  <td>@r.name</td>
+	  <td>@r.zoneId</td>
+	  <td><input type="checkbox" disabled=true @(if(r.isActive) "checked")></td>
+	  <td>
+	    <form action="@routes.RegionManagement.approveCreate()" method="post">
+	      <input type="hidden" name=@AppConstants.FORM_FIELD_NAME_REGION_ID value="@r.id">
+	  	  <input type="Submit" value="Approve">
+		</form>
+	  </td>
+	</tr>
+	}
+  </table>
+ 
+  <br/>
+}

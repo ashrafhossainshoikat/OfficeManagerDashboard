@@ -1,0 +1,43 @@
+@(taskTypes: List[models.task.TaskType])
+
+
+@import helper._
+
+
+
+@main("List Of TaskType"){
+
+<table>
+<tr>
+  <th>Task Type Id</th>
+  <th>Service Type</th>
+  <th>Task Name</th>
+  <th>Is Active?</th>
+  <th>Is Approved?</th>
+  <th>Category Type:</th>
+</tr>
+@for(t <- taskTypes) {
+<tr>
+
+    <td><a href="@routes.TaskTypeManagement.show(t.id)">@t.id</a></td>
+    @if(t.isBssoTask) {
+        <td>BSSO</td>
+    } else {
+        <td>CCSO</td>
+    }
+	
+	
+	<td>@t.taskName</td>
+    <td><input type="checkbox" disabled=true @(if(t.isActive) "checked")></td>
+	<td><input type="checkbox" disabled=true @(if(t.isApproved) "checked")></td>
+	<td>@t.taskCategory.categoryName</td>
+	
+</tr>
+ 
+}
+ </table>
+ 
+ <br/>
+  Select any of the TaskType (click on Id) to view its detail information.
+
+}

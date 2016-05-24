@@ -1,0 +1,118 @@
+Service Name BSSO Area
+======================
+Account Opening (Individual-Single - Welcome Pack)
+Account Opening (Individual-Single - System)
+Account Opening (Individual-Joint)
+Account Opening (Non-Individual)
+Account Closing (Individual-Single)
+Account Closing (Individual-Joint)
+Account Closing (Non-Individual)
+Account Management for Deceased Customer
+Debit Card Requisition
+Credit Card Requisition
+Debit Card Receive - Self
+Credit Card Receive - Self
+Captured Debit Card Receive
+Captured Credit Card Receive
+FD Opening
+Encashment of FD
+DPS Opening
+Encashment of DPS
+Duplication Advice for FD
+Duplication Advice for DPS
+Fund Transfer
+Dormant account activation
+Card chq processing
+Cheque Book Request
+Cheque Book Delivery
+Cheque Stop Request
+No Objection Certificate (NOC)
+Account Statement delivery
+Account related query
+Loan related query
+ATM cash retraction issue
+CDM related issue
+Certificate Issue & Delivery
+Return chq delivery
+Address and Static Data Change
+Transaction Profile update request
+Nominee change
+Signature change request
+Sanchaypatra / Bond Issuance
+Sanchaypatra / Bond Receive
+I-banking request
+E-statement request
+Stop payment request
+Form C request (remittance)
+Mandate instruction
+Loan account closure request
+Personal account closure request
+Remittance payment
+SMS banking request
+Reissue/Replacement of Debit Card/PIN
+Debit card cancellation request
+Sales Welcome pack delivery
+Student File and Others
+Locker Open
+Locker Closer
+Locker Operation
+Other Remittance
+Pay Order
+Western Union
+Balance certificate issue (Tax/Solvency/Loan/Visa Purpose)
+Enquiries or Complain
+Foreign Currency and Travel
+Exceptional Services
+Others
+Salary Disbursement Request (Corporate & SME Account)
+Secured Loan (SL)/Secured Over Draft (SOD) Application
+Loan Rescheduling
+Coupon/Sanchavpatra/Bond Encashment
+Duplicate Statement Request
+Statement Verification Requested by Other Bank
+Nominee Assign
+Permanent Authorization
+Mandate Instruction (Add/Cancel)
+Anti Corruption Commission (ACC) Query
+Credit Card Bill Payment (Account Transfer)
+Unsecured Loan Application
+Home Loan/Home Credit
+Foreign Remittance Pay order
+Trade Finance
+
+Service Name CCSO Area
+======================
+Cash deposit Up to 1 LAC
+Cash Deposit More than 1 LAC below 3 LAC
+Cash Deposit More than 3 LAC
+Cash withdrawal Up to 1 LAC
+Cash Withdrawal More than 1 LAC below 3 LAC
+Cash Withdrawal More than 3 LAC
+Debit/Credit Card Pin Delivery
+Cash withdrawal through POS
+Credit card payment Receive (Local)
+Credit card payment Receive (USD)
+Alico payment receive
+BRAC university payment receive
+RFL durable plastic payment receive
+PRAN
+South East University Fee
+Torn Note
+Prize Bond
+Return Cheque
+UK VISA Fee Collection
+IPO
+Unilever Deposit
+BRAC Net Payment
+Clearing Cheque
+Inter Account Transfer with Cheque Up to 1 LAC
+Inter Account Transfer with Cheque More than 1 LAC
+bKash
+Cash Transaction
+BTCL Payment
+EPB Deposit
+RJSC Payment
+BRTA Payment
+Government Land Voucher
+Exceptional Services
+Others

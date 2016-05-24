@@ -1,0 +1,45 @@
+@(userForm: Form[models.usermanagement.User])
+
+
+@import models.geo.Region
+@import models.geo.Branch
+@import models.usermanagement.Role
+@import helper._
+
+
+@main("User Create Form") {
+	
+	
+
+@form(action=routes.UserManagement.insert()) {
+  @inputText(field=userForm("username") , '_label->"User Name")<br/>
+  @inputText(field=userForm("fullName") , '_label->"Full Name")<br/>
+  @inputPassword(field=userForm("password") , '_label->"Password")<br/>
+  @inputText(field=userForm("email") , '_label->"Email")<br/>
+  @inputText(field=userForm("phone") , '_label->"Phone")<br/>
+  @checkbox(field=userForm("isActive") , '_label->"Is Active")<br/>
+  @inputDate(field=userForm("approvalDate") , '_label->"Approval Date")<br/>
+  @inputDate(field=userForm("createDate") , '_label->"Create Date")<br/>
+  @select(
+  	 userForm("branch.id"),
+     options(Branch.getBranchAsMap),
+     '_label -> "Branch", '_default -> "-- Choose a Branch --",
+     '_showConstraints -> false
+  )<br/>
+  
+   @select(
+  	 userForm("region.id"),
+     options(Region.getRegionAsMap),
+     '_label -> "Region", '_default -> "-- Choose a region --",
+     '_showConstraints -> false
+  )<br/>
+  
+   @select(
+  	 userForm("role.id"),
+     options(Role.getRoleAsMap),
+     '_label -> "Role", '_default -> "-- Choose a role --",
+     '_showConstraints -> false
+  )<br/>
+  <input type="submit" value="Create new User">
+}
+}

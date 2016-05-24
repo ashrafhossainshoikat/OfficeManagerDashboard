@@ -1,0 +1,58 @@
+
+package controllers;
+
+
+import models.Card;
+
+import play.*;
+import play.mvc.*;
+import play.data.*;
+
+import views.html.card.*;
+
+public class CardManagement extends Controller {
+
+	static Form<Card> cardForm = Form.form(Card.class);
+
+	public static Result create() {
+		return ok(create.render(cardForm));
+	}
+
+	public static Result insert() {
+		Form<Card> filledForm = cardForm.bindFromRequest();
+		if (filledForm.hasErrors()) {
+			return badRequest(create.render(filledForm));
+
+		} else {
+			Card.create(filledForm.get());
+			flash("msg", "A new Card User has been created successfully.");
+			return redirect(routes.CardManagement.list());
+		}
+	}
+
+	public static Result list() {
+		return ok(list.render(Card.all()));
+	}
+
+	public static Result show(int id) {
+		Card card = Card.get(id);
+		return ok(show.render(card));
+	}
+
+	public static Result edit(int id) {
+	Card card = Card.get(id);
+		return ok(edit.render(cardForm.fill(card)));
+	}
+
+    public static Result update() {
+		Form<Card> filledForm = cardForm.bindFromRequest();
+		if (filledForm.hasErrors()) {
+			return badRequest(edit.render(filledForm));
+		} else {
+			Card card = filledForm.get();
+			Card.update(card);
+			flash("msg", "card " + card.id + " has been updated");
+			return ok(show.render(card));
+		}
+	}
+}

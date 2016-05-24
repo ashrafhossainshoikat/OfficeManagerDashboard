@@ -1,0 +1,23 @@
+@(taskEventType:models.task.TaskEventType)
+@import helper._
+
+@main("Task Event Type Information"){
+  @if(flash.get("msg")) {
+  	<b>@flash.get("msg")</b>
+  }
+
+  
+
+  <table border=1>
+    <tr> <th align ="left">Event Name</th> <td>@taskEventType.eventName</td> </tr>
+    <br/>
+
+</table>
+
+<br><br>
+
+ @form(routes.TaskEventTypeManagement.edit(taskEventType.id)) {
+    <input type="submit" value="Edit">
+  }
+
+}

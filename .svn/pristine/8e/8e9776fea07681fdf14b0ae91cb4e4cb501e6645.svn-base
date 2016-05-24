@@ -1,0 +1,38 @@
+@(taskTypeForm: Form[models.task.TaskType])
+
+
+@import models.task.TaskCategory
+@import helper._
+
+
+@main("TaskType Create Form") {
+
+@form(action=routes.TaskTypeManagement.insert()) {
+  @inputText(field=taskTypeForm("taskName") , '_label->"Task Name", '_showConstraints -> false)<br/>
+ 
+  
+   <dl id="isBssoCard_field" class=" ">
+    <dt><label for="isBssoTask">Service Type</label></dt>
+    <dd>
+      <input type="radio" name="isBssoTask" value="true" @if(taskTypeForm("isBssoTask").value=="true"){checked}>BSSO &nbsp;&nbsp;&nbsp;
+      <input type="radio" name="isBssoTask" value="false" @if(taskTypeForm("isBssoTask").value=="false"){checked}>CCSO<br>
+    </dd>
+  </dl>  
+  
+  
+   @select(taskTypeForm("taskCategory.id"),
+          options(TaskCategory.getAllAsMap()),
+          '_label -> "Category Type:",
+          '_showConstraints -> false
+        )<br/>
+  @*<label>Category Type:</label>
+       <select name="TaskCategory.id">
+                 @for((c, t) <- TaskCategory.getAllAsMap()){
+                   <option value="@c">@t</option>
+                 }
+                </select>*@ 
+   @inputText(field=taskTypeForm("benchmarkTime") , '_label->"Bench mark Time:", '_showConstraints -> false)<br/>
+  
+  <input type="submit" value="Create new TaskType">
+}
+}

@@ -1,0 +1,24 @@
+@(chForm: Form[models.customer.CustomerHistory])
+
+
+@import models.punchcard.Card
+@import models.customer.CustomerHistory
+@import helper._
+
+
+
+
+@main("Manually Card Input") {
+
+ @form(action=routes.CustomerAndTaskManagement.createNewCustomerHistory()) {
+ 
+    @select(chForm("cardNumber"),
+           options(Card.getAvailableCardsOfSameBranchAsMap()),
+           '_label -> "Card No:",
+           '_showConstraints -> false, 
+           'id -> "cardNumber"
+         )<br/>
+  <input type="submit" value="Entry Card">
+}
+}
+

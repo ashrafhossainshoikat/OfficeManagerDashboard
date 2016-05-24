@@ -1,0 +1,100 @@
+package models.security;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import models.usermanagement.User;
+import play.db.ebean.Model;
+import play.mvc.Http.Context;
+import services.Constants;
+import services.ScalaUtils;
+
+@Entity
+public class ApprovalStatus extends Model {
+
+	@Id
+	public Integer id;
+
+	public String statusName;
+
+	public String username;
+	
+	public int roleId;
+	
+	public Integer branchId;
+	
+	public Integer regionId;
+
+	//@Required
+	//@ManyToOne
+	//@JoinColumn(name = "activity_type", referencedColumnName = "id")
+	//public StatusCode activityType;
+
+	public String userAction;
+	
+	public long primaryKeyValue;
+
+	//public String accessedUrl;
+
+	public String visitorIp;
+
+	public String visitorBrowser;
+
+	public Date activityDateTime;
+	// ** ----------------------------------------------
+
+	public static Finder<Long, AuditLog> find = new Finder(Long.class, AuditLog.class);
+
+	public static List<AuditLog> all() {
+		return find.all();
+	}
+
+	public static AuditLog get(Long id) {
+		if (id == null)
+			return null;
+
+		return find.where().eq("id", id).findUnique();
+	}
+
+	public static Long create(AuditLog al) {
+		if (al == null)
+			return null;
+
+		al.activityDateTime = new Date();
+		al.save();
+		return al.id;
+	}
+
+	
+	public static void logUserActivity(String actionName, Long modelObjId) {
+		String username = Context.current().session().get(Constants.SESN_USERNAME);
+		if(username==null || username.isEmpty() || actionName==null || actionName.isEmpty())
+			return;
+		
+		User user = User.findByUsername(username);
+		if(user==null || user.role==null)
+			return;
+		
+		AuditLog al = new AuditLog();
+		al.username = username;
+		al.userId = user.id;
+		al.roleId = user.role.id;
+		if(user.branch != null)
+			al.branchId = user.branch.id;
+		if(user.region != null)
+			al.regionId = user.region.id;
+		al.userAction = actionName;
+		al.visitorIp = Context.current().request().remoteAddress();
+		al.visitorBrowser = ScalaUtils.stripSome(Context.current().request().getHeader(Constants.REQUEST_HEADER_BROWSER_KEY));
+		al.primaryKeyValue = modelObjId;
+		
+		create(al);
+	}
+}

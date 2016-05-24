@@ -1,0 +1,204 @@
+package controllers;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.swing.table.DefaultTableModel;
+
+
+
+
+import play.Play;
+import services.AppConstants;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
+
+
+
+public class ReportGenerator {
+
+	public ReportGenerator() {
+
+		JasperReport jasperReport;
+		JasperReport jasperReportForXLS;
+		JasperPrint jasperPrint = null;
+		JasperPrint jasperPrintForXLS = null;
+
+		try {
+			// jrxml compiling process
+			
+			//System.out.println("Path ----->"+ Play.application().getFile("public/reports/jasper-template/pdf/service_detailed_report.jrxml").getAbsolutePath());
+
+			//jasperReport = JasperCompileManager.compileReport(Play.application().getFile(AppConstants.PATH_OF_PUBLIC_FOLDER_FOR_PDF+AppConstants.FILE_NAME_SERVICE_DETAILS_REPORT+AppConstants.FILE_EXT_JRXML).getAbsolutePath());
+			
+			//jasperReport = JasperCompileManager.compileReport(Play.application().getFile(AppConstants.PATH_OF_PUBLIC_FOLDER_FOR_PDF+AppConstants.FILE_NAME_PENDING_TOKEN_LIST+AppConstants.FILE_EXT_JRXML).getAbsolutePath());
+			
+			//jasperReport = JasperCompileManager.compileReport(Play.application().getFile(AppConstants.PATH_OF_PUBLIC_FOLDER_FOR_PDF+AppConstants.FILE_NAME_SERVICE_WISE_REPORT+AppConstants.FILE_EXT_JRXML).getAbsolutePath());
+			
+			//jasperReport = JasperCompileManager.compileReport(Play.application().getFile(AppConstants.PATH_OF_PUBLIC_FOLDER_FOR_PDF+AppConstants.FILE_NAME_COUNTER_WISE_SUMMARY+AppConstants.FILE_EXT_JRXML).getAbsolutePath());
+			
+			//jasperReport = JasperCompileManager.compileReport(Play.application().getFile(AppConstants.PATH_OF_PUBLIC_FOLDER_FOR_PDF+AppConstants.FILE_NAME_CCSO_TRANSACTION_REPORT+AppConstants.FILE_EXT_JRXML).getAbsolutePath());
+			
+			//jasperReport = JasperCompileManager.compileReport(Play.application().getFile(AppConstants.PATH_OF_PUBLIC_FOLDER_FOR_PDF+AppConstants.FILE_NAME_USER_SUMMEARY_PROFILE+AppConstants.FILE_EXT_JRXML).getAbsolutePath());
+			
+			//jasperReport = JasperCompileManager.compileReport(Play.application().getFile(AppConstants.PATH_OF_PUBLIC_FOLDER_FOR_PDF+AppConstants.FILE_NAME_DETAILED_TOKEN_REPORT+AppConstants.FILE_EXT_JRXML).getAbsolutePath());
+			
+			//jasperReport = JasperCompileManager.compileReport(Play.application().getFile(AppConstants.PATH_OF_PUBLIC_FOLDER_FOR_PDF+AppConstants.FILE_NAME_BREAK_REPORT+AppConstants.FILE_EXT_JRXML).getAbsolutePath());
+			
+			//jasperReport = JasperCompileManager.compileReport(Play.application().getFile(AppConstants.PATH_OF_PUBLIC_FOLDER_FOR_PDF+AppConstants.FILE_NAME_LIVE_INTERFACE_VIEW+AppConstants.FILE_EXT_JRXML).getAbsolutePath());
+			
+			//jasperReport = JasperCompileManager.compileReport(Play.application().getFile(AppConstants.PATH_OF_PUBLIC_FOLDER_FOR_PDF+AppConstants.FILE_NAME_LIF+AppConstants.FILE_EXT_JRXML).getAbsolutePath());
+			
+			
+			//jasperReportForXLS = JasperCompileManager.compileReport(Play.application().getFile(AppConstants.PATH_OF_PUBLIC_FOLDER_FOR_XLS+AppConstants.FILE_NAME_SERVICE_DETAILS_REPORT_XLS+AppConstants.FILE_EXT_JRXML).getAbsolutePath());
+
+			//jasperReportForXLS = JasperCompileManager.compileReport(Play.application().getFile(AppConstants.PATH_OF_PUBLIC_FOLDER_FOR_XLS+AppConstants.FILE_NAME_PENDING_TOKEN_LIST_XLS+AppConstants.FILE_EXT_JRXML).getAbsolutePath());
+
+			//jasperReportForXLS = JasperCompileManager.compileReport(Play.application().getFile(AppConstants.PATH_OF_PUBLIC_FOLDER_FOR_XLS+AppConstants.FILE_NAME_SERVICE_WISE_REPORT_XLS+AppConstants.FILE_EXT_JRXML).getAbsolutePath());
+
+			//jasperReportForXLS = JasperCompileManager.compileReport(Play.application().getFile(AppConstants.PATH_OF_PUBLIC_FOLDER_FOR_XLS+AppConstants.FILE_NAME_COUNTER_WISE_SUMMARY_XLS+AppConstants.FILE_EXT_JRXML).getAbsolutePath());
+
+			jasperReportForXLS = JasperCompileManager.compileReport(Play.application().getFile(AppConstants.PATH_OF_PUBLIC_FOLDER_FOR_XLS+AppConstants.FILE_NAME_CCSO_TRANSACTION_REPORT_XLS+AppConstants.FILE_EXT_JRXML).getAbsolutePath());
+
+			//jasperReportForXLS = JasperCompileManager.compileReport(Play.application().getFile(AppConstants.PATH_OF_PUBLIC_FOLDER_FOR_XLS+AppConstants.FILE_NAME_USER_SUMMEARY_PROFILE_XLS+AppConstants.FILE_EXT_JRXML).getAbsolutePath());
+			//String fileName = Play.application().getFile(AppConstants.PATH_OF_PUBLIC_FOLDER_FOR_XLS+AppConstants.FILE_NAME_BREAK_REPORT_XLS+AppConstants.FILE_EXT_JRXML).getAbsolutePath();
+
+			String fileName = Play.application().getFile(AppConstants.PATH_OF_PUBLIC_FOLDER_FOR_XLS+AppConstants.FILE_NAME_CCSO_TRANSACTION_REPORT_XLS+AppConstants.FILE_EXT_JRXML).getAbsolutePath();
+
+			
+			jasperReportForXLS = JasperCompileManager.compileReport(fileName);
+
+			// jasperParameter is a Hashmap contains the parameters
+			// passed from application to the jrxml layout
+
+			HashMap<String, Object> jasperParameter = new HashMap<String, Object>();
+			/**
+			 * Passing ReportTitle and Author as parameters
+			 */
+			jasperParameter.put("start_date", "12-04-2014");
+			jasperParameter.put("end_date", "13-04-2014");
+			jasperParameter.put("user", "Ashraf Hossain Siddiquee");
+			jasperParameter.put("counter", "Dhaka");
+			jasperParameter.put("service", "Account Opening Joint");
+
+			// filling report with data from data source
+
+		    //jasperPrint = JasperFillManager.fillReport(jasperReport, jasperParameter, new JRTableModelDataSource(getTableModelData()));
+			
+			jasperPrintForXLS = JasperFillManager.fillReport(jasperReportForXLS, jasperParameter, new JRTableModelDataSource(getTableModelData()));
+			// JasperViewer jasperViewer = new JasperViewer(jasperPrint);
+			// jasperViewer.setVisible(true);
+
+			//----JasperExportManager.exportReportToPdfFile(jasperPrint, Play.application().getFile(AppConstants.PATH_OF_PUBLIC_DOWNLOAD_FOLDER+AppConstants.PDF_NAME_SERVICE_DETAILS_REPORT+AppConstants.FILE_EXT_PDF).getAbsolutePath());
+            //JasperExportManager.exportReportToPdfFile(jasperPrint, Play.application().getFile(AppConstants.PATH_OF_PUBLIC_DOWNLOAD_FOLDER+AppConstants.PDF_NAME_SERVICE_WISE_REPORT+AppConstants.FILE_EXT_PDF).getAbsolutePath());
+           JasperExportManager.exportReportToPdfFile(jasperPrint, Play.application().getFile(AppConstants.PATH_OF_PUBLIC_DOWNLOAD_FOLDER+AppConstants.PDF_NAME_CCSO_TRANSACTION_REPORT+AppConstants.FILE_EXT_PDF).getAbsolutePath());
+           //JasperExportManager.exportReportToPdfFile(jasperPrint, Play.application().getFile(AppConstants.PATH_OF_PUBLIC_DOWNLOAD_FOLDER+AppConstants.PDF_NAME_USER_SUMMEARY_PROFILE+AppConstants.FILE_EXT_PDF).getAbsolutePath());
+
+			//JasperExportManager.exportReportToPdfFile(jasperPrint, Play.application().getFile(AppConstants.PATH_OF_PUBLIC_DOWNLOAD_FOLDER+AppConstants.PDF_NAME_DETAILED_TOKEN_REPORT+AppConstants.FILE_EXT_PDF).getAbsolutePath());
+
+			//JasperExportManager.exportReportToPdfFile(jasperPrint, Play.application().getFile(AppConstants.PATH_OF_PUBLIC_DOWNLOAD_FOLDER+AppConstants.PDF_NAME_BREAK_REPORT+AppConstants.FILE_EXT_PDF).getAbsolutePath());
+			//JasperExportManager.exportReportToPdfFile(jasperPrint, Play.application().getFile(AppConstants.PATH_OF_PUBLIC_DOWNLOAD_FOLDER+AppConstants.PDF_NAME_LIVE_INTERFACE_VIEW+AppConstants.FILE_EXT_PDF).getAbsolutePath());
+
+			//JasperExportManager.exportReportToPdfFile(jasperPrint, Play.application().getFile(AppConstants.PATH_OF_PUBLIC_DOWNLOAD_FOLDER+AppConstants.PDF_NAME_LIF+AppConstants.FILE_EXT_PDF).getAbsolutePath());
+
+			// 2- export to HTML
+			//JasperExportManager.exportReportToHtmlFile(jasperPrint, "E:/jasper/skat_report.html");
+
+			// 3- export to Excel sheet
+			JRXlsExporter exporter = new JRXlsExporter();
+			//SimpleXlsExporterConfiguration configuration = new SimpleXlsExporterConfiguration();
+			exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrintForXLS);
+			//exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, Play.application().getFile(AppConstants.PATH_OF_PUBLIC_DOWNLOAD_FOLDER+AppConstants.XLS_NAME_SERVICE_DETAILS_REPORT+AppConstants.FILE_EXT_XLS).getAbsolutePath());
+			//exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, Play.application().getFile(AppConstants.PATH_OF_PUBLIC_DOWNLOAD_FOLDER+AppConstants.XLS_NAME_PENDING_TOKEN_LIST+AppConstants.FILE_EXT_XLS).getAbsolutePath());
+			//exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, Play.application().getFile(AppConstants.PATH_OF_PUBLIC_DOWNLOAD_FOLDER+AppConstants.XLS_NAME_SERVICE_WISE_REPORT+AppConstants.FILE_EXT_XLS).getAbsolutePath());
+			//exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, Play.application().getFile(AppConstants.PATH_OF_PUBLIC_DOWNLOAD_FOLDER+AppConstants.XLS_NAME_COUNTER_WISE_SUMMARY+AppConstants.FILE_EXT_XLS).getAbsolutePath());
+			//exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, Play.application().getFile(AppConstants.PATH_OF_PUBLIC_DOWNLOAD_FOLDER+AppConstants.XLS_NAME_CCSO_TRANSACTION_REPORT+AppConstants.FILE_EXT_XLS).getAbsolutePath());
+			//exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, Play.application().getFile(AppConstants.PATH_OF_PUBLIC_DOWNLOAD_FOLDER+AppConstants.XLS_NAME_USER_SUMMEARY_PROFILE+AppConstants.FILE_EXT_XLS).getAbsolutePath());
+			//exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, Play.application().getFile(AppConstants.PATH_OF_PUBLIC_DOWNLOAD_FOLDER+AppConstants.XLS_NAME_BREAK_REPORT+AppConstants.FILE_EXT_XLS).getAbsolutePath());
+			exporter.exportReport();
+
+		} catch (JRException ex) {
+			ex.printStackTrace();
+		}
+
+	}
+
+	private DefaultTableModel getTableModelData() {
+		String[] columnNames = { "service_name", "issue_date", "token_no", "counter_no", "issue_time", "start_time", "waiting_time", "end_time",
+				"service_time", "tat"};
+
+		String[][] data = { { "Cash Withdrawl", "25-04-2014", "C005", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Account Opening", "26-04-2014", "C006", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Account Info", "27-04-2014", "S006", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Cash Info", "28-04-2014", "C009", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Joint Account", "29-04-2014", "S009", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Loan", "29-04-2014", "S009", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Internet Banking", "29-04-2014", "S001", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Others Service", "29-04-2014", "S002", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Bill Payment", "29-04-2014", "C002", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Cash Survey", "29-04-2014", "C012", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Cash Withdrawl", "25-04-2014", "C005", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Account Opening", "26-04-2014", "C006", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Account Info", "27-04-2014", "S006", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Cash Info", "28-04-2014", "C009", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Joint Account", "29-04-2014", "S009", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Loan", "29-04-2014", "S009", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Internet Banking", "29-04-2014", "S001", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Others Service", "29-04-2014", "S002", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Bill Payment", "29-04-2014", "C002", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Cash Survey", "29-04-2014", "C012", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Cash Withdrawl", "25-04-2014", "C005", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Account Opening", "26-04-2014", "C006", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Account Info", "27-04-2014", "S006", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Cash Info", "28-04-2014", "C009", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Joint Account", "29-04-2014", "S009", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Loan", "29-04-2014", "S009", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Internet Banking", "29-04-2014", "S001", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Others Service", "29-04-2014", "S002", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Bill Payment", "29-04-2014", "C002", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Cash Survey", "29-04-2014", "C012", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Cash Withdrawl", "25-04-2014", "C005", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Account Opening", "26-04-2014", "C006", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Account Info", "27-04-2014", "S006", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Cash Info", "28-04-2014", "C009", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Joint Account", "29-04-2014", "S009", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Loan", "29-04-2014", "S009", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Internet Banking", "29-04-2014", "S001", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Others Service", "29-04-2014", "S002", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Bill Payment", "29-04-2014", "C002", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Cash Survey", "29-04-2014", "C012", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Cash Withdrawl", "25-04-2014", "C005", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Account Opening", "26-04-2014", "C006", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Account Info", "27-04-2014", "S006", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Cash Info", "28-04-2014", "C009", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Joint Account", "29-04-2014", "S009", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Loan", "29-04-2014", "S009", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Internet Banking", "29-04-2014", "S001", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Others Service", "29-04-2014", "S002", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Bill Payment", "29-04-2014", "C002", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Cash Survey", "29-04-2014", "C012", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" }
+				};
+		
+		/*String[] columnNames = { "service_name", "issue_date", "token_no", "counter_no", "issue_time", "start_time", "waiting_time", "end_time",
+				"service_time", "tat" };
+		
+		String[][] data = { { "Cash Withdrawldadadaddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "25-04-2014", "C005", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Account Opening", "26-04-2014", "C006", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Account Info", "27-04-2014", "S006", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Cash Info", "28-04-2014", "C009", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Joint Account", "29-04-2014", "S009", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Loan", "29-04-2014", "S009", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" },
+				{ "Internet Banking", "29-04-2014", "S001", "1", "12 PM", "12:15 PM", "15 Min", "12:45 PM", "30 Min", "40 Min" }
+			   };*/
+		
+		return new DefaultTableModel(data, columnNames);
+	}
+
+}

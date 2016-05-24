@@ -1,0 +1,60 @@
+@(region: models.geo.Region, isBranchEditMode: Boolean)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("Region Information"){
+  <table border=1>
+	<tr> <th align ="left">Region ID</th> <td>@region.id</td> </tr>
+	<tr> <th align ="left">Region Name</th> <td>@region.name</td> </tr>
+	<tr> <th align ="left">Zone ID</th> <td>@region.zoneId</td> </tr>
+	<tr> <th>Active?</th> <td><input type="checkbox" disabled=true @(if(region.isActive) "checked")></td> </tr>
+	<tr> <th>Approved?</th> <td><input type="checkbox" disabled=true @(if(region.isApproved) "checked")></td> </tr>
+  </table>
+  
+  @form(routes.RegionManagement.edit(region.id)) {
+	<input type="submit" value="Edit">
+  }
+  
+  <h3>Branches</h3>
+  <table border=1>
+    <tr>
+      @if(isBranchEditMode){<th>DELETE</th>}
+      <th>Branch ID</th>
+      <th>SOL ID</th>
+      <th>Branch Name</th>
+      <th>Address</th>
+    </tr>
+    @for(b <- region.getBranches){
+	  <tr>
+	    
+	    @if(isBranchEditMode){
+	      <td>
+	        @form(action = routes.RegionManagement.removeBranch(0, 0), 'style -> "margin-bottom: 5px; important!") {
+	      	  <input type="hidden" name="regionId" value="@region.id">
+	      	  <input type="hidden" name="sol" value="@b.sol">
+	          <input type="submit" value="x" style="width:26px; important!">
+            }
+          </td>
+        }
+	    <td>@b.id</td>
+	    <td>@b.sol</td>
+	    <td>@b.name</td>
+	    <td>@b.address</td>
+	  </tr>
+	}
+	</tr>
+	  
+  </table>
+  
+  @if(isBranchEditMode){
+  	@form(routes.Test.addBranch(region.id)) {
+	  <input type="submit" value="Add new Branch (SOL)">
+    }
+  }else{
+    @form(routes.RegionManagement.showEditBranchForm(region.id)) {
+	  <input type="submit" value="Edit">
+    }
+  }
+
+}

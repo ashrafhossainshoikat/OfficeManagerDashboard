@@ -1,0 +1,27 @@
+@()
+
+<!-- Header -->
+   <div id="header">
+       <!-- Header. Status part -->
+       <div id="header-status">
+           <div class="container_12">
+               <div class="grid_8">
+&nbsp; Welcome to Pay24bd, your 24 hours payment solution -
+               </div>
+           </div>
+           <div style="clear:both;"></div>
+       </div> <!-- End #header-status -->
+       <!-- Header. Main part -->
+       <div id="header-main">
+           <div class="container_12">
+               <div class="grid_12">
+                   <div id="logo">
+                   </div><!-- End. #Logo -->
+               </div><!-- End. .grid_12-->
+               <div style="clear: both;"></div>
+           </div><!-- End. .container_12 -->
+       </div> <!-- End #header-main -->
+       <div style="clear: both;"></div>
+       <!-- Sub navigation -->
+       
+</div> <!-- End #header -->

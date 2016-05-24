@@ -1,0 +1,75 @@
+@()
+
+@import services.AppConstants._
+@import services.JavaUtils
+
+@main("Choose a Report") {
+  <br /> <br />
+  
+  <div class="container_12">         
+    <!-- Dashboard icons -->
+    <div class="grid_7">
+    
+      @defining(JavaUtils.getCurrentUser.permissionNames){pn =>
+      	
+      	@if(pn.contains(ACTION_DEADBOLT_NAME_SERVICE_DETAILED_REPORT)){
+          <a href="@routes.ReportManagement.searchServiceDetailedReport()" class="dashboard-module">                      
+            <img src=@routes.Assets.at("images/menus/report_logo.png") alt="" title="" width="64" height="64" border="0" />
+            <span>Service Detail Report</span>
+          </a>
+        }
+        @if(pn.contains(ACTION_DEADBOLT_NAME_PENDING_TOKEN_REPORT)){
+          <a href="@routes.ReportManagement.searchPendingTokenReport()" class="dashboard-module">                      
+            <img src=@routes.Assets.at("images/menus/report_logo.png") alt="" title="" width="64" height="64" border="0" />
+            <span>Pending Token Report</span>
+          </a>
+        }
+        @if(pn.contains(ACTION_DEADBOLT_NAME_SERVICE_WISE_REPORT)){
+          <a href="@routes.ReportManagement.searchServiceWiseReport()" class="dashboard-module">                      
+            <img src=@routes.Assets.at("images/menus/report_logo.png") alt="" title="" width="64" height="64" border="0" />
+            <span>Service Wise Report</span>
+          </a>
+        }
+        @if(pn.contains(ACTION_DEADBOLT_NAME_COUNTER_WISE_SUMMARY)){
+          <a href="@routes.ReportManagement.searchCounterWiseSummary()" class="dashboard-module">                      
+            <img src=@routes.Assets.at("images/menus/report_logo.png") alt="" title="" width="64" height="64" border="0" />
+            <span>Counter Wise Summary</span>
+          </a>
+        }
+        @if(pn.contains(ACTION_DEADBOLT_NAME_CCSO_TRANSACTION_REPORT)){
+          <a href="@routes.ReportManagement.searchCcsoTransactionReport()" class="dashboard-module">                      
+            <img src=@routes.Assets.at("images/menus/report_logo.png") alt="" title="" width="64" height="64" border="0" />
+            <span>CCSO Transaction Report</span>
+          </a>
+        }
+        @if(pn.contains(ACTION_DEADBOLT_NAME_LIVE_INTERFACE_VIEW)){
+          <a href="@routes.ReportManagement.searchLiveInterfaceView()" class="dashboard-module">                      
+            <img src=@routes.Assets.at("images/menus/report_logo.png") alt="" title="" width="64" height="64" border="0" />
+            <span>Live Interface View</span>
+          </a>
+        }
+        @if(pn.contains(ACTION_DEADBOLT_NAME_USER_SUMMARY_PROFILE)){
+          <a href="@routes.ReportManagement.searchUserSummaryProfile()" class="dashboard-module">                      
+            <img src=@routes.Assets.at("images/menus/report_logo.png") alt="" title="" width="64" height="64" border="0" />
+            <span>User Summary Profile</span>
+          </a>
+        }
+        @if(pn.contains(ACTION_DEADBOLT_NAME_DETAIL_TOKEN_REPORT)){
+          <a href="@routes.ReportManagement.searchDetailedTokenReport()" class="dashboard-module">                      
+            <img src=@routes.Assets.at("images/menus/report_logo.png") alt="" title="" width="64" height="64" border="0" />
+            <span>Detail Token Report</span>
+          </a>
+        }
+        @if(pn.contains(ACTION_DEADBOLT_NAME_BREAK_REPORT)){
+          <a href="@routes.ReportManagement.searchBreakReport()" class="dashboard-module">                      
+            <img src=@routes.Assets.at("images/menus/report_logo.png") alt="" title="" width="64" height="64" border="0" />
+            <span>Break Report</span>
+          </a>
+        }
+        
+      }
+      
+	  </div> <!-- End .grid_7 -->
+    <div style="clear:both;"></div>
+  </div>
+}

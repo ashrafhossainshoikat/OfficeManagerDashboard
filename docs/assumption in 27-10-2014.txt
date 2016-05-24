@@ -1,0 +1,93 @@
+Reporting:
+
+1.average time calculation of a service....
+
+card punch_in_time to service_start_time
+
+***pause condition doesn't consider
+
+2.User Summary Profile:
+counter== UserName & Volume(BDT) column is eliminated.
+
+
+Service Detailed Report:
+
+*Counter???? Counter no??? what is diffrence between counter & counter no????
+* service time??? TAT??? what is diffrence between service time & TAT????
+
+Pending Token List:
+
+*counter????
+*benchmark time????
+*Date format needed
+
+Service Wise Report
+
+*counter???
+* How I calculate the "Time" column value????
+
+Counter Wise Summary	
+
+*Counter???
+* Benchmark time???
+* how to calculate "Average Service Time" & "Avg Waiting Time" ?????
+
+CCSO Transaction Report
+
+*actual time??? Bench mark time??? Deviation???
+
+Live Interface View
+
+* Category???
+
+
+User role: from BRS(FR13) Head Of SMESC/Krishi, Channel & Head of SME combined in one role----- Head of SME
+Region==Zone where territory_id='SMESCKB'
+
+
+Branch== "eOperations"."dbo"."BRACBankBranch"
+
+10.11.2014
+
+css bootstrap will be added in future to show table list
+
+16.11.2014
+
+form start date by default start day 00.00
+end date/time by default current time/date
+
+17.11.2014
+
+* Counter Wise Summary has a column "counter"
+* In all report Column "Counter" value is "BSSO/CCSO" & "Token" is "Card Number"
+
+* In CCSO transaction report----> actual time=service time
+*Deviation= Service time- Benchmark time
+*in Pending Token Report -----> column "Total" is removed
+*In service Detailed Report ----->column "Service Time" is removed bcz service time & TAT are same
+
+23.11.2014
+
+* In User Summary Profile, "Couneter" column value is User.
+
+24.11.2014
+
+* Customer Criteria--->new Criteria Corporate/Bcash added
+*non-account Holder= walk in
+*Live Interface View need Date filter(From date- To Date)
+
+3.12.2014
+* Maker & Checker both Have the create, view, update permission but checker have also the approve permission
+*all the BM,RM,Head Of SME have the permission to see the all report & 
+only BSSO_USER1 have the permission to see Detailed Token report for testing.
+
+*ended task not show in TaskList in homepage.scala.html
+
+
+11.12.2014
+
+* punch out system specification needed(How to punch Out of a card)-->
+ 1. punchout button in task_entry page 
+ 2. db trigger to check previous newly punchin card's previous punch out Time 
+ 3.Add a column "Punch out Type"  in Customer History Table 
+

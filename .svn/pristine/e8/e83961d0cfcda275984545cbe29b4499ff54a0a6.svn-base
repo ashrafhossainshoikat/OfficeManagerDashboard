@@ -1,0 +1,73 @@
+
+package views.html.branch
+
+import play.templates._
+import play.templates.TemplateMagic._
+
+import play.api.templates._
+import play.api.templates.PlayMagic._
+import models._
+import controllers._
+import java.lang._
+import java.util._
+import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
+import play.api.i18n._
+import play.core.j.PlayMagicForJava._
+import play.mvc._
+import play.data._
+import play.api.data.Field
+import play.mvc.Http.Context.Implicit._
+import views.html._
+/**/
+object list extends BaseScalaTemplate[play.api.templates.Html,Format[play.api.templates.Html]](play.api.templates.HtmlFormat) with play.api.templates.Template1[List[models.geo.Branch],play.api.templates.Html] {
+
+    /**/
+    def apply/*1.2*/(branchs: List[models.geo.Branch]):play.api.templates.Html = {
+        _display_ {import helper._
+
+
+Seq[Any](format.raw/*1.36*/("""
+"""),format.raw/*3.1*/("""
+"""),_display_(Seq[Any](/*4.2*/main("List Of Branch")/*4.24*/{_display_(Seq[Any](format.raw/*4.25*/("""
+
+<table>
+<tr>
+<td> Branch Name:</td>
+</tr>
+"""),_display_(Seq[Any](/*10.2*/for(b <- branchs) yield /*10.19*/ {_display_(Seq[Any](format.raw/*10.21*/("""
+<tr>
+
+    <td><a href=""""),_display_(Seq[Any](/*13.19*/routes/*13.25*/.BranchManagement.show(b.id))),format.raw/*13.53*/("""">"""),_display_(Seq[Any](/*13.56*/b/*13.57*/.id)),format.raw/*13.60*/("""</a></td>
+	<td> """),_display_(Seq[Any](/*14.8*/b/*14.9*/.name)),format.raw/*14.14*/("""</td>
+	<td> """),_display_(Seq[Any](/*15.8*/b/*15.9*/.branchManagerName)),format.raw/*15.27*/("""</td>
+	
+</tr>
+ 
+""")))})),format.raw/*19.2*/("""
+ </table>
+ 
+ <br/>
+  Select any of the Branch (click on Id) to view its detail information.
+
+""")))})),format.raw/*25.2*/("""
+"""))}
+    }
+    
+    def render(branchs:List[models.geo.Branch]): play.api.templates.Html = apply(branchs)
+    
+    def f:((List[models.geo.Branch]) => play.api.templates.Html) = (branchs) => apply(branchs)
+    
+    def ref: this.type = this
+
+}
+                /*
+                    -- GENERATED --
+                    DATE: Wed Aug 13 12:31:58 ALMT 2014
+                    SOURCE: E:/j2ee-workspace/service-delivery-model/app/views/branch/list.scala.html
+                    HASH: 5092cf3b4f4a5934e718172a431e574abb4a52fc
+                    MATRIX: 746->1|874->35|902->55|939->58|969->80|1007->81|1093->132|1126->149|1166->151|1230->179|1245->185|1295->213|1334->216|1344->217|1369->220|1422->238|1431->239|1458->244|1507->258|1516->259|1556->277|1608->298|1740->399
+                    LINES: 26->1|30->1|31->3|32->4|32->4|32->4|38->10|38->10|38->10|41->13|41->13|41->13|41->13|41->13|41->13|42->14|42->14|42->14|43->15|43->15|43->15|47->19|53->25
+                    -- GENERATED --
+                */
+            

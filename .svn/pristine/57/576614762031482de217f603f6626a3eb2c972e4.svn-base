@@ -1,0 +1,19 @@
+@(roleForm: Form[models.usermanagement.Role])
+
+
+@import helper._
+
+
+@main("Role Create Form") {
+
+@form(action=routes.RoleManagement.insert()) {
+	
+  
+  @inputText(field=roleForm("roleName") , '_label->"Role Name")<br/>
+  @inputText(field=roleForm("description") , '_label->"Description")<br/>
+  @checkbox(field=roleForm("isActive") , '_label->"Is Active")<br/>
+ 
+  
+  <input type="submit" value="Create new TaskEventType">
+}
+}

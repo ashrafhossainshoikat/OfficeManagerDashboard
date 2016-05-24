@@ -1,0 +1,69 @@
+package controllers;
+
+import java.util.Date;
+import java.util.List;
+
+import models.geo.Branch;
+import models.usermanagement.User;
+import play.data.Form;
+import play.mvc.Controller;
+import play.mvc.Result;
+import views.html.user.*;
+
+public class UserManagement extends Controller{
+	
+static Form<User> userForm=Form.form(User.class);
+	
+	//**show User create Form //
+	public static Result create() {
+
+        return ok(create.render(userForm));
+	}
+	
+	//** Bind & store the User from View  //
+	public static Result insert() {
+		
+		Form<User> filledForm=userForm.bindFromRequest();
+		
+		if(filledForm.hasErrors()){
+			return badRequest(create.render(filledForm));
+			}
+		
+		else{
+			User user=filledForm.get();
+			User.create(user);
+			flash("A new User is created Successfully..");
+			return redirect(controllers.routes.UserManagement.list());
+			}
+		}
+
+	//** show the list of User //
+	public static Result list() {
+		List<User> listOfUser = User.all();
+		return ok(list.render(listOfUser));
+	}
+	
+	//** show each User details //
+	public static Result show(Integer id) {
+		User user = User.get(id);
+		return ok(show.render(user));
+		}
+	
+	public static Result edit(Integer id) {
+		User user= User.get(id);
+		return ok(edit.render(userForm.fill(user)));
+	}
+	
+	public static Result update() {
+		Form<User> filledForm = userForm.bindFromRequest();
+		if (filledForm.hasErrors()) {
+			return badRequest(edit.render(filledForm));
+		} else {
+			User user = filledForm.get();
+			user.createDate = new Date();
+			User.update(user);
+			flash("msg", "User " + user.fullName + " has been updated");
+			return ok(show.render(user));
+		}
+	}
+}

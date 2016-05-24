@@ -1,0 +1,29 @@
+@(taskEventTypes: List[models.task.TaskEventType])
+
+
+@import helper._
+
+
+
+@main("List of TaskEventType"){
+
+<table>
+<tr>
+<th> Task Event Type Id</th>
+<th> Event Name</th>
+<th> Is Active</th>
+</tr>
+@for(t <- taskEventTypes) {
+<tr>
+
+    <td><a href="@routes.TaskEventTypeManagement.show(t.id)">@t.id</a></td>
+	<td> @t.eventName</td>
+</tr>
+ 
+}
+ </table>
+ 
+ <br/>
+  Select any of the TaskEventType (click on Id) to view its detail information.
+
+}

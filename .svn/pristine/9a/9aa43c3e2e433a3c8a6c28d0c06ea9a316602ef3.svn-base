@@ -1,0 +1,171 @@
+package controllers;
+
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import be.objectify.deadbolt.java.actions.Dynamic;
+import connectplus.models.geo.Branch;
+import models.geo.BranchInRegion;
+import models.geo.Region;
+import connectplus.models.Role;
+import connectplus.services.deadbolt.DeadboltHandler;
+import play.data.Form;
+import play.mvc.Controller;
+import play.mvc.Result;
+import play.data.*;
+import services.AppConstants;
+import services.JavaUtils;
+import views.html.region.*;
+
+
+public class RegionManagement extends Controller{
+	
+	static Form<Region> regionForm=Form.form(Region.class);
+	
+	/*show region form*/
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_REGION_CREATE, handler = DeadboltHandler.class)
+	public static Result create() {
+
+        return ok(create.render(regionForm));
+	}
+	
+	/*create & store a region from view*/
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_REGION_CREATE, handler = DeadboltHandler.class)
+	public static Result insert() {
+		Form<Region> filledForm = regionForm.bindFromRequest();
+
+		if (filledForm.hasErrors()) {
+			return badRequest(create.render(filledForm));
+		} else {
+			Region region = filledForm.get();
+			region.createdBy = JavaUtils.getCurrentUsername();
+			region.createDate = new Date();
+			region.isActive = false;
+			region.isApproved = false;
+			
+			region.create();
+			flash("msg", "A new Region is created Successfully..");
+			return redirect(controllers.routes.RegionManagement.list());
+		}
+	}
+
+	/*show the list of Region*/
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_REGION_VIEW, handler = DeadboltHandler.class)
+	public static Result list() {
+		List<Region> listOfRegion = Region.all();
+		return ok(list.render(listOfRegion));
+	}
+	
+	/*show each region details*/
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_REGION_VIEW, handler = DeadboltHandler.class)
+	public static Result show(Integer id) {
+		Region region = Region.get(id);
+		if(region == null)
+			return redirect(routes.RegionManagement.list());
+		
+		return ok(show.render(region, false));
+	}
+	
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_REGION_VIEW, handler = DeadboltHandler.class)
+	public static Result edit(Integer id) {
+		Region region= Region.get(id);
+		if(region == null)
+			return redirect(routes.RegionManagement.list());
+		
+		return ok(edit.render(regionForm.fill(region)));
+	}
+	
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_REGION_VIEW, handler = DeadboltHandler.class)
+	public static Result update() {
+		Form<Region> filledForm = regionForm.bindFromRequest();
+		if (filledForm.hasErrors()) {
+			return badRequest(edit.render(filledForm));
+		} else {
+			Region r = filledForm.get();
+			Region region = Region.get(r.id);
+			region.name = r.name;
+			region.zoneId = r.zoneId;
+			region.isActive = false;
+			region.isApproved = false;
+			region.lastUpdatedBy = JavaUtils.getCurrentUsername();
+			region.lastUpdateDate = new Date();
+			region.update();
+			
+			flash("msg", "Region " + region.name + " has been updated");
+			return ok(show.render(region, false));
+		}
+	}
+	
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_REGION_APPROVE, handler = DeadboltHandler.class)
+	public static Result showCreateApprovalForm() {
+		List<Region> listOfRegion = Region.allUnapproved();
+		return ok(approve.render(listOfRegion));
+	}
+	
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_REGION_APPROVE, handler = DeadboltHandler.class)
+	public static Result approveCreate() {
+		final Map<String,String[]> data = request().body().asFormUrlEncoded();
+		String regionIdStr = data.get(AppConstants.FORM_FIELD_NAME_REGION_ID)[0];
+		
+		int regionId = 0;
+		if(regionIdStr!=null && !regionIdStr.isEmpty())
+			regionId = Integer.parseInt(regionIdStr);
+
+		Region.approveById(regionId);
+		
+		//return redirect(routes.RegionManagement.list());
+		return redirect(routes.RegionManagement.showCreateApprovalForm());
+	}
+	
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_REGION_UPDATE, handler = DeadboltHandler.class)
+	public static Result showEditBranchForm(Integer id) {
+		Region region = Region.get(id);
+		return ok(show.render(region, true));
+	}
+	
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_REGION_UPDATE, handler = DeadboltHandler.class)
+	public static Result removeBranch(Integer regionId, Integer sol) {
+		boolean isSuccess = BranchInRegion.deleteByRegionAndSol(regionId, sol);
+		if(!isSuccess)
+			System.out.println("------ Deletion failed --------");
+		
+		return redirect(routes.RegionManagement.showEditBranchForm(regionId));
+	}
+	
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_REGION_UPDATE, handler = DeadboltHandler.class)
+	public static Result addBranchForm(Integer regionId) {
+		return ok(addBranch.render(regionId));
+	}
+	
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_REGION_UPDATE, handler = DeadboltHandler.class)
+	public static Result addBranch(Integer regionId, Integer sol) {
+		if(regionId==null || sol==null)
+			return redirect(routes.RegionManagement.list());
+		
+		String msg = BranchInRegion.createByRegionAndSol(regionId, sol);
+		if(msg!=null) {
+			flash(AppConstants.FLASH_KEY_ERROR, msg);
+			return redirect(routes.RegionManagement.list());
+		}
+		
+		flash(AppConstants.FLASH_KEY_INFO, "Branch added successfully to this Region");
+		return redirect(routes.RegionManagement.showEditBranchForm(regionId));
+	}
+	
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_REGION_APPROVE, handler = DeadboltHandler.class)
+	public static Result approveBranchEdit() {
+		final Map<String,String[]> data = request().body().asFormUrlEncoded();
+		String regionIdStr = data.get(AppConstants.FORM_FIELD_NAME_REGION_ID)[0];
+		
+		int regionId = 0;
+		if(regionIdStr!=null && !regionIdStr.isEmpty())
+			regionId = Integer.parseInt(regionIdStr);
+
+		Region.approveById(regionId);
+		
+		return redirect(routes.RegionManagement.list());
+	}
+
+}

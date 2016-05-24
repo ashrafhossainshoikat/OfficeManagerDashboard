@@ -1,0 +1,33 @@
+@(roles: List[models.usermanagement.Role])
+
+
+@import helper._
+
+
+
+@main("List of Role"){
+
+<table>
+<tr>
+<th>Role Id</th>
+<th>Role Name</th>
+<th>Description</th>
+<th>Active?</th>
+<th>Approved?</th>
+</tr>
+@for(r <- roles) {
+<tr>
+    <td><a href="@routes.RoleManagement.show(r.id)">@r.id</a></td>
+	<td> @r.roleName</td>
+	<td> @r.description</td>
+	<td><input type="checkbox" disabled=true @(if(r.isActive) "checked")></td>
+	<td><input type="checkbox" disabled=true @(if(r.isApproved) "checked")></td>
+</tr>
+ 
+}
+ </table>
+ 
+ <br/>
+  Select any of the Role (click on Id) to view its detail information.
+
+}

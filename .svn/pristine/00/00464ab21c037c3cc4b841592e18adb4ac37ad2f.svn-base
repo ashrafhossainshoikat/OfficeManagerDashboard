@@ -1,0 +1,57 @@
+
+package controllers;
+
+
+import models.CustomerCriteria;
+
+import play.*;
+import play.mvc.*;
+import play.data.*;
+import views.html.customercriteria.*;
+
+public class CustomerCriteriaManagement extends Controller {
+
+	static Form<CustomerCriteria> customerCriteriaForm = Form.form(CustomerCriteria.class);
+
+	public static Result create() {
+		return ok(create.render(customerCriteriaForm));
+	}
+
+	public static Result insert() {
+		Form<CustomerCriteria> filledForm = customerCriteriaForm.bindFromRequest();
+		if (filledForm.hasErrors()) {
+			return badRequest(create.render(filledForm));
+
+		} else {
+			CustomerCriteria.create(filledForm.get());
+			flash("msg", "A new Card User has been created successfully.");
+			return redirect(routes.CustomerCriteriaManagement.list());
+		}
+	}
+
+	public static Result list() {
+		return ok(list.render(CustomerCriteria.all()));
+	}
+
+	public static Result show(int id) {
+		CustomerCriteria customerCriteria= CustomerCriteria.get(id);
+		return ok(show.render(customerCriteria));
+	}
+
+	public static Result edit(int id) {
+	CustomerCriteria customerCriteria= CustomerCriteria.get(id);
+		return ok(edit.render(customerCriteriaForm.fill(customerCriteria)));
+	}
+
+    public static Result update() {
+		Form<CustomerCriteria> filledForm = customerCriteriaForm.bindFromRequest();
+		if (filledForm.hasErrors()) {
+			return badRequest(edit.render(filledForm));
+		} else {
+			CustomerCriteria customerCriteria = filledForm.get();
+			CustomerCriteria.update(customerCriteria);
+			flash("msg", "customer criteria " + customerCriteria.id + " has been updated");
+			return ok(show.render(customerCriteria));
+		}
+	}
+}

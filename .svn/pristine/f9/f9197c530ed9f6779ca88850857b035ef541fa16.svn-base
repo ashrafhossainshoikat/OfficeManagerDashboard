@@ -1,0 +1,45 @@
+@(loginForm: Form[dummymodels.Login])
+@import helper._
+@import helper.twitterBootstrap._
+
+@mainGuest{
+
+<div id="header">
+</div>
+  <div class="container_12">         
+            <!-- Dashboard icons -->
+           <div class="grid_7">
+
+    @helper.form(routes.UserManagement.authenticate) { 
+    
+     <h1>Sign in</h1>
+            
+            @if(loginForm.hasGlobalErrors) { 
+                <p class="error">
+                    @loginForm.globalError.message
+                </p>
+            }
+            
+            @if(flash.contains("success")) {
+                <p class="success">
+                    @flash.get("success")
+                </p>
+            }
+            
+        
+            <p>
+                <input type="text" name="username" required placeholder="Username" value="@loginForm("username").value">
+            </p>
+            <p>
+                <input type="password" name="password" required placeholder="Password">
+            </p>
+            
+            <p>
+                <button type="submit">Login</button>
+            </p>
+
+    }
+    </div>
+</div>  
+    
+}

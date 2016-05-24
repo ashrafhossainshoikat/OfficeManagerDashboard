@@ -1,0 +1,25 @@
+@(role:models.usermanagement.Role)
+@import helper._
+
+@main("Role Information"){
+  @if(flash.get("msg")) {
+  	<b>@flash.get("msg")</b>
+  }
+
+  
+
+  <table border=1>
+    <tr> <th align ="left">Role Name</th> <td>@role.roleName</td> </tr>
+    <tr> <th align ="left">Description</th> <td>@role.description</td> </tr>
+    <tr> <th align ="left">Is Active</th> <td><input type="checkbox" disabled=true @(if(role.isActive) "checked")></td></tr>
+    <br/>
+
+</table>
+
+<br><br>
+
+ @form(routes.RoleManagement.edit(role.id)) {
+    <input type="submit" value="Edit">
+  }
+
+}

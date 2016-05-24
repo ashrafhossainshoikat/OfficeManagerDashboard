@@ -1,0 +1,25 @@
+@(card:models.punchcard.Card)
+@import helper._
+
+@main("Card Information"){
+  <table border=1>
+    <tr> <th align ="left">Card Number</th> <td>@card.cardNumber</td> </tr>
+    <tr> <th align ="left">Service Type</th> <td>@if(card.isBssoCard) {BSSO} else {CCSO}</td> </tr>
+    <tr> <th align ="left">Branch Name</th> <td>@card.branchName</td></tr>
+    <tr> <th align ="left">Is Active?</th> <td>@if(card.isActive) {Active} else {Not Active}</td></tr>
+    <tr> <th align ="left">Is Approved?</th> <td>@if(card.isApproved) {Approved} else {Not Approved}</td> </tr>
+    <tr> <th align ="left">Service Type</th> <td>@if(card.isBssoCard) {BSSO} else {CCSO}</td> </tr>
+    <tr> <th align ="left">Create Date</th> <td>@card.createDate</td></tr>
+    <tr> <th align ="left">Created By</th> <td>@card.createdBy</td> </tr>
+    <tr> <th align ="left">Last Update Date</th> <td>@card.lastUpdateDate</td> </tr>
+    <tr> <th align ="left">Last Updated By</th> <td>@card.lastUpdatedBy</td></tr>
+    <br/>
+  </table>
+
+<br><br>
+
+ @form(routes.CardManagement.edit(card.id)) {
+    <input type="submit" value="Edit">
+  }
+
+}

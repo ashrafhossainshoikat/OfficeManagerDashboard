@@ -1,0 +1,121 @@
+package models.task;
+
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Version;
+
+import models.customer.CustomerServiceTask;
+import models.geo.Region;
+import play.data.validation.Constraints.Required;
+import play.db.ebean.Model;
+import services.JavaUtils;
+
+
+// ** Cash, Customer Services, Remittance
+@Entity
+public class TaskCategory extends Model {
+
+	@Id
+	public Integer id;
+
+	@Version
+	@Column(name = "edit_count", nullable = false)
+	public int version = 1;
+
+	@Required
+	public String categoryName;
+
+	@Column(nullable = false)
+	public boolean isActive;
+
+	@Column(nullable = false)
+	public boolean isApproved; // ** for checker
+	
+	@Column(nullable = false)
+	public Date createDate;
+	
+	@Column(nullable = false)
+	public String createdBy;
+	
+	public Date lastUpdateDate;
+	
+	public String lastUpdatedBy;
+
+	@OneToMany(mappedBy = "taskCategory")
+	public List<TaskType> taskType;
+	// ---------------------------------------------------------------------------
+
+	public static Finder<Integer, TaskCategory> find = new Finder(Integer.class, TaskCategory.class);
+
+	public void create() {
+		this.createDate = new Date();
+		this.createdBy = JavaUtils.getCurrentUsername();
+		super.save();
+	}
+	
+	public static void create(Region region) {
+		region.create();
+	}
+
+	@Override
+	public void save() {
+		this.create();
+	}
+	
+	@Override
+	public void update() {
+		this.lastUpdateDate = new Date();
+		this.lastUpdatedBy = JavaUtils.getCurrentUsername();
+		super.update(this.id);
+	}
+
+	public static List<TaskCategory> all() {
+		return find.all();
+	}
+
+	public static TaskCategory get(int id) {
+		return find.where().eq("id", id).findUnique();
+	}
+
+	public static Map<String, String> getAllAsMap() {
+		LinkedHashMap<String, String> tcList = new LinkedHashMap<String, String>();
+		for (TaskCategory taskCategory : TaskCategory.find.orderBy("categoryName").findList()) {
+			tcList.put(taskCategory.id.toString(), taskCategory.categoryName);
+		}
+
+		return tcList;
+	}
+
+	public static List<TaskCategory> getTaskCategory() {
+		List<TaskCategory> tcList = TaskCategory.find.orderBy("id").findList();
+
+		return tcList;
+	}
+
+	public static List<TaskCategory> allUnapproved() {
+		return find.where().eq("isApproved", false).orderBy("categoryName").findList();
+	}
+
+	public static boolean approveById(int id) {
+		TaskCategory taskCategory = get(id);
+		if (taskCategory == null)
+			return false;
+
+		try {
+			taskCategory.isApproved = true;
+			taskCategory.isActive = true;
+			taskCategory.update();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+}

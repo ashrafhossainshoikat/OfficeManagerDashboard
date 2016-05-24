@@ -1,0 +1,50 @@
+@(formRegion: Form[models.Region])
+
+
+
+ <div id="wrapper">
+  
+	<div>
+	<h2>Region Information</h2><br>
+	
+    
+    <form id="traninfosearch" name="region_info" method="POST" action="@routes.RegionManagement.regionCreate()" >
+    	<table class="search_table">
+	  		<tr>
+	  		<td>Region ID:</td>
+	  		<td><input type="text" name="region_Id"></td>
+	  		</tr>
+	  		
+	  		<tr>
+	  			<td>Region Name:</td>
+	  			<td><input type="text" name="region_Name"></td>
+	  			
+	  		</tr>
+	  		
+	  	    <tr>
+	  		<td>Regional Manager Name:</td>
+	  		<td><input type="text" name="regional_Manager_Name"></td>
+	  		</tr>
+    		
+    		<tr>
+    		<td>Contact Person Name:</td>
+    		<td><input type="text" name="contact_person_name"></td>		
+    		</tr>
+    		
+    		<tr>
+    		<td>Contact Person Email:</td>
+    		<td><input type="text" name="contact_person_email"></td>		
+    		</tr>
+    		
+    		<tr>
+    		<td>Contact Person Phone:</td>
+    		<td><input type="text" name="contact_person_phone"></td>		
+    		</tr>
+
+		</table>
+		<input type="button" onclick=""  value="Submit" class="submit"> &nbsp;&nbsp;
+		
+	</form>
+	</div>
+
+

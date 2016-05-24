@@ -1,0 +1,91 @@
+package controllers;
+
+import java.util.List;
+import java.util.Map;
+
+import play.data.Form;
+import play.mvc.Controller;
+import play.mvc.Result;
+import models.geo.Branch;
+import models.security.AuditLog;
+import services.AppConstants;
+import views.html.branch.*;
+
+
+public class BranchManagement extends Controller {
+
+	static Form<Branch> branchForm = Form.form(Branch.class);
+
+	// ** Show Branch create Form //
+	public static Result create() {
+		return ok(create.render(branchForm));
+	}
+
+	// ** Bind & store the Branch from View //
+	public static Result insert() {
+		Form<Branch> filledForm = branchForm.bindFromRequest();
+		
+		if (filledForm.hasErrors()) {
+			return badRequest(create.render(filledForm));
+		} else {
+			Branch branch = filledForm.get();
+			Integer branchId = branch.create();
+			if(branchId == null) {
+				flash(AppConstants.FLASH_KEY_ERROR, AppConstants.FLASH_MESSAGE_ERROR_DATA_SAVE);
+				return internalServerError(create.render(filledForm));
+			}
+			
+			AuditLog.logUserActivity(AppConstants.AUDIT_LOG_ACTION_INSERT, "branch", branchId);
+			flash(AppConstants.FLASH_KEY_INFO, "A new Branch [" + branch.name + "] is created Successfully.");
+			return redirect(controllers.routes.BranchManagement.list());
+		}
+	}
+
+	// ** show the list of Branch //
+	public static Result list() {
+		List<Branch> listOfBranch = Branch.all();
+		return ok(list.render(listOfBranch));
+	}
+
+	// ** show each Branch details //
+	public static Result show(Integer id) {
+		Branch branch = Branch.get(id);
+		return ok(show.render(branch));
+	}
+
+	public static Result edit(Integer id) {
+		Branch branch = Branch.get(id);
+		return ok(edit.render(branchForm.fill(branch)));
+	}
+
+	public static Result update() {
+		Form<Branch> filledForm = branchForm.bindFromRequest();
+		if (filledForm.hasErrors()) {
+			return badRequest(edit.render(filledForm));
+		} else {
+			Branch branch = filledForm.get();
+			Branch.update(branch);
+			flash("msg", "Branch " + branch.name + " has been updated");
+			return ok(show.render(branch));
+		}
+	}
+
+	public static Result showCreateApprovalForm() {
+		List<Branch> listOfBranch = Branch.allUnapproved();
+		return ok(approve.render(listOfBranch));
+	}
+
+	public static Result approveCreate() {
+		final Map<String, String[]> data = request().body().asFormUrlEncoded();
+		String branchIdStr = data.get(AppConstants.FORM_FIELD_NAME_BRANCH_ID)[0];
+
+		int branchId = 0;
+		if (branchIdStr != null && !branchIdStr.isEmpty())
+			branchId = Integer.parseInt(branchIdStr);
+
+		Branch.approveById(branchId);
+
+		return redirect(routes.BranchManagement.list());
+	}
+
+}

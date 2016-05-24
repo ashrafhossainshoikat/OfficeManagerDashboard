@@ -1,0 +1,32 @@
+@(branchs: List[models.geo.Branch])
+
+@import helper._
+@import services.AppConstants
+
+@main("List of Branch"){
+
+  <table>
+	<tr>
+	  <th>Branch Id</th>
+	  <th>Branch Name</th>
+	  <th>Active?</th>
+	</tr>
+	@for(b <- branchs) {
+	<tr>
+      <td><a href="@routes.BranchManagement.show(b.id)">@b.id</a></td>
+      <td> @b.id</td>
+	  <td> @b.name</td>
+	  <td><input type="checkbox" disabled=true @(if(b.isActive) "checked")></td>
+	  <td>
+	    <form action="@routes.BranchManagement.approveCreate()" method="post">
+	      <input type="hidden" name=@AppConstants.FORM_FIELD_NAME_BRANCH_ID value="@b.id">
+	  	  <input type="Submit" value="Approve">
+		</form>
+	  </td>
+	</tr>
+	}
+  </table>
+ 
+  <br/>
+  Select any of the Branch (click on Id) to view its detail information.
+}

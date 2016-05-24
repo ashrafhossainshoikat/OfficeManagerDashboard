@@ -1,0 +1,15 @@
+@(taskCategoryForm: Form[models.task.TaskCategory])
+
+@import helper._
+@import helper.bootstrap._
+
+@main("Edit Task Category Page"){
+<h2>Update the Task Category @taskCategoryForm("categoryName").value</h2><br/><br/>
+
+@form(action=routes.CategoryManagement.update()) {
+  <input type="hidden" name="id" value=@taskCategoryForm("id").value>
+  <input type="hidden" name="version" value=@taskCategoryForm("version").value>
+  @inputText(field=taskCategoryForm("categoryName"), args='_label->"Category Name")<br/>
+  <input type="submit" value="Save">
+}
+}

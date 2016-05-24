@@ -1,0 +1,120 @@
+package controllers;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import play.data.Form;
+import play.mvc.Controller;
+import play.mvc.Result;
+import services.AppConstants;
+import services.JavaUtils;
+import models.task.TaskType;
+import be.objectify.deadbolt.java.actions.Dynamic;
+import connectplus.services.deadbolt.DeadboltHandler;
+import views.html.tasktype.*;
+
+
+public class TaskTypeManagement extends Controller {
+	static Form<TaskType> taskTypeForm = Form.form(TaskType.class);
+
+	// ** show TaskType create Form
+	// @Dynamic(value="CREATE-TASKTYPE", handler=DeadboltHandler.class)
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_CREATE, handler = DeadboltHandler.class)
+	public static Result create() {
+		return ok(create.render(taskTypeForm));
+	}
+
+	// ** Bind & store the TaskType from view
+	// @Dynamic(value="CREATE-TASKTYPE", handler=DeadboltHandler.class)
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_CREATE, handler = DeadboltHandler.class)
+	public static Result insert() {
+		Form<TaskType> filledForm = taskTypeForm.bindFromRequest();
+		if (filledForm.hasErrors()) {
+			return badRequest(create.render(filledForm));
+		}
+
+		TaskType taskType = filledForm.get();
+		taskType.isActive = false;
+		taskType.isApproved = false;
+		taskType.createDate = new Date();
+		taskType.createdBy = JavaUtils.getCurrentUsername();
+		Integer ttId = TaskType.create(taskType);
+		
+		if (ttId == null) {
+			flash(AppConstants.FLASH_KEY_ERROR, "Sorry, the TaskType could not be saved. Please, retry after logging in again.");
+			return redirect(controllers.routes.TaskTypeManagement.create());
+		}
+
+		// AuditLog.logUserActivity("CREATE-TASKTYPE", ttId.longValue());
+		flash(AppConstants.FLASH_KEY_INFO, "A new TaskType is created successfully");
+		return redirect(controllers.routes.TaskTypeManagement.list());
+	}
+
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_VIEW, handler = DeadboltHandler.class)
+	// ** show the list of Task Type //
+	public static Result list() {
+		List<TaskType> listOfTaskType = TaskType.all();
+		return ok(list.render(listOfTaskType));
+	}
+
+	// ** show each TaskType details //
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_VIEW, handler = DeadboltHandler.class)
+	public static Result show(Integer id) {
+		TaskType taskType = TaskType.get(id);
+		return ok(show.render(taskType));
+	}
+
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_UPDATE, handler = DeadboltHandler.class)
+	public static Result edit(Integer id) {
+		TaskType taskType = TaskType.get(id);
+		return ok(edit.render(taskTypeForm.fill(taskType)));
+	}
+
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_UPDATE, handler = DeadboltHandler.class)
+	public static Result update() {
+		Form<TaskType> filledForm = taskTypeForm.bindFromRequest();
+		if (filledForm.hasErrors()) {
+			return badRequest(edit.render(filledForm));
+		}
+
+		TaskType tt = filledForm.get();
+		//TaskType.update(taskType);
+		TaskType taskType = TaskType.get(tt.id);
+		taskType.benchmarkTime = tt.benchmarkTime;
+		taskType.isBssoTask = tt.isBssoTask;
+		taskType.taskCategory = tt.taskCategory;
+		taskType.taskName = tt.taskName;
+		taskType.lastUpdateDate = new Date();
+		taskType.lastUpdatedBy = JavaUtils.getCurrentUsername();
+		taskType.isActive = false;
+		taskType.isApproved = false;
+		
+		taskType.update();
+		flash(AppConstants.FLASH_KEY_INFO, "TaskType [" + taskType.taskName + "] has been updated successfully");
+		//return ok(show.render(taskType));
+		return redirect(routes.TaskTypeManagement.show(taskType.id));
+
+	}
+
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_APPROVE, handler = DeadboltHandler.class)
+	public static Result showCreateApprovalForm() {
+		List<TaskType> listOfTaskType = TaskType.allUnapproved();
+		return ok(approve.render(listOfTaskType));
+	}
+
+	@Dynamic(value = AppConstants.ACTION_DEADBOLT_NAME_TASK_APPROVE, handler = DeadboltHandler.class)
+	public static Result approveCreate() {
+		final Map<String, String[]> data = request().body().asFormUrlEncoded();
+		String taskTypeIdStr = data.get(AppConstants.FORM_FIELD_NAME_TASK_TYPE_ID)[0];
+
+		int taskTypeId = 0;
+		if (taskTypeIdStr != null && !taskTypeIdStr.isEmpty())
+			taskTypeId = Integer.parseInt(taskTypeIdStr);
+
+		TaskType.approveById(taskTypeId);
+
+		//return redirect(routes.TaskTypeManagement.list());
+		return redirect(routes.TaskTypeManagement.showCreateApprovalForm());
+	}
+}

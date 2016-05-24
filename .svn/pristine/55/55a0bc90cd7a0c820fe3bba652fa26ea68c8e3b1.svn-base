@@ -1,0 +1,114 @@
+@(livForm: Form[dummymodels.reports.LiveInterfaceView], dataSet1: Array[Array[String]], dataSet2: Array[Array[String]], dataSet3: Array[Array[String]])
+
+@import services.AppConstants
+@import models.punchcard.Card
+@import helper._
+@import helper.bootstrap._
+@import dummymodels.reports.LiveInterfaceView
+
+
+@main("Live Interface View") {
+	
+   
+   <script>
+    function submitForm(isPdfValue){
+      $('#isPdf').val(isPdfValue);
+      document.getElementById("livForm").submit();
+    }
+ </script>
+ 
+  <div>
+    <fieldset>
+      
+   @form(action=routes.ReportManagement.generateLiveInterfaceView(), 'id -> "livForm") {
+   
+  <table>
+    <tr>
+      <td>
+         <input type="hidden" name="isPdf" value="" id="isPdf" />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        @select(livForm("cardNumber"),
+           options(Card.getAsMapForReportFilter()),
+           '_label -> "Token No",
+           '_showConstraints -> false, 
+           '_default -> "All",
+           'id -> "cardNumber"
+         )<br/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input type="submit" value="Search" id="search" onclick="submitForm('');"/>
+      </td>
+      <td>
+        <input type="button" value="Download PDF" id="downloadPdf" onclick="submitForm('on');"/>
+      </td>
+      <td>
+        <input type="button" value="Download EXCEL" id="downloadXls" onclick="submitForm('off');"/>
+      </td>
+    </tr>
+  </table> 
+   } 
+  </fieldset></div><br/>
+
+  
+  <table>
+    <tr>
+      <th class="tabledata">Category</th>
+      <th class="tabledata">Visitor Type</th>
+      <th class="tabledata">Token Served</th>
+      <th class="tabledata">Avg. Waiting</th>
+   </tr>
+    @if(dataSet1 != null){
+       @for((row1 , idx1)<-  dataSet1.zipWithIndex){
+       <tr @if(idx1%2==0){class="even"}else{class="odd"}>
+       @for(cell <- row1){
+         <td class="tabledata">@cell</td>
+       }
+       </tr>
+       }
+     }
+  </table><br><br><br><br>
+  
+  
+  <table>
+    <tr>
+      <th class="tabledata">Category</th>
+      <th class="tabledata">Visitor Type</th>
+      <th class="tabledata">Services</th>
+   </tr>
+    @if(dataSet2 != null){
+       @for((row2 , idx2)<-  dataSet2.zipWithIndex){
+       <tr @if(idx2%2==0){class="even"}else{class="odd"}>
+       @for(cell <- row2){
+         <td class="tabledata">@cell</td>
+       }
+       </tr>
+       }
+     }
+  </table><br><br><br><br>
+  
+   <table>
+    <tr>
+      <th class="tabledata">Services</th>
+      <th class="tabledata">Total</th>
+      <th class="tabledata">Served</th>
+      <th class="tabledata">Serving</th>
+      <th class="tabledata">Waiting</th>
+      <th class="tabledata">Cancelled</th>
+   </tr>
+    @if(dataSet3 != null){
+       @for((row3 , idx3)<-  dataSet3.zipWithIndex){
+       <tr @if(idx3%2==0){class="even"}else{class="odd"}>
+       @for(cell <- row3){
+         <td class="tabledata">@cell</td>
+       }
+       </tr>
+       }
+     }
+  </table>
+}
+

@@ -1,0 +1,12 @@
+@(regionForm: Form[models.geo.Region])
+
+@import helper._
+@import helper.bootstrap._
+
+@main("Region Create Form"){
+@form(action=routes.RegionManagement.insert()) {
+  @inputText(field=regionForm("name") , '_label->"Region Name")<br/>
+  @inputText(field=regionForm("zoneId") , '_label->"Zone ID")<br/>
+  <input type="submit" value="Create new Region">
+}
+}

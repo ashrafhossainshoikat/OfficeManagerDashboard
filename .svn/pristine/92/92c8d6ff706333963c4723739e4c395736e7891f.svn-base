@@ -1,0 +1,11 @@
+@()
+@import helper._
+@import helper.twitterBootstrap._
+
+@mainGuest{
+	
+  <font color="red">
+    Sorry, either the page does not exists or you do not have permission to this page.<br />
+  </font>
+
+}

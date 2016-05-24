@@ -1,0 +1,9 @@
+@(user: models.usermanagement.User)
+@import helper._
+@import helper.twitterBootstrap._
+
+@mainGuest{
+  Congratulations! <b>@user.fullName</b>, your account verification is successful.<br /><br />
+  An email with your login password has been sent to your email address.<br />
+  We will activate your account soon.
+}

@@ -1,0 +1,26 @@
+@(branchForm: Form[models.geo.Branch])
+
+
+@import models.geo.Region
+@import helper._
+
+@main("Edit Branch Page"){
+  <h2>Update the Branch having Id @branchForm("id").value</h2><br/><br/>
+
+  @form(action=routes.BranchManagement.update()) {
+	<input type="hidden" name="id" value=@branchForm("id").value>
+	<input type="hidden" name="version" value=@branchForm("version").value>
+	@inputText(field=branchForm("name") , '_label->"Branch Name")<br/>
+	@inputText(field=branchForm("branchCode") , '_label->"Branch Code")<br/>
+	@inputText(field=branchForm("contactPersonName") , '_label->"Contact Person Name")<br/>
+	@inputText(field=branchForm("contactPersonPhone") , '_label->"Contact Person Phone")<br/>
+	@inputText(field=branchForm("contactPersonEmail") , '_label->"Contact Person Email")<br/>
+	@checkbox(field=branchForm("isActive") , '_label->"Active?")<br/>
+	@select(branchForm("region.id"),
+      options(Region.getAsMap),
+       '_label -> "Region", '_default -> "-- Choose a role --",
+       '_showConstraints -> false
+    )<br/>
+	<input type="submit" value="Save">
+  }
+}

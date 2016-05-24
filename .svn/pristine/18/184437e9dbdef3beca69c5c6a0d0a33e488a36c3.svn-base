@@ -1,0 +1,26 @@
+@(taskCategory: List[models.task.TaskCategory])
+
+@import helper._
+@import helper.bootstrap._
+
+@main("List of Task Category"){
+
+  <table>
+	<tr>
+	  <th>ID</th>
+	  <th>Category Name</th>
+	  <th>Active?</th>
+	  <th>Approved?</th>
+	</tr>
+	@for(t <- taskCategory) {
+	<tr>
+	  <td><a href="@routes.CategoryManagement.show(t.id)">@t.id</a></td>
+	  <td>@t.categoryName</td>
+	  <td><input type="checkbox" disabled=true @(if(t.isActive) "checked")></td>
+	  <td><input type="checkbox" disabled=true @(if(t.isApproved) "checked")></td>
+	</tr>
+	}
+  </table>
+  <br/>
+  Select any of the task_Category (click on ID) to view its detail information.
+}
